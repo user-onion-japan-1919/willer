@@ -2,76 +2,84 @@
 
 # テーブル設計
 
-## users テーブル
-
+## users テーブル（ユーザー情報）
 | Column                        | Type   | Options     |
 | ----------------------------- | ------ | ----------- |
-| nickname                      | string | null: false |
 | email                         | string | null: false, unique: true |
 | encrypted_password            | string | null: false |
 | first_name                    | string | null: false |
 | first_name_furigana           | string | null: false |
 | last_name                     | string | null: false |
 | last_name_furigana            | string | null: false |
-| date_of_birth                 | date   | null: false |
-
-
+| birthday                      | date   | null: false |
+| blood_type                    | string | null: false |
+| address                       | string | null: false |
+| phone_number                  | string | null: false, unique: true |
 
 ### Association
-has_many :items
-has_many :orders
+has_many :notes
+has_many :view_permissions
+has_many :note_assistances
 
 
 
-## items テーブル
 
+
+
+## notes テーブル（遺言データ）
 | Column             | Type       | Options     |
 | ------------------ | ---------- | ----------- |
-| item_name          | string     | null: false |
-| item_description   | text       | null: false |
-| category_id        | integer    | null: false |
-| condition_id       | integer    | null: false |
-| shipping_fee_id    | integer    | null: false |
-| prefecture_id      | integer    | null: false |
-| shipping_day_id    | integer    | null: false |
-| price              | integer    | null: false |
 | user               | referenses | null: false,foreign_key: true |
+| content            | text       | null: false |    ## 遺言の内容
+| is_published       | boolean    | default: false, null: false |    ## 公開ステータス（true=公開）
 
+### Association
+belongs_to :user
+has_many :view_permissions
+has_many :note_assistances
+
+
+
+
+
+
+
+
+## view_permissions テーブル（閲覧許可情報）
+| Column                       | Type       | Options     |
+| ---------------------------- | ---------- | ----------- |
+| user                         | referenses | null: false,foreign_key: true |
+| note                         | referenses | null: false,foreign_key: true |
+| viewer_first_name            | string     | null: false |
+| viewer_first_name_furigana   | string     | null: false |
+| viewer_last_name             | string     | null: false |
+| viewer_last_name_furigana    | string     | null: false |
+| relationship                 | string     | null: false |    ## 続柄
+| viewer_email                 | string     | null: false, unique: true |
+| viewer_birthday              | date       | null: false |
+| viewer_blood_type            | string     | null: false |
+| viewer_address               | string     | null: false |
+| viewer_phone_number          | string     | null: false, unique: true |
 
 
 ### Association
 belongs_to :user
-has_one :order
+belongs_to :note
 
-## orders テーブル
 
-| Column             | Type       | Options     |
-| ------------------ | ---------- | ----------- |
-| user               | referenses | null: false,foreign_key: true |
-| item               | referenses | null: false,foreign_key: true |
+
+
+
+
+
+
+## note_assistances テーブル（記述サポート情報）
+| Column              | Type       | Options     |
+| ------------------- | ---------- | ----------- |
+| user                | referenses | null: false,foreign_key: true |
+| note                | referenses | null: false,foreign_key: true |
+| guidance            | text       | null: false |    ## 記述サポート情報
 
 ### Association
-
 belongs_to :user
-belongs_to :item
-has_one :address
-
-
-## addresses テーブル
-
-| Column                           | Type       | Options     |
-| -------------------------------- | ---------- | ----------- |
-| post_code                        | string     | null: false |
-| prefecture_id                    | integer    | null: false |
-| city_ward_town_village           | string     | null: false |
-| street_address                   | string     | null: false |
-| building_name                    | string     |             |
-| phone_number                     | string     | null: false |
-| order                            | referenses | null: false,foreign_key: true |
-
-
-
-
-### Association
-
-belongs_to :order
+belongs_to :note
