@@ -1,6 +1,8 @@
 <h2>遺言作成管理 - Willer -</h2>
 
-<%= render "devise/shared/error_messages", resource: resource %>
+<div id="error_explanation">
+  <%= render "devise/shared/error_messages", resource: resource %>
+</div>
 
 <div class="tabs">
   <button id="signup-tab" class="active" onclick="showForm('signup')">新規登録</button>

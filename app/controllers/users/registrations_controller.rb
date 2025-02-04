@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     if resource.save
       sign_up(resource_name, resource)
-      redirect_to after_sign_up_path_for(resource), notice: 'アカウント登録が完了しました'
+      redirect_to after_sign_up_path_for(resource)
     else
       clean_up_passwords(resource)
       set_minimum_password_length
