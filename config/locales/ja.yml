@@ -15,18 +15,19 @@ ja:
               too_short: "：パスワードは6文字以上で入力してください"
               invalid: "：パスワードは半角英数字混合で入力してください"
             password_confirmation:
-              confirmation: "：パスワードが一致しません"
-              blank: "：パスワード確認を入力してください"
+              blank: "パスワード（確認）を入力してください"
+              confirmation: "：パスワードとパスワード（確認）が一致しません"
+              invalid: "：パスワードは半角英数字混合で入力してください"
             first_name:
-              blank: "：名前を入力してください"
+              blank: "：苗字を入力してください"
             last_name:
-              blank: "：名字を入力してください"
+              blank: "：名前を入力してください"
             first_name_furigana:
-              blank: "：名前のふりがなを入力してください"
-              invalid: "：ひらがなのみ入力してください"
+              blank: "：苗字（ふりがな）を入力してください"
+              invalid: "：「ひらがな」で入力してください"
             last_name_furigana:
-              blank: "：名字のふりがなを入力してください"
-              invalid: "：ひらがなのみ入力してください"
+              blank: "：名前（ふりがな）を入力してください"
+              invalid: "：「ひらがな」で入力してください"
             birthday:
               blank: "：生年月日を入力してください"
             blood_type:

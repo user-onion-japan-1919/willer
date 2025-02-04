@@ -23,27 +23,27 @@
     </div>
 
     <div>
-      <%= f.label :password_confirmation, "パスワード確認" %><br>
+      <%= f.label :password_confirmation, "パスワード（確認）" %><br>
       <%= f.password_field :password_confirmation, id: "signup_user_password_confirmation", autocomplete: "new-password" %>
     </div>
 
     <div>
-      <%= f.label :first_name, "名" %><br>
+      <%= f.label :first_name, "苗字" %><br>
       <%= f.text_field :first_name, id: "signup_user_first_name", value: f.object.first_name %>
     </div>
 
     <div>
-      <%= f.label :first_name_furigana, "名（ふりがな）" %><br>
+      <%= f.label :first_name_furigana, "苗字（ふりがな）" %><br>
       <%= f.text_field :first_name_furigana, id: "signup_user_first_name_furigana", value: f.object.first_name_furigana %>
     </div>
 
     <div>
-      <%= f.label :last_name, "姓" %><br>
+      <%= f.label :last_name, "名前" %><br>
       <%= f.text_field :last_name, id: "signup_user_last_name", value: f.object.last_name %>
     </div>
 
     <div>
-      <%= f.label :last_name_furigana, "姓（ふりがな）" %><br>
+      <%= f.label :last_name_furigana, "名前（ふりがな）" %><br>
       <%= f.text_field :last_name_furigana, id: "signup_user_last_name_furigana", value: f.object.last_name_furigana %>
     </div>
 
