@@ -1,9 +1,11 @@
 <% if resource.errors.any? %>
   <div id="error_explanation" data-turbo-cache="false">
-    <ul>
-      <% resource.errors.full_messages.uniq.each do |message| %>
-        <li><%= message %></li>
+    <% resource.errors.messages.each do |field, messages| %>
+      <% messages.each do |message| %>
+        <p class="error-message" data-error-for="<%= field %>">
+          <%= resource.class.human_attribute_name(field) %> <%= message %>
+        </p>
       <% end %>
-    </ul>
+    <% end %>
   </div>
 <% end %>
