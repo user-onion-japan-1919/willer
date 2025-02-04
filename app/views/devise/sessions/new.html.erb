@@ -1,10 +1,116 @@
-<h2>ログイン</h2>
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <%= f.label :email %>
-  <%= f.email_field :email %>
+<h2>遺言作成管理-willer-</h2>
 
-  <%= f.label :password %>
-  <%= f.password_field :password %>
+<div class="tabs">
+  <button id="login-tab" class="active" onclick="showForm('login')">ログイン</button>
+  <button id="signup-tab" onclick="showForm('signup')">新規登録</button>
+</div>
 
-  <%= f.submit "ログイン" %>
-<% end %>
+<div id="login-form">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { method: :post }) do |f| %>
+    <div>
+      <%= f.label :email %><br>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
+
+    <div>
+      <%= f.label :password %><br>
+      <%= f.password_field :password, autocomplete: "current-password" %>
+    </div>
+
+    <div>
+      <%= f.submit "ログイン" %>
+    </div>
+  <% end %>
+
+  <%= render "devise/shared/links" %>
+</div>
+
+<div id="signup-form" style="display: none;">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :post }) do |f| %>
+    <div>
+      <%= f.label :email %><br>
+      <%= f.email_field :email, autocomplete: "email" %>
+    </div>
+
+    <div>
+      <%= f.label :password %><br>
+      <%= f.password_field :password, autocomplete: "new-password" %>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation %><br>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
+
+    <div>
+      <%= f.label :first_name %><br>
+      <%= f.text_field :first_name %>
+    </div>
+
+    <div>
+      <%= f.label :first_name_furigana, "ふりがな" %><br>
+      <%= f.text_field :first_name_furigana %>
+    </div>
+
+    <div>
+      <%= f.label :last_name %><br>
+      <%= f.text_field :last_name %>
+    </div>
+
+    <div>
+      <%= f.label :last_name_furigana, "ふりがな" %><br>
+      <%= f.text_field :last_name_furigana %>
+    </div>
+
+    <div>
+      <%= f.label :birthday, "生年月日" %><br>
+      <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year %>
+    </div>
+
+    <div>
+      <%= f.label :blood_type, "血液型" %><br>
+      <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
+    </div>
+
+    <div>
+      <%= f.label :address, "住所" %><br>
+      <%= f.text_field :address %>
+    </div>
+
+    <div>
+      <%= f.label :phone_number, "電話番号" %><br>
+      <%= f.text_field :phone_number %>
+    </div>
+
+    <div>
+      <%= f.submit "新規登録" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function showForm(type) {
+    if (type === 'login') {
+      document.getElementById('login-form').style.display = 'block';
+      document.getElementById('signup-form').style.display = 'none';
+      document.getElementById('login-tab').classList.add('active');
+      document.getElementById('signup-tab').classList.remove('active');
+    } else {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('signup-form').style.display = 'block';
+      document.getElementById('login-tab').classList.remove('active');
+      document.getElementById('signup-tab').classList.add('active');
+    }
+  }
+</script>
+
+<style>
+  .tabs button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  .tabs button.active {
+    font-weight: bold;
+  }
+</style>

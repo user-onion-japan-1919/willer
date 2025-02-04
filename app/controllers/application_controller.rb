@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    notes_path # ログイン後に遺言一覧ページへ
+    stored_location_for(resource) || notes_path || root_path # ログイン後に遺言一覧ページへ
   end
 
   def after_sign_out_path_for(resource)
@@ -23,6 +23,10 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [
+                                        :first_name, :first_name_furigana, :last_name, :last_name_furigana,
+                                        :birthday, :blood_type, :address, :phone_number
+                                      ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [
                                         :first_name, :first_name_furigana, :last_name, :last_name_furigana,
                                         :birthday, :blood_type, :address, :phone_number
                                       ])
