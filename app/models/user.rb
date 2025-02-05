@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  has_many :view_permissions, dependent: :destroy # ✅ 関連付け
+  has_many :view_permissions
+  has_many :view_requests, foreign_key: :parent_id, class_name: 'ViewRequest'
+  has_many :notes
 
   ## Deviseの機能を利用
   devise :database_authenticatable, :registerable,

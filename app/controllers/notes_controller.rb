@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @user = current_user
+    @parent = current_user
   end
 
   # 🔽 公開ページ用のアクション

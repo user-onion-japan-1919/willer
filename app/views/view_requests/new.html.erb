@@ -1,25 +1,24 @@
-<%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
-  
-  <div>
-  <%= f.label :parent_id, "閲覧を希望する親のID" %>
-  <%= f.number_field :parent_id %>
-</div>
-  
+<h3>①閲覧したい対象者（親側）の情報を入力し、登録する</h3>
+<br>
+<p>※旧字体・大文字・小文字・住所の表現などが少しでも異なっていると、閲覧申請は通りません。</p>
+<br>
+
+<%= form_with model: @view_request, url: view_requests_path, method: :post, local: true do |f| %>
   <div>
     <%= f.label :viewer_first_name, "苗字" %>
-    <%= f.text_field :viewer_first_name, required: true %>
+    <%= f.text_field :viewer_first_name %>
   </div>
   <div>
     <%= f.label :viewer_first_name_furigana, "苗字（ふりがな）" %>
-    <%= f.text_field :viewer_first_name_furigana, required: true %>
+    <%= f.text_field :viewer_first_name_furigana %>
   </div>
   <div>
     <%= f.label :viewer_last_name, "名前" %>
-    <%= f.text_field :viewer_last_name, required: true %>
+    <%= f.text_field :viewer_last_name %>
   </div>
   <div>
     <%= f.label :viewer_last_name_furigana, "名前（ふりがな）" %>
-    <%= f.text_field :viewer_last_name_furigana, required: true %>
+    <%= f.text_field :viewer_last_name_furigana %>
   </div>
   <div>
     <%= f.label :viewer_birthday, "生年月日" %>
@@ -29,18 +28,10 @@
     <%= f.label :viewer_blood_type, "血液型" %>
     <%= f.select :viewer_blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
   </div>
-  <div>
-    <%= f.label :viewer_address, "住所" %>
-    <%= f.text_field :viewer_address %>
-  </div>
-  <div>
-    <%= f.label :viewer_phone_number, "電話番号" %>
-    <%= f.text_field :viewer_phone_number %>
-  </div>
 
-   <!-- parent_id を hidden_field でセット -->
+
   <%= f.hidden_field :parent_id, value: @parent.id %>
 
   <br>
-  <%= f.submit "閲覧申請を登録する", class: "btn btn-primary" %>
+  <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
 <% end %>

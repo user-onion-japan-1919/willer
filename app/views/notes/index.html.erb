@@ -42,7 +42,7 @@
 <br>
   </div>
 
-  <!-- 登録情報 -->
+  <!-- ①ユーザ新規登録情報 -->
   <div id="info-section">
   <h3>①<%= current_user.first_name %> <%= current_user.last_name %> さんの登録情報（※空欄不可）</h3>
   <br>
@@ -50,7 +50,7 @@
   <h3>※旧字体・大文字・小文字・住所の表現などが少しでも異なると、閲覧権限を付与できません。</h3>
   <br>
 
-
+<!-- ①ユーザ新規登録情報フォーム -->
    <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
   <div>
     <%= f.label :email, "メールアドレス" %>
@@ -106,16 +106,15 @@
 <% end %>
 
 
-  <!-- 閲覧許可設定 -->
+  <!-- ②閲覧を許可する対象者を登録 -->
   <div id="permission-section" style="display: none;">
   <h3>②閲覧を許可する対象者を登録</h3>
   <br>
   <p>※下に登録したユーザー情報と<b>完全一致するユーザーだけに閲覧を許可</b>します。</p>
-  <p>※最大5人まで登録できます。</p>
   <p>※旧字体・大文字・小文字・住所の表現などが少しでも異なっていると、閲覧権限を付与できません。</p>
   <br>
 
-  <!-- 新規登録フォーム -->
+  <!-- ②閲覧を許可する対象者を登録フォーム -->
   <%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
     <div>
       <%= f.label :first_name, "苗字" %>
@@ -147,7 +146,7 @@
     ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     <br><br>
     
-    <!-- 登録済みの許可対象者リスト -->
+    <!-- ②ーⅡ登録済みの許可対象者リスト -->
   <h3>登録済みの閲覧許可対象者</h3>
   <% if current_user.view_permissions.any? %>
     <table border="1">
@@ -180,7 +179,7 @@
   </div>
   
 
-  <!-- ノートの管理 -->
+  <!-- ③ノートを記述 -->
   <div id="notes-section" style="display: none;">
     <h3>③ノートを記述</h3>
     <br>
@@ -214,40 +213,44 @@
 <br>
 <br>
 
-  <!-- 親情報の登録 -->
+  <!-- １親情報の登録 -->
   <div id="search-section">
     <h3>①親情報（閲覧したい対象者の情報）を入力し、登録する</h3>
     <br>
     <p>※旧字体・大文字・小文字・住所の表現などが少しでも異なっていると、閲覧申請は通りません。</p>
     <br>
 
-    <%= form_with url: search_users_path, method: :get, local: true do |f| %>
-      <div>
-        <%= f.label :first_name, "苗字" %>
-        <%= f.text_field :first_name %>
-      </div>
-      <div>
-        <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
-        <%= f.text_field :first_name_furigana %>
-      </div>
-      <div>
-        <%= f.label :last_name, "名前" %>
-        <%= f.text_field :last_name %>
-      </div>
-      <div>
-        <%= f.label :last_name_furigana, "名前（ふりがな）" %>
-        <%= f.text_field :last_name_furigana %>
-      </div>
-      <div>
-        <%= f.label :birthday, "生年月日" %>
-        <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
-      </div>
-      <div>
-        <%= f.label :blood_type, "血液型" %>
-        <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
-      </div>
-      <br>
-      <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+    <div>
+      <%= f.label :viewer_first_name, "苗字" %>
+      <%= f.text_field :viewer_first_name %>
+    </div>
+    <div>
+      <%= f.label :viewer_first_name_furigana, "苗字（ふりがな）" %>
+      <%= f.text_field :viewer_first_name_furigana %>
+    </div>
+    <div>
+      <%= f.label :viewer_last_name, "名前" %>
+      <%= f.text_field :viewer_last_name %>
+    </div>
+    <div>
+      <%= f.label :viewer_last_name_furigana, "名前（ふりがな）" %>
+      <%= f.text_field :viewer_last_name_furigana %>
+    </div>
+    <div>
+      <%= f.label :viewer_birthday, "生年月日" %>
+      <%= f.date_select :viewer_birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+    </div>
+    <div>
+      <%= f.label :viewer_blood_type, "血液型" %>
+      <%= f.select :viewer_blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
+    </div>
+
+    <!-- parent_id を hidden_field でセット -->
+    <%= f.hidden_field :parent_id, value: @parent.id %>
+
+    <br>
+    <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
 <br>
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -256,7 +259,7 @@
     <% end %>
   </div>
 
-  <!-- 検索結果 -->
+  <!-- ２閲覧申請 -->
   <div id="result-section" style="display: none;">
     <h3>②登録リストから閲覧申請をかける</h3>
     <br>
@@ -288,7 +291,7 @@
 
 
 
-
+ <!-- ##タブ機能 ------------------------------------------------->
 
 <script>
   function showSection(type) {
@@ -346,6 +349,10 @@
   }
 </script>
 
+
+
+ <!-- ##CSS ----------------------------------------------------->
+ 
 <style>
   .tabs button, .sub-tabs button {
     padding: 10px;
