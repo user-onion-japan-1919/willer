@@ -1,0 +1,60 @@
+<h1>新しい閲覧申請</h1>
+
+<%= form_with model: @view_request, url: view_requests_path, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :parent_id, "対象者（親のユーザー）" %>
+    <%= f.collection_select :parent_id, User.all, :id, :email, prompt: "選択してください" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_first_name, "名前（名）" %>
+    <%= f.text_field :viewer_first_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_first_name_furigana, "名前（名・ふりがな）" %>
+    <%= f.text_field :viewer_first_name_furigana, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_last_name, "名前（姓）" %>
+    <%= f.text_field :viewer_last_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_last_name_furigana, "名前（姓・ふりがな）" %>
+    <%= f.text_field :viewer_last_name_furigana, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :relationship, "関係性" %>
+    <%= f.text_field :relationship, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_email, "メールアドレス" %>
+    <%= f.email_field :viewer_email, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_birthday, "生年月日" %>
+    <%= f.date_select :viewer_birthday, start_year: 1900, end_year: Date.today.year, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_blood_type, "血液型" %>
+    <%= f.select :viewer_blood_type, %w[A B O AB], prompt: "選択してください", class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_address, "住所" %>
+    <%= f.text_field :viewer_address, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :viewer_phone_number, "電話番号" %>
+    <%= f.text_field :viewer_phone_number, class: 'form-control' %>
+  </div>
+
+  <%= f.submit "申請する", class: "btn btn-primary" %>
+<% end %>

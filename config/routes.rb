@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:update] 
   resources :view_permissions, only: [:create, :destroy]
+  resources :view_requests, only: [:index, :new, :create]
   resources :notes, only: [:index, :new, :create, :show] # ここに適宜必要なアクションを追加
 
 

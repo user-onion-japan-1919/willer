@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_05_054200) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_05_074931) do
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -45,5 +45,26 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_05_054200) do
     t.index ["user_id"], name: "index_view_permissions_on_user_id"
   end
 
+  create_table "view_requests", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "parent_id", null: false
+    t.string "viewer_first_name", null: false
+    t.string "viewer_first_name_furigana", null: false
+    t.string "viewer_last_name", null: false
+    t.string "viewer_last_name_furigana", null: false
+    t.string "relationship", null: false
+    t.string "viewer_email", null: false
+    t.date "viewer_birthday", null: false
+    t.string "viewer_blood_type", null: false
+    t.string "viewer_address", null: false
+    t.string "viewer_phone_number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_view_requests_on_parent_id"
+    t.index ["user_id"], name: "index_view_requests_on_user_id"
+  end
+
   add_foreign_key "view_permissions", "users"
+  add_foreign_key "view_requests", "users"
+  add_foreign_key "view_requests", "users", column: "parent_id"
 end
