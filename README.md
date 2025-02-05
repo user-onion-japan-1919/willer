@@ -19,6 +19,7 @@
 ### Association
 has_many :notes
 has_many :view_permissions
+has_many :view_requests
 has_many :note_assistances
 
 
@@ -29,13 +30,11 @@ has_many :note_assistances
 ## notes テーブル（遺言データ）
 | Column             | Type       | Options     |
 | ------------------ | ---------- | ----------- |
-| user               | referenses | null: false,foreign_key: true |
+| user               | references | null: false,foreign_key: true |
 | content            | text       | null: false |    ## 遺言の内容
-| is_published       | boolean    | default: false, null: false |    ## 公開ステータス（true=公開）
 
 ### Association
 belongs_to :user
-has_many :view_permissions
 has_many :note_assistances
 
 
@@ -48,8 +47,8 @@ has_many :note_assistances
 ## view_permissions テーブル（閲覧許可情報）
 | Column                       | Type       | Options     |
 | ---------------------------- | ---------- | ----------- |
-| user                         | referenses | null: false,foreign_key: true |
-| note                         | referenses | null: false,foreign_key: true |
+| user                         | references | null: false,foreign_key: true |
+| note                         | references | null: false,foreign_key: true |
 | viewer_first_name            | string     | null: false |
 | viewer_first_name_furigana   | string     | null: false |
 | viewer_last_name             | string     | null: false |
@@ -68,6 +67,26 @@ belongs_to :note
 
 
 
+## view_requests テーブル（閲覧申請情報）
+| Column                       | Type       | Options     |
+| ---------------------------- | ---------- | ----------- |
+| user                         | references | null: false, foreign_key: true | ## 閲覧をリクエストしたユーザー 
+| parent_id                    | references | null: false, foreign_key: { to_table: :users } |  ## 閲覧される対象者 
+| viewer_first_name            | string     | null: false |
+| viewer_first_name_furigana   | string     | null: false |
+| viewer_last_name             | string     | null: false |
+| viewer_last_name_furigana    | string     | null: false |
+| relationship                 | string     | null: false |    ## 続柄
+| viewer_email                 | string     | null: false |
+| viewer_birthday              | date       | null: false |
+| viewer_blood_type            | string     | null: false |
+| viewer_address               | string     | null: false |
+| viewer_phone_number          | string     | null: false |
+
+
+### Association
+belongs_to :user
+belongs_to :parent, class_name: 'User'
 
 
 
@@ -76,8 +95,8 @@ belongs_to :note
 ## note_assistances テーブル（記述サポート情報）
 | Column              | Type       | Options     |
 | ------------------- | ---------- | ----------- |
-| user                | referenses | null: false,foreign_key: true |
-| note                | referenses | null: false,foreign_key: true |
+| user                | references | null: false,foreign_key: true |
+| note                | references | null: false,foreign_key: true |
 | guidance            | text       | null: false |    ## 記述サポート情報
 
 ### Association
