@@ -118,20 +118,20 @@
   <!-- 新規登録フォーム -->
   <%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
     <div>
-      <%= f.label :last_name, "苗字" %>
-      <%= f.text_field :last_name %>
-    </div>
-    <div>
-      <%= f.label :last_name_furigana, "苗字（ふりがな）" %>
-      <%= f.text_field :last_name_furigana %>
-    </div>
-    <div>
-      <%= f.label :first_name, "名前" %>
+      <%= f.label :first_name, "苗字" %>
       <%= f.text_field :first_name %>
     </div>
     <div>
-      <%= f.label :first_name_furigana, "名前（ふりがな）" %>
+      <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
       <%= f.text_field :first_name_furigana %>
+    </div>
+    <div>
+      <%= f.label :last_name, "名前" %>
+      <%= f.text_field :last_name %>
+    </div>
+    <div>
+      <%= f.label :last_name_furigana, "名前（ふりがな）" %>
+      <%= f.text_field :last_name_furigana %>
     </div>
     <div>
       <%= f.label :birthday, "生年月日" %>
