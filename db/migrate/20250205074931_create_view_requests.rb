@@ -8,7 +8,7 @@ class CreateViewRequests < ActiveRecord::Migration[7.0]
       t.string :viewer_first_name_furigana, null: false
       t.string :viewer_last_name, null: false
       t.string :viewer_last_name_furigana, null: false
-      t.string :relationship, null: false  # 続柄
+      t.string :relationship, null: false  # 続柄.
       t.string :viewer_email, null: false
       t.date :viewer_birthday, null: false
       t.string :viewer_blood_type, null: false

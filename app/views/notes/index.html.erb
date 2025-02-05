@@ -223,20 +223,20 @@
 
     <%= form_with url: search_users_path, method: :get, local: true do |f| %>
       <div>
-        <%= f.label :last_name, "苗字" %>
-        <%= f.text_field :last_name %>
-      </div>
-      <div>
-        <%= f.label :last_name_furigana, "苗字（ふりがな）" %>
-        <%= f.text_field :last_name_furigana %>
-      </div>
-      <div>
-        <%= f.label :first_name, "名前" %>
+        <%= f.label :first_name, "苗字" %>
         <%= f.text_field :first_name %>
       </div>
       <div>
-        <%= f.label :first_name_furigana, "名前（ふりがな）" %>
+        <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
         <%= f.text_field :first_name_furigana %>
+      </div>
+      <div>
+        <%= f.label :last_name, "名前" %>
+        <%= f.text_field :last_name %>
+      </div>
+      <div>
+        <%= f.label :last_name_furigana, "名前（ふりがな）" %>
+        <%= f.text_field :last_name_furigana %>
       </div>
       <div>
         <%= f.label :birthday, "生年月日" %>
@@ -247,7 +247,7 @@
         <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
       </div>
       <br>
-      <%= f.submit "登録する" %>
+      <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
 <br>
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -293,26 +293,56 @@
 <script>
   function showSection(type) {
     if (type === 'parent') {
+      // 親側のタブを表示
       document.getElementById('parent-section').style.display = 'block';
       document.getElementById('child-section').style.display = 'none';
+
+      // タブのアクティブ状態を変更
       document.getElementById('parent-tab').classList.add('active');
       document.getElementById('child-tab').classList.remove('active');
+
+      // ✅ 親側の最初のタブ（情報変更タブ）をデフォルト表示
+      showSubSection('info');
+
     } else {
+      // 子側のタブを表示
       document.getElementById('parent-section').style.display = 'none';
       document.getElementById('child-section').style.display = 'block';
+
+      // タブのアクティブ状態を変更
       document.getElementById('parent-tab').classList.remove('active');
       document.getElementById('child-tab').classList.add('active');
+
+      // ✅ 親側のタブをすべて非表示
+      document.getElementById('info-section').style.display = 'none';
+      document.getElementById('permission-section').style.display = 'none';
+      document.getElementById('notes-section').style.display = 'none';
+
+      // ✅ 子側の最初のタブ（検索タブ）をデフォルト表示
+      showChildSubSection('search');
     }
   }
 
   function showSubSection(type) {
+    // 親側のタブを切り替え
     document.getElementById('info-section').style.display = type === 'info' ? 'block' : 'none';
     document.getElementById('permission-section').style.display = type === 'permission' ? 'block' : 'none';
     document.getElementById('notes-section').style.display = type === 'notes' ? 'block' : 'none';
 
+    // タブのアクティブ状態を適切に変更
     document.getElementById('info-tab').classList.toggle('active', type === 'info');
     document.getElementById('permission-tab').classList.toggle('active', type === 'permission');
     document.getElementById('notes-tab').classList.toggle('active', type === 'notes');
+  }
+
+  function showChildSubSection(type) {
+    // 子側のタブを切り替え
+    document.getElementById('search-section').style.display = type === 'search' ? 'block' : 'none';
+    document.getElementById('result-section').style.display = type === 'result' ? 'block' : 'none';
+
+    // タブのアクティブ状態を適切に変更
+    document.getElementById('search-tab').classList.toggle('active', type === 'search');
+    document.getElementById('result-tab').classList.toggle('active', type === 'result');
   }
 </script>
 
@@ -326,13 +356,3 @@
     font-weight: bold;
   }
 </style>
-
-<script>
-  function showChildSubSection(type) {
-    document.getElementById('search-section').style.display = type === 'search' ? 'block' : 'none';
-    document.getElementById('result-section').style.display = type === 'result' ? 'block' : 'none';
-
-    document.getElementById('search-tab').classList.toggle('active', type === 'search');
-    document.getElementById('result-tab').classList.toggle('active', type === 'result');
-  }
-</script>
