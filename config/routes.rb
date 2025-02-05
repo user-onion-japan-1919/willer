@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }
-  
+
   resources :users, only: [:update] 
+  resources :view_permissions, only: [:create, :destroy]
   resources :notes, only: [:index, :new, :create, :show] # ここに適宜必要なアクションを追加
 
 

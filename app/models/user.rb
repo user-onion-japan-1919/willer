@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :view_permissions, dependent: :destroy # ✅ 関連付け
+
   ## Deviseの機能を利用
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
