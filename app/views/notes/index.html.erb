@@ -160,13 +160,11 @@
       </tr>
       <% current_user.view_permissions.each do |vp| %>
         <tr>
-          <td><%= vp.last_name %> (<%= vp.last_name_furigana %>)</td>
           <td><%= vp.first_name %> (<%= vp.first_name_furigana %>)</td>
+          <td><%= vp.last_name %> (<%= vp.last_name_furigana %>)</td>
           <td><%= vp.birthday.strftime('%Y-%m-%d') %></td>
           <td><%= vp.blood_type %></td>
-          <td>
-            <%= button_to "削除", view_permission_path(vp), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
-          </td>
+
         </tr>
       <% end %>
     </table>

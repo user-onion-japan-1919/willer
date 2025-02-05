@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   }
 
   resources :users, only: [:update] 
-  resources :view_permissions, only: [:create, :destroy]
+  resources :view_permissions, only: [:index, :new, :create, :destroy]
   resources :view_requests, only: [:index, :new, :create, :destroy]
   resources :notes, only: [:index, :new, :create, :show] # ここに適宜必要なアクションを追加
 
@@ -19,5 +19,8 @@ Rails.application.routes.draw do
 
   # 閲覧リクエストの処理
   post "/request_access", to: "view_requests#request_access"
+
+    # 閲覧許可の設定（POSTリクエストを受け付ける）
+  post "/view_permissions", to: "view_permissions#create"
   
 end
