@@ -1,0 +1,25 @@
+<h3>登録済みの閲覧申請</h3>
+<% if current_user.view_requests.any? %>
+  <table border="1">
+    <tr>
+      <th>苗字</th>
+      <th>名前</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>操作</th>
+    </tr>
+    <% current_user.view_requests.each do |vr| %>
+      <tr>
+        <td><%= vr.viewer_last_name %> (<%= vr.viewer_last_name_furigana %>)</td>
+        <td><%= vr.viewer_first_name %> (<%= vr.viewer_first_name_furigana %>)</td>
+        <td><%= vr.viewer_birthday.strftime('%Y-%m-%d') %></td>
+        <td><%= vr.viewer_blood_type %></td>
+        <td>
+          <%= button_to "削除", view_request_path(vr), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>現在、登録されている閲覧申請はありません。</p>
+<% end %>

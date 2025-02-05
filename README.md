@@ -70,8 +70,8 @@ belongs_to :note
 ## view_requests テーブル（閲覧申請情報）
 | Column                       | Type       | Options     |
 | ---------------------------- | ---------- | ----------- |
-| user                         | references | null: false, foreign_key: true | ## 閲覧をリクエストしたユーザー 
-| parent_id                    | references | null: false, foreign_key: { to_table: :users } |  ## 閲覧される対象者 
+| user                         | references | null: false, foreign_key: true | 
+| parent_id                    | bigint     | null: false, foreign_key: true |
 | viewer_first_name            | string     | null: false |
 | viewer_first_name_furigana   | string     | null: false |
 | viewer_last_name             | string     | null: false |

@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_05_074931) do
     t.string "viewer_phone_number", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_view_requests_on_parent_id"
+    t.index ["parent_id"], name: "fk_rails_765025e491"
     t.index ["user_id"], name: "index_view_requests_on_user_id"
   end
 
