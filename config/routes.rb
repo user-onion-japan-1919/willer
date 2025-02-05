@@ -9,4 +9,15 @@ Rails.application.routes.draw do
 
   # 検索機能用のルートを追加
   get 'search_users', to: 'users#search', as: :search_users
+
+    # 閲覧許可の設定（POSTリクエストを受け付ける）
+  post "/view_permissions", to: "view_permissions#create"
+
+  #  「あなたの公開ページ」のルートを追加
+  get "public_page", to: "notes#public_page"
+
+
+  get "/search_users", to: "notes#search_users"
+  post "/request_access", to: "notes#request_access"
+
 end

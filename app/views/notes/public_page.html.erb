@@ -1,0 +1,14 @@
+<h2><%= current_user.last_name %> <%= current_user.first_name %> さんの公開ページ</h2>
+
+<p>このページでは、ユーザーの一部情報を閲覧できます。</p>
+
+<!-- ユーザーの基本情報 -->
+<div>
+  <strong>苗字:</strong> <%= current_user.last_name %><br>
+  <strong>名前:</strong> <%= current_user.first_name %><br>
+  <strong>生年月日:</strong> <%= current_user.birthday %><br>
+  <strong>住所:</strong> <%= current_user.address %><br>
+</div>
+
+<br>
+<%= button_to "個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary" %>
