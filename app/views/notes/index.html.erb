@@ -1,2 +1,129 @@
-<h1>遺言一覧ページ</h1>
+<br><br>
+
+<h1>ユーザーさんの個人ページ</h1>
 <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-danger" %>
+
+<br><br>
+
+<h2>遺言管理ページ - Willer -</h2>
+
+<div class="tabs">
+  <button id="parent-tab" class="active" onclick="showSection('parent')">記入者（親側）として利用する</button>
+  <button id="child-tab" onclick="showSection('child')">閲覧者（子側）として利用する</button>
+</div>
+
+<br>
+
+<!-- 親側（記入者）画面 -->
+<div id="parent-section">
+  <h3>ユーザーさんの登録情報（※入力必須）</h3>
+  <br>
+  <h3>※閲覧申請者に要求する情報としても使用しますので、間違いが無いように記入してください。</h3>
+  <h3>※旧字体・大文字・小文字・住所の表現などが少しでも異なると、閲覧許可が付加されません。</h3>
+  <br>
+
+  <%= form_with model: current_user, url: user_registration_path, method: :patch, local: true do |f| %>
+    <div>
+      <%= f.label :email, "メールアドレス" %>
+      <%= f.email_field :email, value: current_user.email, readonly: true %>
+      <%= check_box_tag "require_email", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :first_name, "苗字" %>
+      <%= f.text_field :first_name, value: current_user.first_name %>
+      <%= check_box_tag "require_first_name", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
+      <%= f.text_field :first_name_furigana, value: current_user.first_name_furigana %>
+      <%= check_box_tag "require_first_name_furigana", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :last_name, "名前" %>
+      <%= f.text_field :last_name, value: current_user.last_name %>
+      <%= check_box_tag "require_last_name", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :last_name_furigana, "名前（ふりがな）" %>
+      <%= f.text_field :last_name_furigana, value: current_user.last_name_furigana %>
+      <%= check_box_tag "require_last_name_furigana", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :birthday, "生年月日" %>
+      <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+      <%= check_box_tag "require_birthday", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :blood_type, "血液型" %>
+      <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
+      <%= check_box_tag "require_blood_type", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :address, "住所" %>
+      <%= f.text_field :address, value: current_user.address %>
+      <%= check_box_tag "require_address", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <div>
+      <%= f.label :phone_number, "電話番号" %>
+      <%= f.text_field :phone_number, value: current_user.phone_number %>
+      <%= check_box_tag "require_phone_number", "1", false %> 閲覧申請者に要求
+    </div>
+
+    <br><br>
+    <%= f.submit "情報を更新" %>
+  <% end %>
+
+  <br>
+  <button onclick="location.href='/public_page'">自身の公開ページへ移動</button>
+  <button onclick="location.href='/note_support'">ノート作成時のサポート</button>
+</div>
+
+<!-- 子側（閲覧者）画面 -->
+<div id="child-section" style="display: none;">
+  <h3>子側 - 閲覧申請</h3>
+  <p>閲覧したい対象者（親）を検索してください。</p>
+  
+  <%= form_with url: search_users_path, method: :get, local: true do |f| %>
+    <div>
+      <%= f.label :search_query, "閲覧したい親の名前またはメールアドレス" %>
+      <%= f.text_field :search_query %>
+    </div>
+    <br>
+    <%= f.submit "検索" %>
+  <% end %>
+</div>
+
+<script>
+  function showSection(type) {
+    if (type === 'parent') {
+      document.getElementById('parent-section').style.display = 'block';
+      document.getElementById('child-section').style.display = 'none';
+      document.getElementById('parent-tab').classList.add('active');
+      document.getElementById('child-tab').classList.remove('active');
+    } else {
+      document.getElementById('parent-section').style.display = 'none';
+      document.getElementById('child-section').style.display = 'block';
+      document.getElementById('parent-tab').classList.remove('active');
+      document.getElementById('child-tab').classList.add('active');
+    }
+  }
+</script>
+
+<style>
+  .tabs button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  .tabs button.active {
+    font-weight: bold;
+  }
+</style>

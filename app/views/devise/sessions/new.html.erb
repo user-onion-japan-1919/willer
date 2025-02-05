@@ -1,13 +1,21 @@
+<br>
+<br>
+
 <h2>遺言作成管理 - Willer -</h2>
 
 <div id="error_explanation">
   <%= render "devise/shared/error_messages", resource: resource %>
 </div>
 
+<br>
+<br>
+
 <div class="tabs">
-  <button id="signup-tab" class="active" onclick="showForm('signup')">新規登録</button>
-  <button id="login-tab" onclick="showForm('login')">ログイン</button>
+  <button id="signup-tab" class="active" onclick="showForm('signup')">＜新規登録画面＞</button>
+  <button id="login-tab" onclick="showForm('login')">＜ログイン画面＞</button>
 </div>
+
+<br>
 
 <!-- 新規登録フォーム（デフォルトで表示） -->
 <div id="signup-form">
@@ -67,9 +75,12 @@
       <%= f.text_field :phone_number, id: "signup_user_phone_number", value: f.object.phone_number %>
     </div>
 
+<br><br>
+
     <div>
       <%= f.submit "新規登録" %>
     </div>
+
   <% end %>
 </div>
 
@@ -86,11 +97,15 @@
       <%= f.password_field :password, id: "login_user_password", autocomplete: "current-password" %>
     </div>
 
+<br><br>
+
     <div>
       <%= f.submit "ログイン" %>
     </div>
+
   <% end %>
 </div>
+
 
 <script>
   function showForm(type) {
