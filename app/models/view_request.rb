@@ -12,8 +12,16 @@ class ViewRequest < ApplicationRecord
 
   validate :unique_combination
 
+  # **アクセス履歴の更新**
+  def update_access_history
+    self.last_accessed_at = Time.current
+    self.access_count += 1
+    save
+  end
+
   private
 
+  # **同じ親に対する重複リクエストを防ぐ**
   def unique_combination
     if ViewRequest.exists?(
       first_name: first_name,

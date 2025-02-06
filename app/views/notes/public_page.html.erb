@@ -11,6 +11,29 @@
 
 <p><strong>本日の日付:</strong> <%= Time.current.strftime('%Y-%m-%d %H:%M') %></p>
 
+ーーー
+<h3>あなたの公開ページの閲覧履歴</h3>
+
+<% if @view_requests.any? %>
+  <table border="1">
+    <tr>
+      <th>閲覧者</th>
+      <th>最終アクセス日</th>
+      <th>アクセス回数</th>
+    </tr>
+    <% @view_requests.each do |request| %>
+      <tr>
+        <td><%= request.first_name %> <%= request.last_name %></td>
+        <td><%= request.last_accessed_at.strftime('%Y-%m-%d %H:%M') if request.last_accessed_at %></td>
+        <td><%= request.access_count %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>まだ誰にも閲覧されていません。</p>
+<% end %>
+
+ーーー
 <br>
 <%= button_to "個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary" %>
 
