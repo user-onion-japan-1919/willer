@@ -48,16 +48,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_05_074931) do
   create_table "view_requests", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "parent_id", null: false
-    t.string "viewer_first_name", null: false
-    t.string "viewer_first_name_furigana", null: false
-    t.string "viewer_last_name", null: false
-    t.string "viewer_last_name_furigana", null: false
-    t.string "relationship", null: false
-    t.string "viewer_email", null: false
-    t.date "viewer_birthday", null: false
-    t.string "viewer_blood_type", null: false
-    t.string "viewer_address", null: false
-    t.string "viewer_phone_number", null: false
+    t.string "first_name", null: false
+    t.string "first_name_furigana", null: false
+    t.string "last_name", null: false
+    t.string "last_name_furigana", null: false
+    t.date "birthday", null: false
+    t.string "blood_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_id"], name: "fk_rails_765025e491"
