@@ -296,6 +296,27 @@
   <% else %>
     <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
   <% end %>
+
+ーーー
+<% if current_user.view_requests.exists? %>
+  <h3>閲覧許可リスト</h3>
+  <table border="1">
+    <tr>
+      <th>公開者</th>
+      <th>公開ページURL</th>
+    </tr>
+    <% current_user.view_requests.each do |request| %>
+      <tr>
+        <td><%= request.parent.first_name %> <%= request.parent.last_name %></td>
+        <td>
+          <%= link_to "公開ページを見る", public_page_path(uuid: request.parent.uuid, custom_id: request.parent.id + 150150), target: "_blank", class: "btn btn-primary" %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+ーーー
+
   <br>
   <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー

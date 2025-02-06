@@ -39,6 +39,47 @@ class ViewRequestsController < ApplicationController
     end
   end
 
+  def request_access
+    viewer = current_user # 閲覧申請者（B）
+    parent = User.find_by(id: params[:parent_id]) # 公開者（A）
+
+    unless parent
+      flash[:alert] = '指定された公開者が見つかりません。'
+      return redirect_to notes_path
+    end
+
+    # **① A（公開者）がBを閲覧許可に登録しているか確認**
+    view_permission = ViewPermission.find_by(
+      user_id: parent.id,
+      first_name: viewer.first_name,
+      first_name_furigana: viewer.first_name_furigana,
+      last_name: viewer.last_name,
+      last_name_furigana: viewer.last_name_furigana,
+      birthday: viewer.birthday,
+      blood_type: viewer.blood_type
+    )
+
+    # **② B（閲覧者）がAに閲覧申請を登録しているか確認**
+    view_request = ViewRequest.find_by(
+      user_id: viewer.id,
+      parent_id: parent.id,
+      first_name: parent.first_name,
+      first_name_furigana: parent.first_name_furigana,
+      last_name: parent.last_name,
+      last_name_furigana: parent.last_name_furigana,
+      birthday: parent.birthday,
+      blood_type: parent.blood_type
+    )
+
+    if view_permission && view_request
+      flash[:notice] = "#{parent.first_name} #{parent.last_name} さんの公開ページのURLを取得しました。"
+    else
+      flash[:alert] = '閲覧許可と申請が一致しません。'
+    end
+
+    redirect_to notes_path
+  end
+
   private
 
   def view_request_params

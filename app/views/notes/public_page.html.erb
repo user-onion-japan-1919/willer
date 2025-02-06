@@ -2,6 +2,7 @@
 <input type="text" id="publicPageUrl" value="<%= public_page_url(uuid: current_user.uuid, custom_id: current_user.id + 150150) %>" readonly>
 <button onclick="copyPublicPageUrl()">このページのURLをコピー</button>
 ※ログインは改めて必要になります。
+※閲覧権限が許可されていないとアクセスできません。
 
 <p><strong><%= @user.first_name %> <%= @user.last_name %> さんの最終ログイン日:</strong> </p>
 
