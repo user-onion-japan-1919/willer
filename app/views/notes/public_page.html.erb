@@ -1,6 +1,14 @@
-<h2><%= current_user.last_name %> <%= current_user.first_name %> さんの公開ページ</h2>
 
-<p>このページでは、ユーザーの一部情報を閲覧できます。</p>
+<br>
+
+<h2>閲覧者からみた、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページです。</h2>
+<h2>閲覧者からみた、<%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
+
+
+<br>
+
+<p><%= current_user.first_name %> <%= current_user.last_name %> さんの最終ログイン日</p>
+
 
 <!-- ユーザーの基本情報 -->
 <div>
