@@ -56,6 +56,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_05_074931) do
     t.string "last_name_furigana", null: false
     t.date "birthday", null: false
     t.string "blood_type", null: false
+    t.string "relationship", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_id"], name: "fk_rails_765025e491"

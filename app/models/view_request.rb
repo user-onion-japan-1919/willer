@@ -8,6 +8,7 @@ class ViewRequest < ApplicationRecord
   validates :last_name_furigana, presence: true
   validates :birthday, presence: true
   validates :blood_type, presence: true
+  validates :relationship, presence: true
 
   validate :unique_combination
 

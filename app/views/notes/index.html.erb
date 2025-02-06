@@ -158,7 +158,7 @@
         <th>名前</th>
         <th>生年月日</th>
         <th>血液型</th>
-        <th>操作</th>
+        <th>削除</th>
       </tr>
       <% current_user.view_permissions.each do |vp| %>
         <tr>
@@ -166,7 +166,7 @@
           <td><%= vp.last_name %> (<%= vp.last_name_furigana %>)</td>
           <td><%= vp.birthday.strftime('%Y-%m-%d') %></td>
           <td><%= vp.blood_type %></td>
-
+          <td>削除</td>
         </tr>
       <% end %>
     </table>
@@ -250,6 +250,13 @@
         <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
       </div>
 
+      <br><br>公開者（親側）から見た、
+
+      <div>
+        <%= f.label :relationship, "閲覧者（あなた）の続柄" %>
+        <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
+      </div>
+
     <!-- parent_id を hidden_field でセット -->
      <%= f.hidden_field :parent_id, value: current_user.id %>
 
@@ -272,7 +279,7 @@
         <th>名前</th>
         <th>生年月日</th>
         <th>血液型</th>
-        <th>操作</th>
+        <th>削除</th>
       </tr>
       <% current_user.view_requests.each do |vr| %>
         <tr>
@@ -281,7 +288,7 @@
           <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
           <td><%= vr.blood_type %></td>
           <td>
-            <%= button_to "削除", view_request_path(vr), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+            削除
           </td>
         </tr>
       <% end %>

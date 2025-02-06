@@ -11,7 +11,7 @@ class CreateViewRequests < ActiveRecord::Migration[7.0]
       t.string :last_name_furigana, null: false
       t.date :birthday, null: false
       t.string :blood_type, null: false
-
+      t.string :relationship, null: false
       t.timestamps
     end
   end
