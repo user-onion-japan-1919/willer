@@ -37,11 +37,19 @@ class User < ApplicationRecord
   # 電話番号（10桁または11桁の半角数字）
   validates :phone_number, presence: true, uniqueness: true, format: { with: /\A\d{10,11}\z/ }
 
+  #  **UUID の自動生成**
+  before_create :set_uuid
+
   private
 
   def passwords_match
     return unless password.present? && password_confirmation.present? && password != password_confirmation
 
     errors.add(:password_confirmation)
+  end
+
+  #  **UUID を自動生成**
+  def set_uuid
+    self.uuid ||= SecureRandom.uuid
   end
 end

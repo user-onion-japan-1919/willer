@@ -17,8 +17,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_05_074931) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "first_name", null: false
     t.string "first_name_furigana", null: false
     t.string "last_name", null: false
@@ -27,9 +25,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_05_074931) do
     t.string "blood_type", null: false
     t.string "address", null: false
     t.string "phone_number", null: false
+    t.string "uuid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
   create_table "view_permissions", charset: "utf8mb3", force: :cascade do |t|
