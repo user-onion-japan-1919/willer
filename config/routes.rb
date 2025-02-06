@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   }
 
   resources :users, only: [:update] 
-  resources :view_permissions, only: [:create, :destroy]
-  resources :view_requests, only: [:create, :destroy]
+  resources :view_permissions, only: [:index, :new, :create, :destroy]
+  resources :view_requests, only: [:index, :new, :create, :destroy]
   resources :notes, only: [:index, :new, :create, :show] # ここに適宜必要なアクションを追加
 
 
@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
 
   #  「あなたの公開ページ」のルートを追加
-  get "/public_page", to: "notes#public_page"
+  get "/public_page/:uuid/:custom_id", to: "notes#public_page", as: :public_page
 
   # 閲覧リクエストの処理
   post "/request_access", to: "view_requests#request_access"

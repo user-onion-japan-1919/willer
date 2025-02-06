@@ -8,9 +8,12 @@
 <br>
 
 <div class="button-container">
-  <%= button_to "閲覧者から見た<あなた>の公開ページ", public_page_path, method: :get, class: "btn btn-primary" %>
- <br>
-  <%= button_to "ログアウトしてログインページへ戻る", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+  <%= link_to "⭐️閲覧者から見た『あなた』の公開ページ",
+              public_page_path(current_user.uuid, (current_user.id + 150150)),
+              class: "btn btn-primary" %>
+  <br>
+  <br>
+  <%= button_to " ログアウト ", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
 </div>
 
 <br>
