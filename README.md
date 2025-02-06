@@ -15,6 +15,7 @@
 | blood_type                    | string | null: false |
 | address                       | string | null: false |
 | phone_number                  | string | null: false, unique: true |
+| uuid                          | string | null: false, unique: true |
 
 ### Association
 has_many :notes
@@ -74,6 +75,9 @@ belongs_to :user
 | birthday            | date       | null: false |
 | blood_type          | string     | null: false |
 | relationship        | string     | null: false |
+| last_accessed_at    | datetime   | ----------- |
+| access_count        | integer    | null: false, default: 0 |
+
 
 
 
