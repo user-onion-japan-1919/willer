@@ -220,6 +220,7 @@
     <p>※旧字体・大文字・小文字・住所の表現などが少しでも異なっていると、閲覧申請は通りません。</p>
     <br>
 
+  <!-- ①親情報（閲覧したい対象者の情報）登録フォーム -->
   <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
       <div>
         <%= f.label :first_name, "苗字" %>
@@ -257,6 +258,39 @@
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
 <br>
+
+
+  <!-- ②登録済みの親情報（閲覧したい対象者の情報）リスト -->
+  <h3>登録済みの親情報（閲覧したい対象者の情報）</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>操作</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %> (<%= vr.first_name_furigana %>)</td>
+          <td><%= vr.last_name %> (<%= vr.last_name_furigana %>)</td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            <%= button_to "削除", view_request_path(vr), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
+  <% end %>
+  <br>
+  <br>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+
     <% end %>
   </div>
 
@@ -279,9 +313,7 @@
     <% else %>
       <p>一致するユーザーが見つかりませんでした。</p>
       <br>
-<br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-<br>
 <br>
     <% end %>
   </div>
