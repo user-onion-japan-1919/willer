@@ -73,6 +73,7 @@ belongs_to :user
 | last_name_furigana  | string     | null: false |
 | birthday            | date       | null: false |
 | blood_type          | string     | null: false |
+| relationship        | string     | null: false |
 
 
 

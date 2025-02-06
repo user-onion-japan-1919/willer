@@ -1,22 +1,20 @@
+<h2><%= @user.first_name %> <%= @user.last_name %> さんの公開ページ</h2>
+<input type="text" id="publicPageUrl" value="<%= public_page_url(uuid: current_user.uuid, custom_id: current_user.id + 150150) %>" readonly>
+<button onclick="copyPublicPageUrl()">このページのURLをコピー</button>
+※ログインは改めて必要になります。
 
-<br>
+<p><strong><%= @user.first_name %> <%= @user.last_name %> さんの最終ログイン日:</strong> </p>
 
-<h2>閲覧者からみた、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページです。</h2>
-<h2>閲覧者からみた、<%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
+<p><strong>公開者:</strong> <%= @user.first_name %> <%= @user.last_name %></p>
 
+<p><strong>閲覧者:</strong> <%= @viewer.first_name %> <%= @viewer.last_name %></p>
 
-<br>
-
-<p><%= current_user.first_name %> <%= current_user.last_name %> さんの最終ログイン日</p>
-
-
-<!-- ユーザーの基本情報 -->
-<div>
-  <strong>苗字:</strong> <%= current_user.last_name %><br>
-  <strong>名前:</strong> <%= current_user.first_name %><br>
-  <strong>生年月日:</strong> <%= current_user.birthday %><br>
-  <strong>住所:</strong> <%= current_user.address %><br>
-</div>
+<p><strong>本日の日付:</strong> <%= Time.current.strftime('%Y-%m-%d %H:%M') %></p>
 
 <br>
 <%= button_to "個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary" %>
+
+
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<%#= @user.last_sign_in_at %> 
