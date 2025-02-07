@@ -1,7 +1,10 @@
 class User < ApplicationRecord
   has_many :view_permissions
   has_many :view_requests, foreign_key: :parent_id, class_name: 'ViewRequest'
-  has_many :view_accesses, dependent: :destroy
+
+  has_many :view_accesses_as_owner, class_name: 'ViewAccess', foreign_key: 'owner_id', dependent: :destroy
+  has_many :view_accesses_as_viewer, class_name: 'ViewAccess', foreign_key: 'viewer_id', dependent: :destroy
+
   has_many :notes
 
   ## Deviseの機能を利用
@@ -38,7 +41,7 @@ class User < ApplicationRecord
   # 電話番号（10桁または11桁の半角数字）
   validates :phone_number, presence: true, uniqueness: true, format: { with: /\A\d{10,11}\z/ }
 
-  #  **UUID の自動生成**
+  # **UUID の自動生成**
   before_create :set_uuid
 
   private
@@ -49,7 +52,7 @@ class User < ApplicationRecord
     errors.add(:password_confirmation)
   end
 
-  #  **UUID を自動生成**
+  # **UUID を自動生成**
   def set_uuid
     self.uuid ||= SecureRandom.uuid
   end

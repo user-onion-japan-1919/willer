@@ -12,11 +12,13 @@ class NotesController < ApplicationController
     end
 
     # **閲覧履歴の取得**
-    @view_accesses = ViewAccess.where(parent_id: @user.id).order(last_accessed_at: :desc)
-    @view_accesses ||= [] # **nilガードを追加**
+    @view_accesses = ViewAccess.includes(:owner, :viewer)
+                               .where(owner_id: @user.id)
+                               .order(last_accessed_at: :desc)
+                               .to_a # `nil` の場合は空配列にする
 
-    # **Aさん自身が自分の公開ページを開いた場合にも履歴を記録する**
-    view_access = ViewAccess.find_or_initialize_by(user_id: @viewer.id, parent_id: @user.id)
+    # **閲覧履歴の更新**
+    view_access = ViewAccess.find_or_initialize_by(viewer_id: @viewer.id, owner_id: @user.id)
 
     # 初回アクセス時にURLを保存
     if view_access.new_record?
@@ -27,7 +29,7 @@ class NotesController < ApplicationController
     end
 
     # **履歴の更新**
-    if view_access.update(last_accessed_at: Time.current, access_count: view_access.access_count + 1)
+    if view_access.update(last_accessed_at: Time.current, access_count: (view_access.access_count || 0) + 1)
       Rails.logger.debug "📌 閲覧履歴更新成功: #{view_access.inspect}"
     else
       Rails.logger.debug "⚠️ 閲覧履歴の更新に失敗: #{view_access.errors.full_messages}"

@@ -310,27 +310,25 @@
 <% end %>
 ーーー
 ーーー
-<% if current_user.view_accesses.any? %>
+<% if current_user.view_accesses_as_viewer.any? %>
   <h3>閲覧許可済みリスト</h3>
   <table border="1">
     <tr>
       <th>公開者</th>
       <th>公開ページURL</th>
     </tr>
-    <% current_user.view_accesses.each do |access| %>
-      <% if access.parent_id != current_user.id %> <!-- 🔹 自分以外の公開ページのみ表示 -->
-        <tr>
-          <td><%= access.parent.first_name %> <%= access.parent.last_name %></td>
-          <td>
-            <% if access.public_page_url.present? %>
-              <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
-            <% else %>
-              URL未取得
+    <% current_user.view_accesses_as_viewer.each do |access| %>
+      <tr>
+        <td><%= access.owner.first_name %> <%= access.owner.last_name %></td>
+        <td>
+          <% if access.public_page_url.present? %>
+            <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
+          <% else %>
+            URL未取得
             <% end %>
           </td>
         </tr>
       <% end %>
-    <% end %>
   </table>
 <% else %>
   <p>閲覧許可された公開ページはありません。</p>
