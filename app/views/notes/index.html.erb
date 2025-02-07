@@ -257,8 +257,8 @@
         <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
       </div>
 
-    <!-- parent_id を hidden_field でセット -->
-     <%= f.hidden_field :parent_id, value: current_user.id %>
+<!-- parent_id を hidden_field でセット -->
+<%= f.hidden_field :parent_id, value: @searched_users&.first&.id %>
 
 
     <br>
