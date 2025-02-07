@@ -72,6 +72,12 @@ class ViewRequestsController < ApplicationController
     )
 
     if view_permission && view_request
+      # **Aの公開ページURLを生成**
+      public_page_url = public_page_url(uuid: parent.uuid, custom_id: parent.id + 150_150)
+
+      # **Bの個人ページにAの公開ページURLを保存**
+      view_request.update(public_page_url: public_page_url)
+
       flash[:notice] = "#{parent.first_name} #{parent.last_name} さんの公開ページのURLを取得しました。"
     else
       flash[:alert] = '閲覧許可と申請が一致しません。'
