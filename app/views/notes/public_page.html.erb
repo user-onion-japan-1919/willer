@@ -15,18 +15,18 @@
 ーーー
 <h3>あなたの公開ページの閲覧履歴</h3>
 
-<% if @view_requests.any? %>
+<% if @view_accesses.any? %>
   <table border="1">
     <tr>
       <th>閲覧者</th>
       <th>最終アクセス日</th>
       <th>アクセス回数</th>
     </tr>
-    <% @view_requests.each do |request| %>
+    <% @view_accesses.each do |access| %>
       <tr>
-        <td><%= request.first_name %> <%= request.last_name %></td>
-        <td><%= request.last_accessed_at.strftime('%Y-%m-%d %H:%M') if request.last_accessed_at %></td>
-        <td><%= request.access_count %></td>
+        <td><%= access.user.first_name %> <%= access.user.last_name %></td>
+        <td><%= access.last_accessed_at.strftime("%Y-%m-%d %H:%M") if access.last_accessed_at %></td>
+        <td><%= access.access_count %> 回</td>
       </tr>
     <% end %>
   </table>
