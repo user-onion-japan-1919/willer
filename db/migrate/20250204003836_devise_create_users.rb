@@ -24,8 +24,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string :blood_type, null: false
       t.string :address, null: false
       t.string :phone_number, null: false
-
-      ## UUID
       t.string :uuid, null: false
 
       t.timestamps null: false
