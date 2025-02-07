@@ -24,9 +24,10 @@
     </tr>
     <% @view_accesses.each do |access| %>
       <tr>
-        <td><%= access.user.first_name %> <%= access.user.last_name %></td>
-        <td><%= access.last_accessed_at.strftime("%Y-%m-%d %H:%M") if access.last_accessed_at %></td>
-        <td><%= access.access_count %> 回</td>
+         <%= access.viewer.first_name %> <%= access.viewer.last_name %>
+  </td>
+  <td><%= access.last_accessed_at.strftime("%Y-%m-%d %H:%M") if access.last_accessed_at %></td>
+  <td><%= access.access_count %> 回</td>
       </tr>
     <% end %>
   </table>
