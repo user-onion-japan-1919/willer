@@ -85,15 +85,15 @@ belongs_to :parent, class_name: 'User', foreign_key: 'parent_id'
 ## 4.view_accessses テーブル（閲覧申請情報）
 | Column              | Type       | Options     |
 | ------------------- | ---------- | ----------- |
-| user                | references | null: false, foreign_key: true | 
-| parent_id           | bigint     | null: false, foreign_key: true | # 閲覧される側
+| owner_id            | bigint     | null: false, foreign_key: true | # 公開者(1人)
+| viewer_id           | bigint     | null: false, foreign_key: true | # 閲覧者(複数)
 | public_page_url     | string     | null: true |
 | last_accessed_at    | datetime   | null: true |
 | access_count        | integer    | null: false, default: 0 |
 
 ### 4.Association
-belongs_to :user
-belongs_to :parent, class_name: 'User', foreign_key: 'parent_id'
+belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'  # 公開ページの持ち主
+belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id' # 閲覧者
 
 
 

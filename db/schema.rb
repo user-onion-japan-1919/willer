@@ -35,15 +35,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
   end
 
   create_table "view_accesses", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "parent_id", null: false
+    t.bigint "owner_id", null: false
+    t.bigint "viewer_id", null: false
     t.string "public_page_url"
     t.datetime "last_accessed_at"
     t.integer "access_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_view_accesses_on_parent_id"
-    t.index ["user_id"], name: "index_view_accesses_on_user_id"
+    t.index ["owner_id"], name: "index_view_accesses_on_owner_id"
+    t.index ["viewer_id"], name: "index_view_accesses_on_viewer_id"
   end
 
   create_table "view_permissions", charset: "utf8mb3", force: :cascade do |t|
@@ -75,8 +75,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
     t.index ["user_id"], name: "index_view_requests_on_user_id"
   end
 
-  add_foreign_key "view_accesses", "users"
-  add_foreign_key "view_accesses", "users", column: "parent_id"
+  add_foreign_key "view_accesses", "users", column: "owner_id"
+  add_foreign_key "view_accesses", "users", column: "viewer_id"
   add_foreign_key "view_permissions", "users"
   add_foreign_key "view_requests", "users"
   add_foreign_key "view_requests", "users", column: "parent_id"

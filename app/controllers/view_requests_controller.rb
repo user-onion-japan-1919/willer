@@ -17,7 +17,7 @@ class ViewRequestsController < ApplicationController
                  nil
                end
 
-    # 親ユーザーの取得
+    # 親ユーザー（閲覧対象者）を取得
     @parent = User.find_by(id: params[:view_request][:parent_id])
     unless @parent
       flash[:alert] = '親の情報が見つかりません。'
@@ -40,17 +40,17 @@ class ViewRequestsController < ApplicationController
   end
 
   def request_access
-    viewer = current_user # 閲覧申請者（B）
-    parent = User.find_by(id: params[:parent_id]) # 公開者（A）
+    viewer = current_user # 閲覧申請者（A）
+    target_user = User.find_by(id: params[:parent_id]) # 公開者（B）
 
-    unless parent
+    unless target_user
       flash[:alert] = '指定された公開者が見つかりません。'
       return redirect_to notes_path
     end
 
-    # **① A（公開者）がBを閲覧許可に登録しているか確認**
+    # **① A（ログインユーザー）がB（公開者）を閲覧許可に登録しているか確認**
     view_permission = ViewPermission.find_by(
-      user_id: parent.id,
+      user_id: target_user.id,
       first_name: viewer.first_name,
       first_name_furigana: viewer.first_name_furigana,
       last_name: viewer.last_name,
@@ -62,30 +62,35 @@ class ViewRequestsController < ApplicationController
     # **② B（閲覧者）がAに閲覧申請を登録しているか確認**
     view_request = ViewRequest.find_by(
       user_id: viewer.id,
-      parent_id: parent.id,
-      first_name: parent.first_name,
-      first_name_furigana: parent.first_name_furigana,
-      last_name: parent.last_name,
-      last_name_furigana: parent.last_name_furigana,
-      birthday: parent.birthday,
-      blood_type: parent.blood_type
+      parent_id: target_user.id,
+      first_name: target_user.first_name,
+      first_name_furigana: target_user.first_name_furigana,
+      last_name: target_user.last_name,
+      last_name_furigana: target_user.last_name_furigana,
+      birthday: target_user.birthday,
+      blood_type: target_user.blood_type
     )
 
+    Rails.logger.debug "📌 閲覧許可: #{view_permission.inspect}, 閲覧申請: #{view_request.inspect}"
+
     if view_permission && view_request
-      # **Aの公開ページURLを生成**
-      public_page_url = public_page_url(uuid: parent.uuid, custom_id: parent.id + 150_150)
+      # **B（公開者）の公開ページURLを取得**
+      public_page_url = public_page_url(uuid: target_user.uuid, custom_id: target_user.id + 150_150)
+
+      Rails.logger.debug "📌 取得した公開ページURL: #{public_page_url}"
 
       # **ViewAccess に保存**
-      view_access = ViewAccess.find_or_create_by(user_id: viewer.id, parent_id: parent.id) do |va|
-        va.public_page_url = public_page_url
-        va.access_count = 0
-        va.last_accessed_at = nil
+      view_access = ViewAccess.find_or_initialize_by(user_id: viewer.id, parent_id: target_user.id)
+      view_access.public_page_url = public_page_url
+      view_access.access_count = (view_access.access_count || 0) # 初回の場合は 0 にする
+      view_access.last_accessed_at ||= Time.current
+
+      if view_access.save
+        Rails.logger.debug "📌 保存された ViewAccess: #{view_access.inspect}"
+        flash[:notice] = "#{target_user.first_name} #{target_user.last_name} さんの公開ページのURLを取得しました。"
+      else
+        flash[:alert] = "URL の保存に失敗しました: #{view_access.errors.full_messages.join(', ')}"
       end
-
-      # 既存の記録があればURLを更新
-      view_access.update(public_page_url: public_page_url)
-
-      flash[:notice] = "#{parent.first_name} #{parent.last_name} さんの公開ページのURLを取得しました。"
     else
       flash[:alert] = '閲覧許可と申請が一致しません。'
     end
@@ -99,7 +104,7 @@ class ViewRequestsController < ApplicationController
     params.require(:view_request).permit(
       :first_name, :first_name_furigana,
       :last_name, :last_name_furigana, :relationship,
-      :blood_type, :parent_id
+      :blood_type, :parent_id, :birthday
     )
   end
 end

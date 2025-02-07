@@ -13,13 +13,17 @@ class NotesController < ApplicationController
 
     # **閲覧履歴の取得**
     @view_accesses = ViewAccess.where(parent_id: @user.id).order(last_accessed_at: :desc)
-    @view_accesses = [] if @view_accesses.nil? # **nilガードを追加**
+    @view_accesses ||= [] # **nilガードを追加**
 
     # **Aさん自身が自分の公開ページを開いた場合にも履歴を記録する**
-    view_access = ViewAccess.find_or_create_by(user_id: @viewer.id, parent_id: @user.id) do |va|
-      va.public_page_url = public_page_url(uuid: @user.uuid, custom_id: @user.id + 150_150)
-      va.access_count = 0
-      va.last_accessed_at = Time.current
+    view_access = ViewAccess.find_or_initialize_by(user_id: @viewer.id, parent_id: @user.id)
+
+    # 初回アクセス時にURLを保存
+    if view_access.new_record?
+      view_access.public_page_url = public_page_url(uuid: @user.uuid, custom_id: @user.id + 150_150)
+      view_access.access_count = 0
+      view_access.last_accessed_at = Time.current
+      view_access.save
     end
 
     # **履歴の更新**
