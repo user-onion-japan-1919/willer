@@ -310,28 +310,28 @@
 <% end %>
 ーーー
 ーーー
-<% if current_user.view_requests.any? %>
+<% if current_user.view_accesses.any? %>
   <h3>閲覧許可済みリスト</h3>
   <table border="1">
     <tr>
       <th>公開者</th>
       <th>公開ページURL</th>
-     </tr>
-    <% current_user.view_requests.each do |request| %>
-      <% if request.public_page_url.present? %>
-        <tr>
-          <td><%= request.parent.first_name %> <%= request.parent.last_name %></td>
-          <td>
-            <a href="<%= request.public_page_url %>" target="_blank">
-              <%= request.public_page_url %>
-            </a>
-          </td>
-        </tr>
-      <% end %>
+    </tr>
+    <% current_user.view_accesses.each do |access| %>
+      <tr>
+        <td><%= access.parent.first_name %> <%= access.parent.last_name %></td>
+        <td>
+          <% if access.public_page_url.present? %>
+            <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
+          <% else %>
+            URL未取得
+          <% end %>
+        </td>
+      </tr>
     <% end %>
   </table>
 <% else %>
-  <p>現在、閲覧できる公開ページはありません。</p>
+  <p>閲覧許可された公開ページはありません。</p>
 <% end %>
 ーーー
 

@@ -75,8 +75,15 @@ class ViewRequestsController < ApplicationController
       # **Aの公開ページURLを生成**
       public_page_url = public_page_url(uuid: parent.uuid, custom_id: parent.id + 150_150)
 
-      # **Bの個人ページにAの公開ページURLを保存**
-      view_request.update(public_page_url: public_page_url)
+      # **ViewAccess に保存**
+      view_access = ViewAccess.find_or_create_by(user_id: viewer.id, parent_id: parent.id) do |va|
+        va.public_page_url = public_page_url
+        va.access_count = 0
+        va.last_accessed_at = nil
+      end
+
+      # 既存の記録があればURLを更新
+      view_access.update(public_page_url: public_page_url)
 
       flash[:notice] = "#{parent.first_name} #{parent.last_name} さんの公開ページのURLを取得しました。"
     else

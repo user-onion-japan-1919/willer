@@ -12,9 +12,6 @@ class CreateViewRequests < ActiveRecord::Migration[7.0]
       t.date :birthday, null: false
       t.string :blood_type, null: false
       t.string :relationship, null: false
-      
-      t.datetime :last_accessed_at
-      t.integer :access_count, default: 0, null: false
 
       t.timestamps
     end
