@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   resources :view_requests, only: [:index, :new, :create, :destroy] do
     collection do
-      post "request_access" # 閲覧リクエストの処理
+      post "request_access" # ✅ 閲覧リクエストのURL取得処理
     end
   end
 

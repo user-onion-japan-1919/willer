@@ -301,7 +301,7 @@
   <p>
     <strong>閲覧許可した対象者:</strong> <%= request.first_name %> <%= request.last_name %>
         <%= button_to "公開ページURLを取得する", request_access_view_requests_path, 
-          method: :post, params: { parent_id: request.parent_id }, class: "btn btn-primary" %>
+          method: :post, params: { view_request_id: request.id }, class: "btn btn-primary" %>
   </p>
 <% end %>
 ーーー
