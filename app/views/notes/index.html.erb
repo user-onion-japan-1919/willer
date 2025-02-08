@@ -257,9 +257,6 @@
         <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
       </div>
 
-<!-- parent_id を hidden_field でセット -->
-<%= f.hidden_field :parent_id, value: (@searched_users.first.id if @searched_users.present?) %>
-
 
     <br>
     <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
@@ -302,7 +299,7 @@
 <h3>登録リストから公開ページURLを取得</h3>
 <% current_user.view_requests.each do |request| %>  
   <p>
-    <strong>閲覧許可した対象者:</strong> <%= permission.first_name %> <%= permission.last_name %>
+    <strong>閲覧許可した対象者:</strong> <%= request.first_name %> <%= request.last_name %>
         <%= button_to "公開ページURLを取得する", request_access_view_requests_path, 
           method: :post, params: { parent_id: request.parent_id }, class: "btn btn-primary" %>
   </p>

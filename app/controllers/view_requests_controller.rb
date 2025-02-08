@@ -4,34 +4,9 @@ class ViewRequestsController < ApplicationController
   def create
     Rails.logger.debug "📌 Received Params: #{params.inspect}" # デバッグ用ログ
 
-    # `parent_id` を取得（フォームから渡された値を使用）
-    parent_id = params[:view_request][:parent_id].present? ? params[:view_request][:parent_id].to_i : nil
-    owner = User.find_by(id: parent_id)
-
-    unless owner
-      flash[:alert] = '公開者の情報が見つかりません。'
-      return redirect_to notes_path
-    end
-
-    # **ログインユーザーが公開者自身の場合はエラー**
-    if current_user.id == owner.id
-      flash[:alert] = '自分自身を閲覧申請することはできません。'
-      return redirect_to notes_path
-    end
-
-    Rails.logger.debug "📌 見つかった公開者: #{owner.inspect}"
-
-    # **既存の ViewRequest がある場合は保存せずリダイレクト**
-    existing_request = ViewRequest.find_by(user_id: current_user.id, parent_id: owner.id)
-    if existing_request
-      flash[:alert] = 'この公開者への閲覧申請は既に登録されています。'
-      return redirect_to notes_path
-    end
-
-    # **閲覧リクエストを作成**
+    # **`parent_id` を登録時に指定しない**
     @view_request = ViewRequest.new(
       user_id: current_user.id,
-      parent_id: owner.id,
       first_name: params[:view_request][:first_name],
       first_name_furigana: params[:view_request][:first_name_furigana],
       last_name: params[:view_request][:last_name],
@@ -42,7 +17,7 @@ class ViewRequestsController < ApplicationController
     )
 
     if @view_request.save
-      flash[:notice] = '閲覧申請を送信しました。'
+      flash[:notice] = '閲覧申請を登録しました。'
     else
       flash[:alert] = "申請に失敗しました: #{@view_request.errors.full_messages.join(', ')}"
     end
@@ -55,7 +30,7 @@ class ViewRequestsController < ApplicationController
   def view_request_params
     params.require(:view_request).permit(
       :first_name, :first_name_furigana, :last_name, :last_name_furigana,
-      :blood_type, :relationship, :parent_id
+      :blood_type, :relationship
     ).merge(
       birthday: parse_birthday(params[:view_request]) # ✅ 統一
     )
