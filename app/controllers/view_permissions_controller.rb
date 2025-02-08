@@ -3,16 +3,23 @@ class ViewPermissionsController < ApplicationController
 
   def create
     # フォームからのパラメータでユーザーを検索（同じ名前・誕生日のユーザーを探す）
-    viewer = User.find_by(
-      first_name: params[:view_permission][:first_name],
-      first_name_furigana: params[:view_permission][:first_name_furigana],
-      last_name: params[:view_permission][:last_name],
-      last_name_furigana: params[:view_permission][:last_name_furigana],
-      birthday: Date.new(params[:view_permission]['birthday(1i)'].to_i,
-                         params[:view_permission]['birthday(2i)'].to_i,
-                         params[:view_permission]['birthday(3i)'].to_i),
-      blood_type: params[:view_permission][:blood_type]
-    )
+    viewer = begin
+      User.find_by(
+        first_name: params[:view_permission][:first_name],
+        first_name_furigana: params[:view_permission][:first_name_furigana],
+        last_name: params[:view_permission][:last_name],
+        last_name_furigana: params[:view_permission][:last_name_furigana],
+        birthday: parse_birthday(params[:view_permission]), # ✅ `UsersController` に統一
+        blood_type: params[:view_permission][:blood_type]
+      )
+    rescue StandardError
+      nil
+    end # **エラー回避: 日付が不正な場合 nil をセット**
+
+    unless viewer
+      flash[:alert] = '該当するユーザーが見つかりませんでした。'
+      return redirect_to notes_path
+    end
 
     # `view_permission_params` で取り出したデータをセット
     @view_permission = current_user.view_permissions.new(view_permission_params)
@@ -46,7 +53,24 @@ class ViewPermissionsController < ApplicationController
   def view_permission_params
     params.require(:view_permission).permit(
       :first_name, :first_name_furigana, :last_name, :last_name_furigana,
-      :birthday, :blood_type
+      :blood_type
+    ).merge(
+      birthday: parse_birthday(params[:view_permission]) # ✅ 統一
     )
+  end
+
+  # ✅ `UsersController` と統一した `birthday` 変換処理
+  def parse_birthday(params)
+    return unless params['birthday(1i)'].present? && params['birthday(2i)'].present? && params['birthday(3i)'].present?
+
+    begin
+      Date.new(
+        params['birthday(1i)'].to_i,
+        params['birthday(2i)'].to_i,
+        params['birthday(3i)'].to_i
+      )
+    rescue StandardError
+      nil
+    end # **エラー回避**
   end
 end
