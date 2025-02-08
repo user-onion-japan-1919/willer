@@ -1,5 +1,6 @@
 class ViewPermission < ApplicationRecord
-  belongs_to :user
+  belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
+  belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id', optional: true
 
   validates :first_name, presence: true
   validates :first_name_furigana, presence: true
@@ -18,8 +19,9 @@ class ViewPermission < ApplicationRecord
       first_name_furigana: first_name_furigana,
       last_name: last_name,
       last_name_furigana: last_name_furigana,
+      birthday: birthday,
       blood_type: blood_type,
-      user_id: user_id # 同じユーザーが重複登録しないように制限
+      owner_id: owner_id
     )
       errors.add(:base, 'この閲覧許可対象者はすでに登録されています。')
     end

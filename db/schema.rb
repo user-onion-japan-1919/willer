@@ -50,6 +50,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
   create_table "view_permissions", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "owner_id", null: false
     t.bigint "viewer_id", null: false
+    t.string "first_name", null: false
+    t.string "first_name_furigana", null: false
+    t.string "last_name", null: false
+    t.string "last_name_furigana", null: false
+    t.date "birthday", null: false
+    t.string "blood_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id", "viewer_id"], name: "index_view_permissions_on_owner_id_and_viewer_id", unique: true

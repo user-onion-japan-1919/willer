@@ -32,12 +32,12 @@ class ViewRequestsController < ApplicationController
     @view_request = ViewRequest.new(
       user_id: current_user.id,
       parent_id: owner.id,
-      first_name: owner.first_name,
-      first_name_furigana: owner.first_name_furigana,
-      last_name: owner.last_name,
-      last_name_furigana: owner.last_name_furigana, # ← ここにカンマを追加
-      birthday: owner.birthday,
-      blood_type: owner.blood_type,
+      first_name: params[:view_request][:first_name],
+      first_name_furigana: params[:view_request][:first_name_furigana],
+      last_name: params[:view_request][:last_name],
+      last_name_furigana: params[:view_request][:last_name_furigana],
+      birthday: params[:view_request][:birthday],
+      blood_type: params[:view_request][:blood_type],
       relationship: params[:view_request][:relationship]
     )
 
