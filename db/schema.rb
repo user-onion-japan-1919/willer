@@ -65,7 +65,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
 
   create_table "view_requests", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "parent_id"
     t.string "first_name", null: false
     t.string "first_name_furigana", null: false
     t.string "last_name", null: false
@@ -75,7 +74,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
     t.string "relationship", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_view_requests_on_parent_id"
     t.index ["user_id"], name: "index_view_requests_on_user_id"
   end
 
@@ -84,5 +82,4 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
   add_foreign_key "view_permissions", "users", column: "owner_id"
   add_foreign_key "view_permissions", "users", column: "viewer_id"
   add_foreign_key "view_requests", "users"
-  add_foreign_key "view_requests", "users", column: "parent_id"
 end

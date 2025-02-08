@@ -4,7 +4,7 @@ class ViewRequestsController < ApplicationController
   def create
     Rails.logger.debug "📌 Received Params: #{params.inspect}" # デバッグ用ログ
 
-    # **`parent_id` を登録時に指定しない**
+    # **公開者情報を `users` テーブルと照合するため、parent_id を登録しない**
     @view_request = ViewRequest.new(
       user_id: current_user.id,
       first_name: params[:view_request][:first_name],
@@ -37,7 +37,7 @@ class ViewRequestsController < ApplicationController
       return redirect_to notes_path
     end
 
-    # `users` テーブルと完全一致するユーザーを検索
+    # `users` テーブルと完全一致するユーザーを検索（公開者の特定）
     owner = User.find_by(
       first_name: view_request.first_name,
       first_name_furigana: view_request.first_name_furigana,
@@ -54,7 +54,7 @@ class ViewRequestsController < ApplicationController
 
     Rails.logger.debug "📌 照合された公開者: #{owner.inspect}"
 
-    # 公開ページURLを作成
+    # **公開ページURLを作成**
     public_page_url = "https://example.com/public_page/#{owner.uuid}/#{owner.id + 150_150}"
 
     # `view_accesses` にデータを保存 or 更新

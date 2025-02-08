@@ -62,7 +62,6 @@ belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id'
 | Column              | Type       | Options                                         |
 | ------------------- | ---------- | ----------------------------------------------- |
 | user_id             | references | null: false, foreign_key: true                 | # 閲覧者
-| parent_id           | references | null: false, foreign_key: { to_table: :users } | # 公開者
 | first_name          | string     | null: false                                    |
 | first_name_furigana | string     | null: false                                    |
 | last_name           | string     | null: false                                    |
@@ -73,7 +72,6 @@ belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id'
 
 ### **3. Association**
 belongs_to :user
-belongs_to :parent, class_name: 'User', foreign_key: 'parent_id'
 
 
 
