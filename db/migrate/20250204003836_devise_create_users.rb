@@ -34,5 +34,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
     add_index :users, :reset_password_token, unique: true
     add_index :users, :phone_number, unique: true  # 一意性制約
     add_index :users, :uuid, unique: true  # UUIDを一意にする
+
+## **複合ユニークインデックス（6つの情報が一致するユーザーを禁止）**
+add_index :users, [:first_name, :last_name, :first_name_furigana, :last_name_furigana, :birthday, :blood_type], unique: true, name: "index_users_on_unique_personal_info", length: { first_name: 100, last_name: 100, first_name_furigana: 100, last_name_furigana: 100, blood_type: 10 }
   end
 end

@@ -38,6 +38,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["first_name", "last_name", "first_name_furigana", "last_name_furigana", "birthday", "blood_type"], name: "index_users_on_unique_personal_info", unique: true, length: { first_name: 100, last_name: 100, first_name_furigana: 100, last_name_furigana: 100, blood_type: 10 }
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
