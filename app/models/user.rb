@@ -48,8 +48,6 @@ class User < ApplicationRecord
 
   def passwords_match
     return unless password.present? && password_confirmation.present? && password != password_confirmation
-
-    errors.add(:password_confirmation, 'がパスワードと一致しません。')
   end
 
   # **UUID を自動生成**
