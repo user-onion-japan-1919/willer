@@ -78,12 +78,6 @@
 
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
-<%#= @user.last_sign_in_at %> 
-
-
-
-
-
 
 <script>
   function copyPublicPageUrl() {
@@ -96,3 +90,24 @@
     alert("URLをコピーしました: " + urlField.value);
   }
 </script>
+
+
+
+
+
+
+
+
+ーーー
+<br><br><br><br><br><br>
+ーーー
+
+
+<!-- ここから個人ページの表示（閲覧のみ） -->
+<hr>
+<p>以下は閲覧専用であり、編集・リンクへの移動は一切できません。</p>
+
+<!-- `notes/index.html.erb` を表示（current_user を @user に置換し、readonly モードを適用） -->
+<div class="readonly-content">
+  <%= render template: "notes/index", locals: { current_user: @user, readonly: true } %>
+</div>

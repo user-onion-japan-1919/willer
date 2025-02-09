@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
+  create_table "notes", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -77,6 +86,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_07_013746) do
     t.index ["user_id"], name: "index_view_requests_on_user_id"
   end
 
+  add_foreign_key "notes", "users"
   add_foreign_key "view_accesses", "users", column: "owner_id"
   add_foreign_key "view_accesses", "users", column: "viewer_id"
   add_foreign_key "view_permissions", "users", column: "owner_id"

@@ -11,6 +11,9 @@ class NotesController < ApplicationController
       return redirect_to root_path
     end
 
+    # **公開者のノート情報を取得（閲覧のみ）**
+    @notes = @user.notes || [] # `nil` を防ぐために空配列を代入
+
     # **閲覧履歴の取得**
     @view_accesses = ViewAccess.includes(:owner, :viewer)
                                .where(owner_id: @user.id)
