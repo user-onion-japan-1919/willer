@@ -7,14 +7,21 @@
 
 <br>
 
-<div class="button-container">
-  <%= link_to "⭐️閲覧者から見た『あなた』の公開ページ",
-              public_page_path(current_user.uuid, (current_user.id + 150150)),
-              class: "btn btn-primary" %>
-  <br>
-  <br>
-  <%= button_to " ログアウト ", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+<div class="button-container" style="display: flex; gap: 10px;">
+  <!-- 公開ページへのボタン -->
+  <%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
+                public_page_path(current_user.uuid, (current_user.id + 150150)),
+                method: :get,
+                class: "btn btn-primary",
+                style: "flex: 1;" %>
+
+  <!-- ログアウトボタン -->
+  <%= button_to "   ログアウト   ", destroy_user_session_path, 
+                method: :delete, 
+                class: "btn btn-danger",
+                style: "flex: 1;" %>
 </div>
+
 
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -432,15 +439,28 @@
 
 
 
- <!-- ##CSS ----------------------------------------------------->
- 
+<!-- ##CSS ----------------------------------------------------->
 <style>
+  /* タブボタンの共通スタイル（通常時は薄めの黄緑） */
   .tabs button, .sub-tabs button {
     padding: 10px;
     margin: 5px;
     cursor: pointer;
-  }
-  .tabs button.active, .sub-tabs button.active {
+    background-color: #D0F0C0; /* ✅ 通常時の薄い黄緑 */
+    border: 1px solid #8BC34A; /* ✅ 縁取りは緑系 */
+    color: black; /* ✅ 文字色はそのまま */
     font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  /* アクティブなタブの色を #9ACD32（黄緑） */
+  .tabs button.active, .sub-tabs button.active {
+    background-color: #9ACD32; /* ✅ 黄緑 */
+  }
+
+  /* ホバー時の色を #556B2F（濃いオリーブグリーン）に変更 */
+  .tabs button:hover, .sub-tabs button:hover {
+    background-color: #556B2F; /* ✅ ダークオリーブグリーン */
   }
 </style>

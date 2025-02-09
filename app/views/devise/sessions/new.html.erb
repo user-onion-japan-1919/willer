@@ -1,5 +1,6 @@
 <br>
 <br>
+<br>
 
 <h2>遺言作成管理 - Willer -</h2>
 
@@ -7,7 +8,6 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 </div>
 
-<br>
 <br>
 
 <div class="tabs">
@@ -124,12 +124,93 @@
 </script>
 
 <style>
+  /* ✅ 全体の中央配置 */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ✅ 全体を中央揃え */
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ✅ タイトルを中央揃え */
+  h2 {
+    text-align: center;
+  }
+
+  /* ✅ エラーメッセージの中央揃え */
+  #error_explanation {
+    text-align: center;
+    width: 100%;
+  }
+
+  /* ✅ タブの共通スタイル */
+  .tabs {
+    display: flex;
+    justify-content: center; /* ✅ タブボタンを中央に配置 */
+  }
+
   .tabs button {
     padding: 10px;
     margin: 5px;
     cursor: pointer;
-  }
-  .tabs button.active {
+    background-color: #E6F7FF; /* ✅ 通常時（かなり薄めの青） */
+    border: 1px solid #A0C4FF; /* ✅ 枠線を少し濃いめの青 */
+    color: black;
     font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  /* ✅ アクティブなタブの色 */
+  .tabs button.active {
+    background-color: #B3E0FF; /* ✅ アクティブ時（もう少し濃い青） */
+  }
+
+  /* ✅ ホバー時の色 */
+  .tabs button:hover {
+    background-color: #99D6FF; /* ✅ ホバー時（少しだけ濃いめの青） */
+  }
+
+  /* ✅ フォーム全体の中央配置 */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ✅ 中央揃え */
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ✅ 入力欄やボタンの中央配置 + テキストも中央寄せ */
+  .form-container input,
+  .form-container select,
+  .form-container button {
+    width: 60%; /* ✅ 幅を調整 */
+    max-width: 400px; /* ✅ 最大幅を設定 */
+    margin: 5px 0;
+    padding: 10px;
+    text-align: center; /* ✅ 入力テキストも中央寄せ */
+    display: block;
+    border: 1px solid #A0C4FF;
+    border-radius: 5px;
+  }
+
+  /* ✅ ラベルの中央揃え */
+  .form-container label {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  /* ✅ ボタンのデザイン統一 */
+  .form-container button {
+    background-color: #B3E0FF; /* ✅ ボタン色（アクティブタブと統一） */
+    cursor: pointer;
+  }
+
+  /* ✅ ボタンホバー時 */
+  .form-container button:hover {
+    background-color: #99D6FF;
   }
 </style>
