@@ -56,10 +56,12 @@
 
 <p style="text-align: left;">
   <%= button_to "あなたの個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary", form: { style: "display: inline; margin-left: 50px;" } %>
-  　　　　　　　　　　　　　　<strong style="color: red; text-decoration: underline; font-weight: bold;">
+  　　　　　　　　<strong style="color: red; text-decoration: underline; font-weight: bold;">
     <%= Time.current.strftime('%Y-%m-%d %H:%M') %> 現在
   </strong>
 </p>
+
+<p>　</p>
 
 <p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：
   <%= @view_accesses.select { |va| va.viewer_id == @user.id }
@@ -145,9 +147,8 @@
 <div class="readonly-container">
   <div class="readonly-content">
     <%= render template: "notes/index", locals: { current_user: @user, readonly: true } %>
-  </div>
+        </div>
 </div>
-
 <p style="font-weight: bold; color: blue; text-decoration: underline;">
   ※このページはあくまで閲覧専用です。編集やリンク操作はできません。
 </p>
