@@ -298,10 +298,12 @@
 
 ーーー
 <h3>登録リストから公開ページURLを取得</h3>
-<% current_user.view_requests.each do |request| %>  
+<% current_user.view_requests.each do |request| %>
   <p>
     <strong>閲覧許可した対象者:</strong> <%= request.first_name %> <%= request.last_name %>
-        <%= button_to "公開ページURLを取得する", request_access_view_requests_path, 
+
+      <!-- URLが未取得の場合、ボタンを表示 -->
+       <%= button_to "公開ページURLを取得する", request_access_view_requests_path, 
           method: :post, params: { view_request_id: request.id }, class: "btn btn-primary" %>
   </p>
 <% end %>

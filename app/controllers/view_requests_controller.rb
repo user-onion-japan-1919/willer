@@ -4,14 +4,13 @@ class ViewRequestsController < ApplicationController
   def create
     Rails.logger.debug "📌 Received Params: #{params.inspect}" # デバッグ用ログ
 
-    # **公開者情報を `users` テーブルと照合するため、parent_id を登録しない**
     @view_request = ViewRequest.new(
       user_id: current_user.id,
       first_name: params[:view_request][:first_name],
       first_name_furigana: params[:view_request][:first_name_furigana],
       last_name: params[:view_request][:last_name],
       last_name_furigana: params[:view_request][:last_name_furigana],
-      birthday: parse_birthday(params[:view_request]), # ✅ `UsersController` に統一
+      birthday: parse_birthday(params[:view_request]),
       blood_type: params[:view_request][:blood_type],
       relationship: params[:view_request][:relationship]
     )
@@ -25,19 +24,26 @@ class ViewRequestsController < ApplicationController
     redirect_to notes_path
   end
 
-  # ✅ **登録済みの `view_requests` のデータからURLを取得**
+  # ✅ **公開ページURLの取得処理（`view_requests` に保存された情報から検索）**
   def request_access
     Rails.logger.debug "📌 Received Params: #{params.inspect}" # デバッグ用ログ
 
-    # **`view_requests` から `user_id` に対応するデータを取得**
+    # `view_request_id` が正しく渡っているか確認
+    if params[:view_request_id].blank?
+      flash[:alert] = '閲覧申請IDが指定されていません。'
+      return redirect_to notes_path
+    end
+
+    # `view_requests` から `view_request_id` に対応するデータを取得
     view_request = current_user.view_requests.find_by(id: params[:view_request_id])
 
     unless view_request
+      Rails.logger.error "⚠️ 指定された view_request_id (#{params[:view_request_id]}) の閲覧申請が見つかりません"
       flash[:alert] = '該当する閲覧申請が見つかりません。'
       return redirect_to notes_path
     end
 
-    # **`users` テーブルから完全一致する公開者を検索**
+    # `users` テーブルと完全一致するユーザーを検索（公開者の特定）
     owner = User.find_by(
       first_name: view_request.first_name,
       first_name_furigana: view_request.first_name_furigana,
@@ -48,6 +54,7 @@ class ViewRequestsController < ApplicationController
     )
 
     unless owner
+      Rails.logger.error "⚠️ 公開者 (#{view_request.first_name} #{view_request.last_name}) が見つかりませんでした。"
       flash[:alert] = '該当する公開者が見つかりませんでした。'
       return redirect_to notes_path
     end
@@ -57,7 +64,7 @@ class ViewRequestsController < ApplicationController
     # **公開ページURLを作成**
     public_page_url = "https://example.com/public_page/#{owner.uuid}/#{owner.id + 150_150}"
 
-    # **`view_accesses` にデータを保存 or 更新**
+    # `view_accesses` にデータを保存 or 更新
     view_access = ViewAccess.find_or_initialize_by(owner_id: owner.id, viewer_id: current_user.id)
     view_access.public_page_url = public_page_url
     view_access.save!
@@ -73,11 +80,10 @@ class ViewRequestsController < ApplicationController
       :first_name, :first_name_furigana, :last_name, :last_name_furigana,
       :blood_type, :relationship
     ).merge(
-      birthday: parse_birthday(params[:view_request]) # ✅ 統一
+      birthday: parse_birthday(params[:view_request])
     )
   end
 
-  # ✅ `UsersController` と統一した `birthday` 変換処理
   def parse_birthday(params)
     return unless params['birthday(1i)'].present? && params['birthday(2i)'].present? && params['birthday(3i)'].present?
 
@@ -89,6 +95,6 @@ class ViewRequestsController < ApplicationController
       )
     rescue StandardError
       nil
-    end # **エラー回避**
+    end
   end
 end

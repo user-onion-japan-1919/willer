@@ -1,33 +1,56 @@
-<h2><%= @user.first_name %> <%= @user.last_name %> さんの公開ページ</h2>
-<input type="text" id="publicPageUrl" value="<%= public_page_url(uuid: current_user.uuid, custom_id: current_user.id + 150150) %>" readonly>
-<button onclick="copyPublicPageUrl()">このページのURLをコピー</button>
-※ログインは改めて必要になります。
-※閲覧権限が許可されていないとアクセスできません。
 
-<p><strong><%= @user.first_name %> <%= @user.last_name %> さんの最終ログイン日:</strong> </p>
+<p>　</p>
 
-<p><strong>公開者:</strong> <%= @user.first_name %> <%= @user.last_name %></p>
+<h2 style="display: inline;">　　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
+<input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly style="margin-left: 10px; width: 300px;">
+<button onclick="copyPublicPageUrl()" style="margin-left: 10px;">このページのURLをコピー</button>
 
-<p><strong>閲覧者:</strong> <%= @viewer.first_name %> <%= @viewer.last_name %></p>
+<p>　</p>
 
-<p><strong>本日の日付:</strong> <%= Time.current.strftime('%Y-%m-%d %H:%M') %></p>
 
-ーーー
-<h3>あなたの公開ページの閲覧履歴</h3>
+<p>
+  <%= button_to "あなたの個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary", form: { style: "display: inline;" } %>
+  　　　　　　　　　　　　　　　　<strong style="color: red; text-decoration: underline; font-weight: bold;">
+  <%= Time.current.strftime('%Y-%m-%d %H:%M') %> 現在
+</strong>
+</p>
+
+<p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：<%= @view_accesses.select { |va| va.viewer_id == @user.id }
+      .max_by(&:last_accessed_at)&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></p>
+<p><strong>　　現在の閲覧者　：　</strong> <%= @viewer.first_name %> <%= @viewer.last_name %>　　　最終アクセス時間：<%= @view_accesses.find { |va| va.viewer_id == @viewer.id }&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></p>
+
+
+<p>　</p>
+
+<h3>このページの閲覧履歴詳細</h3>
 
 <% if @view_accesses.any? %>
   <table border="1">
     <tr>
       <th>閲覧者</th>
-      <th>最終アクセス日</th>
+      <th>続柄</th>
+      <th>アクセス時間</th>
       <th>アクセス回数</th>
+      <th>メールアドレス</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>住所</th>
+      <th>電話番号</th>
     </tr>
     <% @view_accesses.each do |access| %>
+      <% viewer = access.viewer %>
+      <% view_request = viewer.view_requests.find_by(user_id: @user.id) %>
+      <% relationship = view_request&.relationship.presence || "本人" %>
       <tr>
-         <%= access.viewer.first_name %> <%= access.viewer.last_name %>
-  </td>
-  <td><%= access.last_accessed_at.strftime("%Y-%m-%d %H:%M") if access.last_accessed_at %></td>
-  <td><%= access.access_count %> 回</td>
+        <td><%= viewer.first_name %> <%= viewer.last_name %></td>
+        <td><%= relationship %></td>
+        <td><%= access.last_accessed_at.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M') if access.last_accessed_at %></td>
+        <td><%= access.access_count %> 回</td>
+        <td><%= viewer.email %></td>
+        <td><%= viewer.birthday.strftime('%Y-%m-%d') if viewer.birthday %></td>
+        <td><%= viewer.blood_type %></td>
+        <td><%= viewer.address %></td>
+        <td><%= viewer.phone_number %></td>
       </tr>
     <% end %>
   </table>
@@ -35,11 +58,27 @@
   <p>まだ誰にも閲覧されていません。</p>
 <% end %>
 
-ーーー
-<br>
-<%= button_to "個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary" %>
+
+<p>　</p>
 
 
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
 <%#= @user.last_sign_in_at %> 
+
+
+
+
+
+
+<script>
+  function copyPublicPageUrl() {
+    var urlField = document.getElementById("publicPageUrl");
+    urlField.select();
+    urlField.setSelectionRange(0, 99999); // モバイル対応
+    document.execCommand("copy"); // クリップボードにコピー
+
+    // コピー完了を通知
+    alert("URLをコピーしました: " + urlField.value);
+  }
+</script>
