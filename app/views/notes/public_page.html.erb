@@ -1,3 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>公開ページ - <%= @user.first_name %> <%= @user.last_name %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+    /* 背景色を適用する範囲を拡張 */
+    .readonly-content {
+      background-color: #E0F7FA;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .readonly-container {
+      background-color: #E0F7FA; /* 薄めの水色 */
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<p>
+  <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
+</p>
 
 <p>　</p>
 
@@ -7,22 +54,24 @@
 
 <p>　</p>
 
-
-<p>
-  <%= button_to "あなたの個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary", form: { style: "display: inline;" } %>
-  　　　　　　　　　　　　　　　　<strong style="color: red; text-decoration: underline; font-weight: bold;">
-  <%= Time.current.strftime('%Y-%m-%d %H:%M') %> 現在
-</strong>
+<p style="text-align: left;">
+  <%= button_to "あなたの個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary", form: { style: "display: inline; margin-left: 50px;" } %>
+  　　　　　　　　　　　　　　<strong style="color: red; text-decoration: underline; font-weight: bold;">
+    <%= Time.current.strftime('%Y-%m-%d %H:%M') %> 現在
+  </strong>
 </p>
 
-<p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：<%= @view_accesses.select { |va| va.viewer_id == @user.id }
-      .max_by(&:last_accessed_at)&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></p>
-<p><strong>　　現在の閲覧者　：　</strong> <%= @viewer.first_name %> <%= @viewer.last_name %>　　　最終アクセス時間：<%= @view_accesses.find { |va| va.viewer_id == @viewer.id }&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></p>
-
+<p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：
+  <%= @view_accesses.select { |va| va.viewer_id == @user.id }
+      .max_by(&:last_accessed_at)&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
+</p>
+<p><strong>　　現在の閲覧者　：　</strong> <%= @viewer.first_name %> <%= @viewer.last_name %>　　　最終アクセス時間：
+  <%= @view_accesses.find { |va| va.viewer_id == @viewer.id }&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
+</p>
 
 <p>　</p>
 
-<h3>このページの閲覧履歴詳細</h3>
+<h3>　　このページの閲覧履歴詳細</h3>
 
 <% if @view_accesses.any? %>
   <% sorted_view_accesses = @view_accesses.map do |access|
@@ -37,7 +86,6 @@
     }
   end %>
 
-  <%# 並び順を指定するための優先順位リスト %>
   <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
 
   <% sorted_view_accesses.sort_by! { |va| relationship_order.index(va[:relationship]) || relationship_order.length } %>
@@ -72,42 +120,34 @@
   <p>まだ誰にも閲覧されていません。</p>
 <% end %>
 
-
-<p>　</p>
-
-
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-<br>
-
 <script>
   function copyPublicPageUrl() {
     var urlField = document.getElementById("publicPageUrl");
     urlField.select();
-    urlField.setSelectionRange(0, 99999); // モバイル対応
-    document.execCommand("copy"); // クリップボードにコピー
-
-    // コピー完了を通知
+    urlField.setSelectionRange(0, 99999);
+    document.execCommand("copy");
     alert("URLをコピーしました: " + urlField.value);
   }
 </script>
 
+<p>　</p>
+<p>　</p>
 
-
-
-
-
-
-
-ーーー
-<br><br><br><br><br><br>
-ーーー
-
-
-<!-- ここから個人ページの表示（閲覧のみ） -->
 <hr>
-<p>以下は閲覧専用であり、編集・リンクへの移動は一切できません。</p>
 
-<!-- `notes/index.html.erb` を表示（current_user を @user に置換し、readonly モードを適用） -->
-<div class="readonly-content">
-  <%= render template: "notes/index", locals: { current_user: @user, readonly: true } %>
+<p style="font-weight: bold; color: blue; text-decoration: underline;">
+  ↓↓↓以下は閲覧専用であり、編集やリンク先への移動は一切できません。↓↓↓
+</p>
+
+<p>　</p>
+
+<!-- 背景色を適用するエリア -->
+<div class="readonly-container">
+  <div class="readonly-content">
+    <%= render template: "notes/index", locals: { current_user: @user, readonly: true } %>
+  </div>
 </div>
+
+<p style="font-weight: bold; color: blue; text-decoration: underline;">
+  ※このページはあくまで閲覧専用です。編集やリンク操作はできません。
+</p>

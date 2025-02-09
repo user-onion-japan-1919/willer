@@ -8,24 +8,22 @@ Rails.application.routes.draw do
 
   resources :view_permissions, only: [:index, :new, :create, :destroy] do
     collection do
-      post "request_access" # 閲覧許可の処理
+      post "request_access"
     end
   end
 
   resources :view_requests, only: [:index, :new, :create, :destroy] do
     collection do
-      post "request_access" # ✅ 閲覧リクエストのURL取得処理
+      post "request_access"
     end
   end
 
-  resources :notes, only: [:index, :new, :create, :show] # ここに適宜必要なアクションを追加
+  resources :notes, only: [:index, :new, :create, :show] do
+    member do
+      get "download_pdf"
+    end
+  end
 
-  # 検索機能用のルートを追加
   get "/search_users", to: "users#search", as: :search_users
-
-  # 「あなたの公開ページ」のルートを追加
   get "/public_page/:uuid/:custom_id", to: "notes#public_page", as: :public_page
-
-  # 閲覧許可の設定（POSTリクエストを受け付ける）
-  post "/view_permissions", to: "view_permissions#create"
 end
