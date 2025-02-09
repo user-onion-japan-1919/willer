@@ -29,8 +29,8 @@
 <br>
 
 <div class="tabs">
-  <button id="parent-tab" class="active" onclick="showSection('parent')">記入者（親側）として利用する</button>
-  <button id="child-tab" onclick="showSection('child')">閲覧者（子側）として利用する</button>
+  <button id="parent-tab" class="active" onclick="showSection('parent')"> Single_Note 📖 </button>
+  <button id="child-tab" onclick="showSection('child')"> Families_Note 📚 </button>
 </div>
 
 <br>
@@ -38,12 +38,13 @@
 <br>
 <br>
 
-<!-- 親側（記入者）画面 -->
+<!-- 親側（記入者）画面 --><!-- single_note -->
+
 <div id="parent-section">
   <div class="sub-tabs">
-    （親側）<br>
-    <button id="info-tab" class="active" onclick="showSubSection('info')">①あなたの登録情報の変更</button>
-    <button id="permission-tab" onclick="showSubSection('permission')">②閲覧を許可する対象者を登録</button>
+    　◎1人で作業する<br>
+    <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️ ユーザー編集 ⚙️ </button>
+    <button id="permission-tab" onclick="showSubSection('permission')"> 📓 ノートに記述 📓 </button>
     <button id="notes-tab" onclick="showSubSection('notes')">③ノートを記述</button>
     <br>
     <br>
@@ -52,15 +53,19 @@
 <br>
   </div>
 
-  <!-- ①ユーザ新規登録情報 -->
+  <!-- ①ユーザー設定 -->
   <div id="info-section">
-  <h3>①<%= current_user.first_name %> <%= current_user.last_name %> さんの登録情報（※空欄不可）</h3>
-  <br>
-  <h3>※<b>閲覧申請者に要求する情報としても使用</b>しますので、間違いが無いように記入してください。</h3>
-  <h3>※旧字体・大文字・小文字・住所の表現などが少しでも異なると、閲覧権限を付与できません。</h3>
+  <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
   <br>
 
-<!-- ①ユーザ新規登録情報フォーム -->
+  <h3>いつでも内容を変更できます。（空欄は不可）</h3>
+  <h3>ログイン時の情報・閲覧許可の対象・閲覧申請の対象として使用されます。</h3>
+  <br>
+    <h3>※漢字は新字体での統一を推奨します。</h3>
+  <h3>※情報が少しでも異なると、親と子の紐付けが失敗します。</h3>
+  <br>
+
+<!-- ①フォーム -->
    <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
   <div>
     <%= f.label :email, "メールアドレス" %>
@@ -116,15 +121,18 @@
 <% end %>
 
 
-  <!-- ②閲覧を許可する対象者を登録 -->
+  <!-- ③閲覧許可 -->
   <div id="permission-section" style="display: none;">
-  <h3>②閲覧を許可する対象者を登録</h3>
+  <h3>🏠③公開ページの閲覧を許可する対象者🏠</h3>
   <br>
-  <p>※下に登録したユーザー情報と<b>完全一致するユーザーだけに閲覧を許可</b>します。</p>
-  <p>※旧字体・大文字・小文字・住所の表現などが少しでも異なっていると、閲覧権限を付与できません。</p>
+  <p>※あなたを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
+  <p>※本人または許可対象者のみが、あなたの公開ページへアクセスできるようになります。</p>
+  <br>
+    <h3>※漢字は新字体での統一を推奨します。</h3>
+  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
   <br>
 
-  <!-- ②閲覧を許可する対象者を登録フォーム -->
+  <!-- ③フォーム -->
   <%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
     <div>
       <%= f.label :first_name, "苗字" %>
@@ -156,8 +164,8 @@
     ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     <br><br>
     
-    <!-- ②ーⅡ登録済みの許可対象者リスト -->
-  <h3>登録済みの閲覧許可対象者</h3>
+    <!-- ③ー閲覧許可対象者リスト -->
+  <h3>あなたが登録した閲覧許可の対象者です。</h3>
   <% if current_user.view_permissions.any? %>
     <table border="1">
       <tr>
@@ -189,11 +197,11 @@
   </div>
   
 
-  <!-- ③ノートを記述 -->
+  <!-- 不要 -->
   <div id="notes-section" style="display: none;">
-    <h3>③ノートを記述</h3>
+    <h3>不要な記述です。</h3>
     <br>
-    <p>※ここに遺言情報を記述できます。</p>
+    <p>※不要な記述です。</p>
       <br>
       <br>
   ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -209,28 +217,31 @@
 
 
 
-<!-- 子側（閲覧者）画面 -->
+<!-- ファミリーノート -->
 <div id="child-section" style="display: none;">
   <div class="sub-tabs">
-    （子側）<br>
-    <button id="search-tab" class="active" onclick="showChildSubSection('search')">①閲覧したい対象者（親側）の情報登録</button>
-    <button id="result-tab" onclick="showChildSubSection('result')">②登録リストから公開ページへアクセス</button>
+    　◎家族と共有する<br>
+    <button id="search-tab" class="active" onclick="showChildSubSection('search')"> 🏠  "親" として利用 🏠 </button>
+    <button id="result-tab" onclick="showChildSubSection('result')"> 🥳  "子" として利用 🥳 </button>
   </div>
 
-<br>
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
 <br>
 
-  <!-- １親情報の登録 -->
+  <!-- ④閲覧申請 -->
   <div id="search-section">
-    <h3>①親情報（閲覧したい対象者の情報）を入力し、登録する</h3>
+    <h3>🥳④あなたが閲覧したい対象者🥳</h3>
     <br>
-    <p>※旧字体・大文字・小文字・住所の表現などが少しでも異なっていると、閲覧申請は通りません。</p>
-    <br>
+  <p>※あなたを閲覧者（子）、申請対象を公開者（親）として紐付けします。</p>
+  <p>※検索内容と一致するユーザーが存在すると、、公開ページURLを取得できます。(アクセス許可は別です)</p>
+  <br>
+    <h3>※漢字は新字体での統一を推奨します。</h3>
+  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+  <br>
 
-  <!-- ①親情報（閲覧したい対象者の情報）登録フォーム -->
+  <!-- ④フォーム -->
   <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
       <div>
         <%= f.label :first_name, "苗字" %>
@@ -274,9 +285,8 @@
 <br>
 <br>
 
-
-  <!-- ②登録済みの親情報（閲覧したい対象者の情報）リスト -->
-  <h3>登録済みの親情報（閲覧したい対象者の情報）</h3>
+  <!-- ④閲覧申請リスト -->
+  <h3>あなたが登録した閲覧申請の対象者です。</h3>
   <% if current_user.view_requests.any? %>
     <table border="1">
       <tr>
@@ -349,28 +359,14 @@
     <% end %>
   </div>
 
-  <!-- ２閲覧申請 -->
+  <!-- ０内容を上書き -->
   <div id="result-section" style="display: none;">
-    <h3>②登録リストから閲覧申請をかける</h3>
+    <h3>内容を上書き</h3>
     <br>
-    <p>※成功すると対象者の公開ページへアクセスし、失敗するとエラーが表示されます。</p>
-    <p>※旧字体・大文字・小文字・住所の表現などが少しでも異なると、閲覧申請は通りません。</p>
-    <p>※”親側の本人登録情報と完全一致” し、かつ ”親側が閲覧許可しているユーザー” のみ、閲覧ページにアクセスできます。</p>
-    <br>
-    <% if @searched_users.present? %>
-      <ul>
-        <% @searched_users.each do |user| %>
-          <li><%= user.last_name %> <%= user.first_name %> さん</li>
-        <% end %>
-      </ul>
-      <br>
-      <%= button_to "このユーザーに閲覧申請する", request_access_path, method: :post, params: { user_id: @searched_users.first.id }, class: "btn btn-primary" %>
-    <% else %>
-      <p>一致するユーザーが見つかりませんでした。</p>
+      
       <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
-    <% end %>
   </div>
 </div>
 
