@@ -25,11 +25,28 @@
 <h3>このページの閲覧履歴詳細</h3>
 
 <% if @view_accesses.any? %>
+  <% sorted_view_accesses = @view_accesses.map do |access|
+    viewer = access.viewer
+    view_request = ViewRequest.find_by(user_id: viewer.id, first_name: @user.first_name, last_name: @user.last_name, birthday: @user.birthday)
+    relationship = view_request&.relationship.presence || "本人"
+    {
+      viewer: viewer,
+      relationship: relationship,
+      last_accessed_at: access.last_accessed_at,
+      access_count: access.access_count
+    }
+  end %>
+
+  <%# 並び順を指定するための優先順位リスト %>
+  <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
+
+  <% sorted_view_accesses.sort_by! { |va| relationship_order.index(va[:relationship]) || relationship_order.length } %>
+
   <table border="1">
     <tr>
-      <th>閲覧者</th>
+      <th>閲覧ユーザー</th>
       <th>続柄</th>
-      <th>アクセス時間</th>
+      <th>最終アクセス</th>
       <th>アクセス回数</th>
       <th>メールアドレス</th>
       <th>生年月日</th>
@@ -37,20 +54,17 @@
       <th>住所</th>
       <th>電話番号</th>
     </tr>
-    <% @view_accesses.each do |access| %>
-      <% viewer = access.viewer %>
-      <% view_request = viewer.view_requests.find_by(user_id: @user.id) %>
-      <% relationship = view_request&.relationship.presence || "本人" %>
+    <% sorted_view_accesses.each do |va| %>
       <tr>
-        <td><%= viewer.first_name %> <%= viewer.last_name %></td>
-        <td><%= relationship %></td>
-        <td><%= access.last_accessed_at.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M') if access.last_accessed_at %></td>
-        <td><%= access.access_count %> 回</td>
-        <td><%= viewer.email %></td>
-        <td><%= viewer.birthday.strftime('%Y-%m-%d') if viewer.birthday %></td>
-        <td><%= viewer.blood_type %></td>
-        <td><%= viewer.address %></td>
-        <td><%= viewer.phone_number %></td>
+        <td><%= va[:viewer].first_name %> <%= va[:viewer].last_name %></td>
+        <td><%= va[:relationship] %></td>
+        <td><%= va[:last_accessed_at]&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+        <td><%= va[:access_count] %> 回</td>
+        <td><%= va[:viewer].email %></td>
+        <td><%= va[:viewer].birthday.strftime('%Y-%m-%d') if va[:viewer].birthday %></td>
+        <td><%= va[:viewer].blood_type %></td>
+        <td><%= va[:viewer].address %></td>
+        <td><%= va[:viewer].phone_number %></td>
       </tr>
     <% end %>
   </table>
