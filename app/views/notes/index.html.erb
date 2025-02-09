@@ -45,7 +45,6 @@
     　◎1人で作業する<br>
     <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️ ユーザー編集 ⚙️ </button>
     <button id="permission-tab" onclick="showSubSection('permission')"> 📓 ノートに記述 📓 </button>
-    <button id="notes-tab" onclick="showSubSection('notes')">③ノートを記述</button>
     <br>
     <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -197,16 +196,7 @@
   </div>
   
 
-  <!-- 不要 -->
-  <div id="notes-section" style="display: none;">
-    <h3>不要な記述です。</h3>
-    <br>
-    <p>※不要な記述です。</p>
-      <br>
-      <br>
-  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-      <br>
-      <br>
+
   </div>
     </div>
     </div>
@@ -380,7 +370,7 @@
 <script>
   function showSection(type) {
     if (type === 'parent') {
-      // 親側のタブを表示
+      // シングルのタブを表示
       document.getElementById('parent-section').style.display = 'block';
       document.getElementById('child-section').style.display = 'none';
 
