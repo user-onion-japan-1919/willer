@@ -346,6 +346,7 @@
 <br>
 <br>
 <% end %>
+<br>
 </div>
 
 
@@ -361,8 +362,11 @@
 
 
   <div id="result-section" style="display: none;">
- <!-- ④閲覧申請 -->
+
+ <!-- ④A検索AA検索AA検索AA検索AA検索AA検索AA検索AA検索A -->
+
   <div id="search-section">
+
     <h3>🥳④あなたが閲覧したい対象者🥳</h3>
     <br>
   <p>※あなたを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
@@ -373,7 +377,6 @@
   <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
   <br>
 
-  <!-- ④フォーム -->
   <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
       <div>
         <%= f.label :first_name, "苗字" %>
@@ -413,7 +416,8 @@
 <br>
 <br>
 
-  <!-- ④閲覧申請リスト -->
+  <!-- ④BリストBBリストBBリストBBリストBBリストBBリストBBリストBBリストB -->
+
   <h3>あなたが登録した閲覧対象者</h3>
   <% if current_user.view_requests.any? %>
     <table border="1">
@@ -445,6 +449,9 @@
 <br>
 <br>
 
+
+ <!-- ④Cページ取得CCページ取得CCページ取得CCページ取得CCページ取得CCページ取得C -->
+
 <h3>登録リストから公開ページURLを取得</h3>
 <% current_user.view_requests.each do |request| %>
   <p>
@@ -461,8 +468,11 @@
 <br>
 <br>
 
+
+ <!-- ④DリストDDリストDDリストDDリストDDリストDDリストDDリストDDリストD -->
+
+  <h3>URL取得済みリスト</h3>
 <% if current_user.view_accesses_as_viewer.any? %>
-  <h3>閲覧許可済みリスト</h3>
   <table border="1">
     <tr>
       <th>公開者</th>
@@ -484,19 +494,17 @@
 <% else %>
   <p>閲覧許可された公開ページはありません。</p>
 <% end %>
-
-  <br>
-  <br>
-
     <% end %>
+
   </div>
 
-
+  <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<br>
+<br>
   </div>
 </div>
-<br>
-<br>
 
 
 
