@@ -25,11 +25,11 @@ class ViewRequestsController < ApplicationController
     redirect_to notes_path
   end
 
-  # ✅ 閲覧リクエストのURL取得処理
+  # ✅ **登録済みの `view_requests` のデータからURLを取得**
   def request_access
     Rails.logger.debug "📌 Received Params: #{params.inspect}" # デバッグ用ログ
 
-    # `view_requests` から一致するデータを取得
+    # **`view_requests` から `user_id` に対応するデータを取得**
     view_request = current_user.view_requests.find_by(id: params[:view_request_id])
 
     unless view_request
@@ -37,7 +37,7 @@ class ViewRequestsController < ApplicationController
       return redirect_to notes_path
     end
 
-    # `users` テーブルと完全一致するユーザーを検索（公開者の特定）
+    # **`users` テーブルから完全一致する公開者を検索**
     owner = User.find_by(
       first_name: view_request.first_name,
       first_name_furigana: view_request.first_name_furigana,
@@ -57,7 +57,7 @@ class ViewRequestsController < ApplicationController
     # **公開ページURLを作成**
     public_page_url = "https://example.com/public_page/#{owner.uuid}/#{owner.id + 150_150}"
 
-    # `view_accesses` にデータを保存 or 更新
+    # **`view_accesses` にデータを保存 or 更新**
     view_access = ViewAccess.find_or_initialize_by(owner_id: owner.id, viewer_id: current_user.id)
     view_access.public_page_url = public_page_url
     view_access.save!
