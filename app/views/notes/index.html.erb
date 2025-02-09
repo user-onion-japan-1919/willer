@@ -339,33 +339,176 @@
 <% else %>
   <p>閲覧許可された公開ページはありません。</p>
 <% end %>
-ーーー
 
   <br>
-  <br>
+  
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
-
-    <% end %>
-  </div>
-
-  <!-- ０内容を上書き -->
-  <div id="result-section" style="display: none;">
-    <h3>内容を上書き</h3>
-    <br>
-      
-      <br>
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
-  </div>
+<% end %>
 </div>
 
 
 
 
 
+  <!-- ③③③③③③③③③③③③③③③ -->
+          <!-- 共通入力部分 -->
+  <!-- ④④④④④④④④④④④④④④④ -->
 
- <!-- ##タブ機能 ------------------------------------------------->
+
+
+
+
+  <div id="result-section" style="display: none;">
+ <!-- ④閲覧申請 -->
+  <div id="search-section">
+    <h3>🥳④あなたが閲覧したい対象者🥳</h3>
+    <br>
+  <p>※あなたを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
+  <p>※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</p>
+  <p>※取得した公開ページURLにアクセスできるかは、都度チェックされます。</p>
+  <br>
+    <h3>※漢字は新字体での統一を推奨します。</h3>
+  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+  <br>
+
+  <!-- ④フォーム -->
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+      <div>
+        <%= f.label :first_name, "苗字" %>
+        <%= f.text_field :first_name, name: "view_request[first_name]", required: true %>
+      </div>
+      <div>
+        <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
+        <%= f.text_field :first_name_furigana, name: "view_request[first_name_furigana]", required: true %>
+      </div>
+      <div>
+        <%= f.label :last_name, "名前" %>
+        <%= f.text_field :last_name, name: "view_request[last_name]", required: true %>
+      </div>
+      <div>
+        <%= f.label :last_name_furigana, "名前（ふりがな）" %>
+        <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
+      </div>
+      <div>
+        <%= f.label :birthday, "生年月日" %>
+        <%= f.date_select :birthday, prefix: "view_request", start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+      </div>
+      <div>
+        <%= f.label :blood_type, "血液型" %>
+        <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください", name: "view_request[blood_type]" %>
+      </div>
+      <div>
+        <%= f.label :relationship, "検索対象から見たあなたの続柄" %>
+        <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
+      </div>
+
+    <br>
+    <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
+    <br>
+
+<br>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<br>
+
+  <!-- ④閲覧申請リスト -->
+  <h3>あなたが登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %> (<%= vr.first_name_furigana %>)</td>
+          <td><%= vr.last_name %> (<%= vr.last_name_furigana %>)</td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            削除
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
+  <% end %>
+
+<br>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<br>
+
+<h3>登録リストから公開ページURLを取得</h3>
+<% current_user.view_requests.each do |request| %>
+  <p>
+    <strong>閲覧許可した対象者:</strong> <%= request.first_name %> <%= request.last_name %>
+
+      <!-- URLが未取得の場合、ボタンを表示 -->
+       <%= button_to "公開ページURLを取得する", request_access_view_requests_path, 
+          method: :post, params: { view_request_id: request.id }, class: "btn btn-primary" %>
+  </p>
+<% end %>
+
+<br>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<br>
+
+<% if current_user.view_accesses_as_viewer.any? %>
+  <h3>閲覧許可済みリスト</h3>
+  <table border="1">
+    <tr>
+      <th>公開者</th>
+      <th>公開ページURL</th>
+    </tr>
+    <% current_user.view_accesses_as_viewer.each do |access| %>
+      <tr>
+        <td><%= access.owner.first_name %> <%= access.owner.last_name %></td>
+        <td>
+          <% if access.public_page_url.present? %>
+            <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
+          <% else %>
+            URL未取得
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+  </table>
+<% else %>
+  <p>閲覧許可された公開ページはありません。</p>
+<% end %>
+
+  <br>
+  <br>
+
+    <% end %>
+  </div>
+
+
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  </div>
+</div>
+<br>
+<br>
+
+
+
+
+
+  <!-- ④④④④④④④④④④④④④④④ -->
+          <!-- 共通入力部分 -->
+  <!-- タブタブタブタブタブタブタブタブ -->
+
+
+
+
 
 <script>
   function showSection(type) {
@@ -425,7 +568,16 @@
 
 
 
-<!-- ##CSS ----------------------------------------------------->
+
+
+ <!-- タブタブタブタブタブタブタブタブ -->
+          <!-- 共通入力部分 -->
+ <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS -->
+
+
+
+
+
 <style>
   /* タブボタンの共通スタイル（通常時は薄めの黄緑） */
   .tabs button, .sub-tabs button {
@@ -450,3 +602,10 @@
     background-color: #556B2F; /* ✅ ダークオリーブグリーン */
   }
 </style>
+
+
+
+
+ <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS -->
+          <!-- 共通入力部分 -->
+ <!-- ここが最後ですここが最後ですここが最後です -->
