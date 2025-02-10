@@ -1,3 +1,4 @@
+<body style="margin-left: 5%; margin-right: 5%;">
 
 <br>
 
@@ -70,11 +71,11 @@
   <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
   <br>
 
-  <h3>※いつでも内容を変更できます。（空欄は不可）</h3>
-  <h3>※ログイン時の情報・閲覧許可の対象・閲覧申請の対象として使用されます。</h3>
-  <br>
-    <h3>※漢字は新字体での統一を推奨します。</h3>
-  <h3>※情報が少しでも異なると、親と子の紐付けが失敗します。</h3>
+<h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（空欄は不可）</h3>
+<h3 style="color: blue; font-size: 70%;">※ログイン時の情報・閲覧許可の対象・閲覧申請の対象として使用されます。</h3>
+<br>
+<h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+<h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、親と子の紐付けが失敗します。</h3>
   <br>
   
 
@@ -152,8 +153,10 @@
   <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
   <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
   <br>
-  <h3>※いつでも内容を変更できます。（入力内容は自動保存されます。）</h3>
-  <h3>※空欄も可能です。気負わずにじっくり取り組みましょう。 </h3>
+
+  <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（入力内容は自動保存されます。） </h3>
+  <h3 style="color: blue; font-size: 70%;">※空欄も可能です。気負わずにじっくり取り組みましょう!! </h3>
+
 
 
   <br>
@@ -191,11 +194,13 @@
   <div id="parent-section" style="display: none;">
   <h3>🏠公開ページの閲覧を許可する対象者</h3>
   <br>
-  <p>※<%= current_user.first_name %> <%= current_user.last_name %> さんを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
-  <p>※本人または許可対象者のみが、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへアクセスできるようになります。</p>
+
+
+  <p style="color: blue; font-size: 70%;">※<%= current_user.first_name %> <%= current_user.last_name %> さんを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
+  <p style="color: blue; font-size: 70%;">※本人または許可対象者のみが、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへアクセスできるようになります。</p>
   <br>
-    <h3>※漢字は新字体での統一を推奨します。</h3>
-  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+    <h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+  <h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、アクセス許可を付与できません。</h3>
   <br>
 
 <%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
@@ -296,12 +301,12 @@
 
     <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者  </h3>
     <br>
-  <p>※<%= current_user.first_name %> <%= current_user.last_name %> さんを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
-  <p>※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</p>
-  <p>※取得した公開ページURLにアクセスできるかは、都度チェックされます。</p>
+  <p style="color: blue; font-size: 70%;">※<%= current_user.first_name %> <%= current_user.last_name %> さんを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
+  <p style="color: blue; font-size: 70%;">※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</p>
+  <p style="color: blue; font-size: 70%;">※取得した公開ページURLにアクセスできるかは、都度チェックされます。</p>
   <br>
-    <h3>※漢字は新字体での統一を推奨します。</h3>
-  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+    <h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+  <h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、アクセス許可を付与できません。</h3>
   <br>
 
 <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>

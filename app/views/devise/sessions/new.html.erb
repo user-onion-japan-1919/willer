@@ -2,7 +2,7 @@
   <br>
   <br>
 
-  <h2>遺言作成管理  - Will_Note -  📓</h2>
+  <h2 style="color: darkbrown; font-size: 150%;">遺言の作成・管理・共有  - Will_Note -  📓</h2>
 
   <div id="error_explanation">
     <%= render "devise/shared/error_messages", resource: resource %>
@@ -12,7 +12,7 @@
 
   <div class="tabs">
     <button id="signup-tab" class="active" onclick="showForm('signup')">＜新規登録画面＞</button>
-    <button id="login-tab" onclick="showForm('login')">＜ログイン画面＞</button>
+    　<button id="login-tab" onclick="showForm('login')">＜ログイン画面＞</button>
   </div>
 
   <br>
@@ -24,14 +24,14 @@
 
   <div id="signup-form" class="form-container">
     <%= form_with model: resource, url: registration_path(resource_name), local: true, id: "signup_form" do |f| %>
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :Eメール　（※＠マークを含め、半角英数字で記入） %>
         <%= f.email_field :email, id: "signup_user_email", value: f.object.email, autocomplete: "email" %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :パスワード　（※6文字以上、半角英数字混合で記入）　 %>
         <%= f.password_field :password, id: "login_user_password", autocomplete: "current-password" %>
         <%= f.label :"※パスワードは 親族を含めた他人に 絶対に教えないでください。", style: "color: red;" %>
@@ -40,63 +40,63 @@
   <br>
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :password_confirmation, "パスワード（確認のため、再度記入）" %>
         <%= f.password_field :password_confirmation, id: "signup_user_password_confirmation", autocomplete: "new-password" %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :first_name, "苗字（漢字）※新字体での統一を推奨します" %>
         <%= f.text_field :first_name, id: "signup_user_first_name", value: f.object.first_name %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
         <%= f.text_field :first_name_furigana, id: "signup_user_first_name_furigana", value: f.object.first_name_furigana %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :last_name, "名前（漢字）※新字体での統一を推奨します" %>
         <%= f.text_field :last_name, id: "signup_user_last_name", value: f.object.last_name %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :last_name_furigana, "名前（ふりがな）" %>
         <%= f.text_field :last_name_furigana, id: "signup_user_last_name_furigana", value: f.object.last_name_furigana %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :birthday, "生年月日" %>
         <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :blood_type, "血液型" %>
         <%= f.select :blood_type, ["A", "B", "O", "AB"], id: "signup_user_blood_type", include_blank: "選択してください" %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :address, "住所  （※例:　　〇〇県〇〇市〇〇区〇〇 1-2-3）" %>
         <%= f.text_field :address, id: "signup_user_address", value: f.object.address %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :phone_number, "電話番号  （※ハイフンなし）  " %>
         <%= f.text_field :phone_number, id: "signup_user_phone_number", value: f.object.phone_number %>
       </div>
@@ -114,14 +114,14 @@
   <!-- ログインフォーム（非表示） -->
   <div id="login-form" class="form-container" style="display: none;">
     <%= form_with model: resource, url: session_path(resource_name), local: true, id: "login_form" do |f| %>
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :Eメール　（※＠マークを含め、半角英数字で記入） %>
         <%= f.email_field :email, id: "login_user_email", value: f.object.email, autofocus: true, autocomplete: "email" %>
       </div>
 
   <br>
 
-      <div>
+      <div style=";font-size: 80%;">
         <%= f.label :パスワード　（※6文字以上、半角英数字混合で記入）　 %>
         <%= f.password_field :password, id: "login_user_password", autocomplete: "current-password" %>
         <%= f.label :"※パスワードは 親族を含めた他人に 絶対に教えないでください。", style: "color: red;" %>
