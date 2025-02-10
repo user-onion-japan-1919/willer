@@ -9,13 +9,13 @@
 
 <div class="button-container" style="display: flex; gap: 10px;">
 
-  <%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
+  　　　<%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
                 public_page_path(current_user.uuid, (current_user.id + 150150)),
                 method: :get,
                 class: "btn btn-primary",
                 style: "flex: 1;" %>
 
-  <%= button_to "   ログアウト   ", destroy_user_session_path, 
+  　　　<%= button_to "   ログアウト   ", destroy_user_session_path, 
                 method: :delete, 
                 class: "btn btn-danger",
                 style: "flex: 1;" %>
@@ -29,8 +29,8 @@
 
 <!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ シングルとファミリーの分岐タブ ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
 <div class="tabs">
-  <button id="single-tab" class="active" onclick="showSection('single')"> Single_Note 📖 <br><br>シングルモード</button>
-  <button id="family-tab" onclick="showSection('family')"> Family's_Note 📚 <br><br>ファミリーモード</button>
+  　　　<button id="single-tab" class="active" onclick="showSection('single')"> Single_Note 📖 <br><br>シングルモード</button>
+  　　　<button id="family-tab" onclick="showSection('family')"> Family's_Note 📚 <br><br>ファミリーモード</button>
 </div>
 
 <br>
@@ -42,8 +42,8 @@
 <div id="single-section">
   <div class="sub-tabs">
     　◎1人で作業しよう<br>
-    <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
-    <button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
+    　　　<button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
+    　　<button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
  </div>
  </div>
 
@@ -53,8 +53,8 @@
  <div id="family-section" style="display: none;">
   <div class="sub-tabs">
     　◎家族と共有しよう<br>
-    <button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用 🏠 <br>(閲覧許可)</button>
-    <button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用 🥳 <br>(閲覧検索)</button>
+    　　　<button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用  <br>(閲覧許可)</button>
+    　　<button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用  <br>(閲覧検索)</button>
  </div>
  </div>
 
@@ -149,8 +149,9 @@
  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
   <div id="note-section">
-<%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
-  ◎<%= current_user.first_name %> <%= current_user.last_name %> さんのノートです。
+  <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
+  <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
+  <br>
   <h3>※いつでも内容を変更できます。（入力内容は自動保存されます。）</h3>
   <h3>※空欄も可能です。気負わずにじっくり取り組みましょう。 </h3>
 
@@ -162,6 +163,7 @@
   <br>
   <br>
 <p>以上で終了です。お疲れ様でした。</p>
+<br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   <br>
   <br>
@@ -187,7 +189,7 @@
 
 <!-- ③閲覧許可 -->
   <div id="parent-section" style="display: none;">
-  <h3>🏠③公開ページの閲覧を許可する対象者🏠</h3>
+  <h3>🏠公開ページの閲覧を許可する対象者</h3>
   <br>
   <p>※<%= current_user.first_name %> <%= current_user.last_name %> さんを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
   <p>※本人または許可対象者のみが、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへアクセスできるようになります。</p>
@@ -296,7 +298,7 @@
 
   <div id="child-section">
 
-    <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 🥳 </h3>
+    <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者  </h3>
     <br>
   <p>※<%= current_user.first_name %> <%= current_user.last_name %> さんを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
   <p>※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</p>
