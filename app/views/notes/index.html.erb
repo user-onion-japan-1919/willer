@@ -226,10 +226,12 @@
     <%= f.text_field :last_name_furigana %>
   </div>
 
-  <div>
-    <label>生年月日</label><br>
-    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+<div>
+  <label>生年月日</label><br>
+  <div style="display: flex; flex-direction: column; gap: 5px;">
+    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
   </div>
+</div>
 
   <div>
     <label>血液型</label><br>
@@ -336,7 +338,7 @@
 <div>
   <label>生年月日</label><br>
   <div style="display: flex; flex-direction: column; gap: 5px;">
-    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
   </div>
 </div>
 
@@ -544,6 +546,20 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("note-tab").classList.remove("active");
   document.getElementById("note-section").style.display = "none";
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 
