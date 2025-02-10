@@ -128,7 +128,7 @@
   </div>
 
   <br>
-  <%= f.submit "更新して保存" %>
+  <%= f.submit "　更新して保存する　" %>
   <br>
   <br>
   <br>
@@ -158,6 +158,39 @@
 
   <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（入力内容は自動保存されます。） </h3>
   <h3 style="color: blue; font-size: 70%;">※空欄も可能です。気負わずにじっくり取り組みましょう!! </h3>
+
+
+
+
+
+
+
+
+
+
+
+<div class="button-container" style="display: flex; gap: 10px;">
+
+  　　　<%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
+                public_page_path(current_user.uuid, (current_user.id + 150150)),
+                method: :get,
+                class: "btn btn-primary",
+                style: "flex: 1;" %>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -239,7 +272,7 @@
   </div>
 
   <br>
-  <%= f.submit "閲覧を許可する相手を保存" %>
+  <%= f.submit "　閲覧を許可する相手を保存　" %>
 
   <br><br>
     ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -353,7 +386,7 @@
   </div>
 
   <br>
-  <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
+  <%= f.submit "　閲覧したい対象者を登録する　", class: "btn btn-primary" %>
   <br>
 
   <br>
@@ -393,7 +426,7 @@
 
 <% current_user.view_requests.each do |request| %>
   <p>
-       <%= button_to "公開ページURLを更新・取得する", request_access_view_requests_path, 
+       <%= button_to "　公開ページURLを更新・取得する　", request_access_view_requests_path, 
           method: :post, params: { view_request_id: request.id }, class: "btn btn-primary" %>
   </p>
 
@@ -492,6 +525,9 @@
       // ✅ 「◎家族と共有しよう」から表示し、それ以外を非表示
       showParentSubSection('parent');
     }
+
+    // ✅ タブ状態を保存
+    sessionStorage.setItem("activeTab", type);
   }
 
   function showSubSection(type) {
@@ -508,6 +544,9 @@
     // タブのアクティブ状態を適切に変更
     document.getElementById('info-tab').classList.toggle('active', type === 'info');
     document.getElementById('note-tab').classList.toggle('active', type === 'note');
+
+    // ✅ サブタブの状態を保存
+    sessionStorage.setItem("activeSubTab", type);
   }
 
   function showParentSubSection(type) {
@@ -522,6 +561,9 @@
     // タブのアクティブ状態を適切に変更
     document.getElementById('parent-tab').classList.toggle('active', type === 'parent');
     document.getElementById('child-tab').classList.remove('active');
+
+    // ✅ サブタブの状態を保存
+    sessionStorage.setItem("activeSubTab", type);
   }
 
   function showChildSubSection(type) {
@@ -536,30 +578,42 @@
     // タブのアクティブ状態を適切に変更
     document.getElementById('parent-tab').classList.remove('active');
     document.getElementById('child-tab').classList.toggle('active', type === 'child');
+
+    // ✅ サブタブの状態を保存
+    sessionStorage.setItem("activeSubTab", type);
   }
 
-document.addEventListener("DOMContentLoaded", function () {
-  // ✅ デフォルトで「ユーザー編集」を開く
-  document.getElementById("info-tab").classList.add("active");
-  document.getElementById("info-section").style.display = "block";
+  document.addEventListener("DOMContentLoaded", function () {
+    // ✅ リロード時のみデフォルト（ユーザー編集タブ）を表示
+    if (performance.navigation.type === 1 || performance.getEntriesByType("navigation")[0].type === "reload") {
+      sessionStorage.removeItem("activeTab");  // タブの状態をリセット
+      sessionStorage.removeItem("activeSubTab");
+    }
 
-  document.getElementById("note-tab").classList.remove("active");
-  document.getElementById("note-section").style.display = "none";
-});
+    // ✅ セッションストレージから前回のタブ状態を取得（なければデフォルト「info」）
+    let activeTab = sessionStorage.getItem("activeTab") || "single";
+    let activeSubTab = sessionStorage.getItem("activeSubTab") || "info";
 
+    // ✅ すべてのセクションを非表示にする
+    document.getElementById("single-section").style.display = "none";
+    document.getElementById("family-section").style.display = "none";
+    document.getElementById("info-section").style.display = "none";
+    document.getElementById("note-section").style.display = "none";
+    document.getElementById("parent-section").style.display = "none";
+    document.getElementById("child-section").style.display = "none";
 
+    // ✅ タブの状態を復元
+    showSection(activeTab);
+    showSubSection(activeSubTab);
 
-
-
-
-
-
-
-
-
-
-
-
+    // ✅ フォーム送信時にタブの状態を保存（更新後もタブを維持）
+    document.querySelectorAll("form").forEach(form => {
+      form.addEventListener("submit", function () {
+        sessionStorage.setItem("activeTab", activeTab);
+        sessionStorage.setItem("activeSubTab", activeSubTab);
+      });
+    });
+  });
 
 </script>
 
