@@ -27,9 +27,10 @@
 <br>
 <br>
 
+<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ Single_Note 開始 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
 <div class="tabs">
-  <button id="parent-tab" class="active" onclick="showSection('parent')"> Single_Note 📖 </button>
-  <button id="child-tab" onclick="showSection('child')"> Family's_Note 📚 </button>
+  <button id="parent-tab" class="active" onclick="showSection('parent')"> Single_Note 📖 <br><br>シングルノート</button>
+  <button id="child-tab" onclick="showSection('child')"> Family's_Note 📚 <br><br>ファミリーズノート</button>
 </div>
 
 <br>
@@ -37,13 +38,12 @@
 <br>
 <br>
 
-<!-- single_noteの小タブ -->
-
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 Single_Note の 小タブ 開始 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 <div id="parent-section">
   <div class="sub-tabs">
     　◎1人で作業する<br>
-    <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️ ユーザー編集 ⚙️ </button>
-    <button id="permission-tab" onclick="showSubSection('permission')"> 📓 ノートに記述 📓 </button>
+    <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
+    <button id="permission-tab" onclick="showSubSection('permission')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
 
     <br>
     <br>
@@ -57,12 +57,7 @@
 
 
  <!-- ①①①①①①①①①①①①①①① -->
-
-
-
-
-
-  <!-- ①ユーザー編集 -->
+  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①ユーザー編集 開始 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
   <div id="info-section">
   <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
@@ -134,11 +129,11 @@
 
 
 
-
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①ユーザー編集 終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
  <!-- ①①①①①①①①①①①①①①① -->
           <!-- 共通入力部分 -->
  <!-- ②②②②②②②②②②②②②②② -->
-
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートに記述 開始 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
 
 
@@ -190,9 +185,11 @@
   <br>
   <%= f.submit "閲覧を許可する相手を保存" %>
 
-  <br><br>
+  <br>
+  <br>
     ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    <br><br>
+    <br>
+    <br>
     
     <!-- ③ー閲覧許可対象者リスト -->
   <h3>あなたが許可した人の一覧です。</h3>
@@ -242,8 +239,8 @@
 <div id="child-section" style="display: none;">
   <div class="sub-tabs">
     　◎家族と共有する<br>
-    <button id="search-tab" class="active" onclick="showChildSubSection('search')"> 🏠  "親" として利用 🏠 </button>
-    <button id="result-tab" onclick="showChildSubSection('result')"> 🥳  "子" として利用 🥳 </button>
+    <button id="search-tab" class="active" onclick="showChildSubSection('search')"> 🏠  "親" として利用 🏠 <br>(閲覧許可)</button>
+    <button id="result-tab" onclick="showChildSubSection('result')"> 🥳  "子" として利用 🥳 <br>(閲覧検索)</button>
   </div>
 
 <br>
@@ -256,7 +253,6 @@
  <!-- ②②②②②②②②②②②②②②② -->
           <!-- 共通入力部分 -->
  <!-- ③③③③③③③③③③③③③③③ -->
-
  
 
 <!-- ③閲覧許可 -->
@@ -333,7 +329,8 @@
   <% else %>
     <p>現在、登録されている閲覧許可対象者はありません。</p>
   <% end %>
-  <br><br>
+  <br>
+  <br>
   ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 </div>
 
