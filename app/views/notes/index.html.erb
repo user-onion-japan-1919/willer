@@ -8,20 +8,19 @@
 <br>
 
 <div class="button-container" style="display: flex; gap: 10px;">
-  <!-- 公開ページへのボタン -->
+
   <%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
                 public_page_path(current_user.uuid, (current_user.id + 150150)),
                 method: :get,
                 class: "btn btn-primary",
                 style: "flex: 1;" %>
 
-  <!-- ログアウトボタン -->
   <%= button_to "   ログアウト   ", destroy_user_session_path, 
                 method: :delete, 
                 class: "btn btn-danger",
                 style: "flex: 1;" %>
-</div>
 
+</div>
 
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -38,13 +37,14 @@
 <br>
 <br>
 
-<!-- 親側（記入者）画面 --><!-- single_note -->
+<!-- single_noteの小タブ -->
 
 <div id="parent-section">
   <div class="sub-tabs">
     　◎1人で作業する<br>
     <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️ ユーザー編集 ⚙️ </button>
     <button id="permission-tab" onclick="showSubSection('permission')"> 📓 ノートに記述 📓 </button>
+
     <br>
     <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -52,7 +52,18 @@
 <br>
   </div>
 
-  <!-- ①ユーザー設定 -->
+
+
+
+
+ <!-- ①①①①①①①①①①①①①①① -->
+
+
+
+
+
+  <!-- ①ユーザー編集 -->
+
   <div id="info-section">
   <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
   <br>
@@ -64,7 +75,6 @@
   <h3>※情報が少しでも異なると、親と子の紐付けが失敗します。</h3>
   <br>
 
-<!-- ①フォーム -->
    <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
   <div>
     <%= f.label :email, "メールアドレス" %>
@@ -113,11 +123,25 @@
 
   <br>
   <%= f.submit "登録情報の変更を保存" %>
-  <br><br>
+
+  <br>
+  <br>
   ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-  <br><br>
+  <br>
+  <br>
   </div>
 <% end %>
+
+
+
+
+ <!-- ①①①①①①①①①①①①①①① -->
+          <!-- 共通入力部分 -->
+ <!-- ②②②②②②②②②②②②②②② -->
+
+
+
+
 
 
   <!-- ③閲覧許可 -->
@@ -236,14 +260,6 @@
 
 
   <div id="search-section">
-    <h3>🥳④あなたが閲覧したい対象者🥳</h3>
-    <br>
-  <p>※あなたを閲覧者（子）、申請対象を公開者（親）として紐付けします。</p>
-  <p>※検索内容と一致するユーザーが存在すると、、公開ページURLを取得できます。(アクセス許可は別です)</p>
-  <br>
-    <h3>※漢字は新字体での統一を推奨します。</h3>
-  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
-  <br>
 
   <!-- ④フォーム -->
   <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
@@ -526,7 +542,7 @@
 
   <!-- ④④④④④④④④④④④④④④④ -->
           <!-- 共通入力部分 -->
-  <!-- タブタブタブタブタブタブタブタブ -->
+  <!-- タブタブタブタブタブタブタブタブ ---------------------------------------------->
 
 
 
@@ -592,9 +608,9 @@
 
 
 
- <!-- タブタブタブタブタブタブタブタブ -->
+ <!-- タブタブタブタブタブタブタブタブ --------------------------------------------->
           <!-- 共通入力部分 -->
- <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS -->
+ <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS --------------------------------------------->
 
 
 
@@ -628,6 +644,6 @@
 
 
 
- <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS -->
+ <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS ------------------------------------------->
           <!-- 共通入力部分 -->
- <!-- ここが最後ですここが最後ですここが最後です -->
+ <!-- ここが最後ですここが最後ですここが最後です ----------------------------------->
