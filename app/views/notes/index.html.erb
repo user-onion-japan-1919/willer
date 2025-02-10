@@ -3,7 +3,7 @@
 <br>
 
 <h1>
-  <%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　ーーーーーーーーーーーーーーーーーーーーーーーーーー
 </h1>
 
 <br>
@@ -16,7 +16,7 @@
                 class: "btn btn-primary",
                 style: "flex: 1;" %>
 
-  　　　<%= button_to "   ログアウト   ", destroy_user_session_path, 
+  　　　　　　　<%= button_to "   ログアウト   ", destroy_user_session_path, 
                 method: :delete, 
                 class: "btn btn-danger",
                 style: "flex: 1;" %>
@@ -82,7 +82,7 @@
 <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
   <div>
     <label>Eメール</label><br>
-    <%= f.email_field :email, value: current_user.email, readonly: true %>
+    <%= f.text_field :email, value: current_user.email, readonly: true %>
   </div>
 
   <div>
@@ -105,10 +105,12 @@
     <%= f.text_field :last_name_furigana, value: current_user.last_name_furigana %>
   </div>
 
-  <div>
-    <label>生年月日</label><br>
+<div>
+  <label>生年月日</label><br>
+  <div style="display: flex; flex-direction: column; gap: 5px;">
     <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
   </div>
+</div>
 
   <div>
     <label>血液型</label><br>
@@ -331,10 +333,12 @@
     <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
   </div>
 
-  <div>
-    <label>生年月日</label><br>
-    <%= f.date_select :birthday, prefix: "view_request", start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+<div>
+  <label>生年月日</label><br>
+  <div style="display: flex; flex-direction: column; gap: 5px;">
+    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
   </div>
+</div>
 
   <div>
     <label>血液型</label><br>
@@ -579,6 +583,33 @@ document.addEventListener("DOMContentLoaded", function () {
   .tabs button:hover, .sub-tabs button:hover {
     background-color: #556B2F; /* ✅ ダークオリーブグリーン */
   }
+
+
+/* ✅ すべてのテキストフィールドを画面幅の50%に設定 */
+input[type="text"], select {
+  width: 350px;
+  min-width: 250px;  /* 最小幅を設定し、狭くなりすぎないように */
+  max-width: 600px;  /* 最大幅を600pxにしてデザイン崩れを防ぐ */
+  padding: 5px;  /* 余白を確保 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ✅ テキストエリアも同様に拡張 */
+textarea {
+  width: 350PX;
+  min-width: 250px;
+  max-width: 600px;
+  height: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
+
+
 </style>
 
 

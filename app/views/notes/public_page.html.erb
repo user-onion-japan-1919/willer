@@ -50,11 +50,17 @@
 
 <p>　</p>
 
+
 <h2 style="display: inline;">　　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
-<input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly style="margin-left: 10px; width: 300px;">
-<button onclick="copyPublicPageUrl()" style="margin-left: 10px;">このページのURLをコピー</button>
+<div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+  <input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly 
+    style="flex: 1; max-width: 500px;">
+  <button onclick="copyPublicPageUrl()">このページのURLをコピー</button>
+</div>
+
 
 <p>　</p>
+
 
 <p style="text-align: left;">
   <%= button_to "あなたの個人ページに戻る", notes_path, method: :get, class: "btn btn-secondary", form: { style: "display: inline; margin-left: 50px;" } %>
@@ -108,7 +114,8 @@
     </tr>
     <% sorted_view_accesses.each do |va| %>
       <tr>
-        <td><%= va[:viewer].first_name %> <%= va[:viewer].last_name %></td>
+        <td><%= va[:viewer].first_name %>　(<%= va[:viewer].first_name_furigana %>) 
+          　<%= va[:viewer].last_name %>　(<%= va[:viewer].last_name_furigana %>)</td>
         <td><%= va[:relationship] %></td>
         <td><%= va[:last_accessed_at]&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
         <td><%= va[:access_count] %> 回</td>
@@ -140,10 +147,94 @@
 ※また、直ちに[パスワード変更手続き]を行なってください。
 </p>
 
+
+
+<p>　</p>
 <p>　</p>
 <p>　</p>
 
 <hr>
+
+
+<p>　</p>
+<p>　</p>
+
+
+
+<h3>　　<%= @user.first_name %> <%= @user.last_name %> さんが許可した人の一覧</h3>
+
+<% if @user.view_permissions.any? %>
+  <table border="1">
+    <tr>
+      <th>許可された閲覧者</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+    </tr>
+    <% @user.view_permissions.each do |vp| %>
+      <tr>
+        <td>
+          <%= vp.first_name %> (<%= vp.first_name_furigana %>) 
+          <%= vp.last_name %> (<%= vp.last_name_furigana %>)
+        </td>
+        <td><%= vp.birthday.strftime('%Y-%m-%d') if vp.birthday %></td>
+        <td><%= vp.blood_type %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>現在、許可されている閲覧者はいません。</p>
+<% end %>
+
+
+<p>　</p>
+
+
+
+<h3>　　<%= @user.first_name %> <%= @user.last_name %> さんが閲覧したいと検索をかけた人の一覧</h3>
+
+<% if @user.view_requests.any? %>
+  <table border="1">
+    <tr>
+      <th>閲覧したい対象者</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>公開ページURL</th>
+    </tr>
+    <% @user.view_requests.each do |vr| %>
+      <tr>
+        <td>
+          <%= vr.first_name %> (<%= vr.first_name_furigana %>) 
+          <%= vr.last_name %> (<%= vr.last_name_furigana %>)
+        </td>
+        <td><%= vr.birthday.strftime('%Y-%m-%d') if vr.birthday %></td>
+        <td><%= vr.blood_type %></td>
+        <td>
+          <% access = ViewAccess.find_by(viewer_id: @user.id, owner_id: vr.user_id) %>
+          <% if access&.public_page_url.present? %>
+            <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
+          <% else %>
+            未取得
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>現在、閲覧したい対象者の登録はありません。</p>
+<% end %>
+
+
+
+<p>　</p>
+<p>　</p>
+<p>　</p>
+
+<hr>
+
+
+<p>　</p>
+<p>　</p>
+
 
 <p style="font-weight: bold; color: blue; text-decoration: underline;">
   ↓↓↓以下は閲覧専用であり、編集やリンク先への移動は一切できません。↓↓↓
