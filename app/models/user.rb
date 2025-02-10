@@ -14,8 +14,8 @@ class User < ApplicationRecord
        # メールアドレスの一意性 & フォーマットチェック
        validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/ }
      
-       # パスワードのバリデーション（英数字混合、6文字以上）
-       validates :password, length: { minimum: 6 },
+       # パスワードのバリデーション（英数字混合、9文字以上）
+       validates :password, length: { minimum: 9 },
                             format: { with: /\A(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+\z/ }, on: :create
        validates :password_confirmation, presence: true, on: :create
      
