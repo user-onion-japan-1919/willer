@@ -27,10 +27,10 @@
 <br>
 <br>
 
-<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ Single_Note 開始 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
+<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ シングルとファミリーの分岐タブ ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
 <div class="tabs">
-  <button id="parent-tab" class="active" onclick="showSection('parent')"> Single_Note 📖 <br><br>シングルノート</button>
-  <button id="child-tab" onclick="showSection('child')"> Family's_Note 📚 <br><br>ファミリーズノート</button>
+  <button id="single-tab" class="active" onclick="showSection('single')"> Single_Note 📖 <br><br>シングルモード</button>
+  <button id="family-tab" onclick="showSection('family')"> Family's_Note 📚 <br><br>ファミリーモード</button>
 </div>
 
 <br>
@@ -38,27 +38,34 @@
 <br>
 <br>
 
-<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 Single_Note の 小タブ 開始 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
-<div id="parent-section">
+<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ シングルの小タブ（infoとnoteを定義） ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
+<div id="single-section">
   <div class="sub-tabs">
-    　◎1人で作業する<br>
+    　◎1人で作業しよう<br>
     <button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
-    <button id="permission-tab" onclick="showSubSection('permission')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
+    <button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
+ </div>
+ </div>
 
-    <br>
-    <br>
+
+
+<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ ファミリーの小タブ（parentとchildを定義） ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
+ <div id="family-section" style="display: none;">
+  <div class="sub-tabs">
+    　◎家族と共有しよう<br>
+    <button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用 🏠 <br>(閲覧許可)</button>
+    <button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用 🥳 <br>(閲覧検索)</button>
+ </div>
+ </div>
+
+
+
+
+  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①infoの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+<br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
 <br>
-  </div>
-
-
-
-
-
- <!-- ①①①①①①①①①①①①①①① -->
-  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①ユーザー編集 開始 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
-
   <div id="info-section">
   <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
   <br>
@@ -69,6 +76,7 @@
     <h3>※漢字は新字体での統一を推奨します。</h3>
   <h3>※情報が少しでも異なると、親と子の紐付けが失敗します。</h3>
   <br>
+  
 
 <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
   <div>
@@ -118,155 +126,76 @@
 
   <br>
   <%= f.submit "更新して保存" %>
-
   <br>
   <br>
-  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   <br>
-  <br>
-</div>
-<% end %>
-
-
-
-<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①ユーザー編集 終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
- <!-- ①①①①①①①①①①①①①①① -->
-          <!-- 共通入力部分 -->
- <!-- ②②②②②②②②②②②②②②② -->
-<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートに記述 開始 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
-
-
-
-
-
-  <!-- ③閲覧許可 -->
-  <div id="permission-section" style="display: none;">
-  <h3>🏠③公開ページの閲覧を許可する対象者🏠</h3>
-  <br>
-  <p>※あなたを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
-  <p>※本人または許可対象者のみが、あなたの公開ページへアクセスできるようになります。</p>
-  <br>
-    <h3>※漢字は新字体での統一を推奨します。</h3>
-  <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
-  <br>
-
-  <!-- ③フォーム -->
-<%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
-  <div>
-    <label>苗字（漢字）</label><br>
-    <%= f.text_field :first_name %>
-  </div>
-
-  <div>
-    <label>苗字（ふりがな）</label><br>
-    <%= f.text_field :first_name_furigana %>
-  </div>
-
-  <div>
-    <label>名前（漢字）</label><br>
-    <%= f.text_field :last_name %>
-  </div>
-
-  <div>
-    <label>名前（ふりがな）</label><br>
-    <%= f.text_field :last_name_furigana %>
-  </div>
-
-  <div>
-    <label>生年月日</label><br>
-    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
-  </div>
-
-  <div>
-    <label>血液型</label><br>
-    <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
-  </div>
-
-  <br>
-  <%= f.submit "閲覧を許可する相手を保存" %>
-
-  <br>
-  <br>
-    ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    <br>
-    <br>
-    
-    <!-- ③ー閲覧許可対象者リスト -->
-  <h3>あなたが許可した人の一覧です。</h3>
-  <% if current_user.view_permissions.any? %>
-    <table border="1">
-      <tr>
-        <th>苗字</th>
-        <th>名前</th>
-        <th>生年月日</th>
-        <th>血液型</th>
-        <th>削除</th>
-      </tr>
-      <% current_user.view_permissions.each do |vp| %>
-        <tr>
-          <td><%= vp.first_name %> (<%= vp.first_name_furigana %>)</td>
-          <td><%= vp.last_name %> (<%= vp.last_name_furigana %>)</td>
-          <td><%= vp.birthday.strftime('%Y-%m-%d') %></td>
-          <td><%= vp.blood_type %></td>
-          <td>削除</td>
-        </tr>
-      <% end %>
-    </table>
-  <% else %>
-    <p>現在、登録されている閲覧許可対象者はありません。</p>
-  <% end %>
-  <br><br>
-  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-</div>
-
-      </div>
-    <% end %>
-  </div>
-  
-
-
-  </div>
-    </div>
-    </div>
-</div>
-
-
-
-
-
-
-<!-- ファミリーズノート -->
-<div id="child-section" style="display: none;">
-  <div class="sub-tabs">
-    　◎家族と共有する<br>
-    <button id="search-tab" class="active" onclick="showChildSubSection('search')"> 🏠  "親" として利用 🏠 <br>(閲覧許可)</button>
-    <button id="result-tab" onclick="showChildSubSection('result')"> 🥳  "子" として利用 🥳 <br>(閲覧検索)</button>
-  </div>
-
-<br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-<br>
-<br>
+  <br>
+  <br>
+
+<% end %>  <!--form with-->
+     </div>  <!--info-section閉じタグ  -->
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①infoの終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
 
 
- <!-- ②②②②②②②②②②②②②②② -->
-          <!-- 共通入力部分 -->
- <!-- ③③③③③③③③③③③③③③③ -->
+
+
+
+
+
+
+ <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+  <div id="note-section">
+<%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
+  ◎<%= current_user.first_name %> <%= current_user.last_name %> さんのノートです。
+  <h3>※いつでも内容を変更できます。（入力内容は自動保存されます。）</h3>
+  <h3>※空欄も可能です。気負わずにじっくり取り組みましょう。 </h3>
+
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+<p>以上で終了です。お疲れ様でした。</p>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <br>
+  <br>
+
+
+
+<% end %>  <!--form with-->
+  </div>   <!--noteの閉じタグ-->
+
+  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+
+
  
 
+
+
+
+
+
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ③ parentの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
 <!-- ③閲覧許可 -->
-  <div id="permission-section" style="display: none;">
+  <div id="parent-section" style="display: none;">
   <h3>🏠③公開ページの閲覧を許可する対象者🏠</h3>
   <br>
-  <p>※あなたを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
-  <p>※本人または許可対象者のみが、あなたの公開ページへアクセスできるようになります。</p>
+  <p>※<%= current_user.first_name %> <%= current_user.last_name %> さんを公開者（親）、許可対象を閲覧者（子）として紐付けします。</p>
+  <p>※本人または許可対象者のみが、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへアクセスできるようになります。</p>
   <br>
     <h3>※漢字は新字体での統一を推奨します。</h3>
   <h3>※情報が少しでも異なると、アクセス許可を付与できません。</h3>
   <br>
 
-  <!-- ③フォーム -->
 <%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
   <div>
     <label>苗字（漢字）</label><br>
@@ -306,7 +235,7 @@
     <br><br>
     
     <!-- ③ー閲覧許可対象者リスト -->
-  <h3>あなたが許可した人の一覧です。</h3>
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが許可した人の一覧です。</h3>
   <% if current_user.view_permissions.any? %>
     <table border="1">
       <tr>
@@ -328,60 +257,48 @@
     </table>
   <% else %>
     <p>現在、登録されている閲覧許可対象者はありません。</p>
-  <% end %>
-  <br>
-  <br>
-  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+
 </div>
-
-      </div>
-    <% end %>
-  </div>
-  
-
-
-  </div>
-    </div>
-    </div>
 </div>
-
----<br>
-
-  <div id="search-section">
-
-  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
-
----<br>
-
-
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-<br>
-<br>
 <% end %>
-<br>
+
+    <br>
+    ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    <br><br>
+
+</div>
+    </div>
+    </div>
+</div>
+
+<% end %>
+
 </div>
 
 
 
-
-
-  <!-- ③③③③③③③③③③③③③③③ -->
-          <!-- 共通入力部分 -->
-  <!-- ④④④④④④④④④④④④④④④ -->
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ③ parentの終了タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
 
 
 
 
-  <div id="result-section" style="display: none;">
+
+
+
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ④ childの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+  <div id="child-section" style="display: none;">
 
  <!-- ④A検索AA検索AA検索AA検索AA検索AA検索AA検索AA検索A -->
 
-  <div id="search-section">
+  <div id="child-section">
 
     <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 🥳 </h3>
     <br>
-  <p>※あなたを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
+  <p>※<%= current_user.first_name %> <%= current_user.last_name %> さんを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
   <p>※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</p>
   <p>※取得した公開ページURLにアクセスできるかは、都度チェックされます。</p>
   <br>
@@ -505,7 +422,6 @@
 <% else %>
   <p>閲覧許可された公開ページはありません。</p>
 <% end %>
-    <% end %>
 
   </div>
 
@@ -513,16 +429,22 @@
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
 <br>
-<br>
   </div>
-</div>
+
+
+<% end %>  <!--form with-->
+  </div>   <!--noteの閉じタグ-->
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ④childの終了タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
 
 
 
 
-  <!-- ④④④④④④④④④④④④④④④ -->
-          <!-- 共通入力部分 -->
+
+
+
+
   <!-- タブタブタブタブタブタブタブタブ ---------------------------------------------->
 
 
@@ -531,66 +453,101 @@
 
 <script>
   function showSection(type) {
-    if (type === 'parent') {
-      // シングルのタブを表示
-      document.getElementById('parent-section').style.display = 'block';
+    if (type === 'single') {
+      // シングルモードを表示
+      document.getElementById('single-section').style.display = 'block';
+      document.getElementById('family-section').style.display = 'none';
+
+      // ファミリーモードのコンテンツを完全非表示
+      document.getElementById('parent-section').style.display = 'none';
       document.getElementById('child-section').style.display = 'none';
 
       // タブのアクティブ状態を変更
-      document.getElementById('parent-tab').classList.add('active');
-      document.getElementById('child-tab').classList.remove('active');
+      document.getElementById('single-tab').classList.add('active');
+      document.getElementById('family-tab').classList.remove('active');
 
-      // ✅ 親側の最初のタブ（情報変更タブ）をデフォルト表示
+      // ✅ 「◎1人で作業しよう」から表示し、それ以外を非表示
       showSubSection('info');
-
     } else {
-      // 子側のタブを表示
-      document.getElementById('parent-section').style.display = 'none';
-      document.getElementById('child-section').style.display = 'block';
+      // ファミリーモードを表示
+      document.getElementById('single-section').style.display = 'none';
+      document.getElementById('family-section').style.display = 'block';
+
+      // シングルモードのコンテンツを完全非表示
+      document.getElementById('info-section').style.display = 'none';
+      document.getElementById('note-section').style.display = 'none';
 
       // タブのアクティブ状態を変更
-      document.getElementById('parent-tab').classList.remove('active');
-      document.getElementById('child-tab').classList.add('active');
+      document.getElementById('single-tab').classList.remove('active');
+      document.getElementById('family-tab').classList.add('active');
 
-      // ✅ 親側のタブをすべて非表示
-      document.getElementById('info-section').style.display = 'none';
-      document.getElementById('permission-section').style.display = 'none';
-      document.getElementById('notes-section').style.display = 'none';
-
-      // ✅ 子側の最初のタブ（検索タブ）をデフォルト表示
-      showChildSubSection('search');
+      // ✅ 「◎家族と共有しよう」から表示し、それ以外を非表示
+      showParentSubSection('parent');
     }
   }
 
   function showSubSection(type) {
-    // 親側のタブを切り替え
-    document.getElementById('info-section').style.display = type === 'info' ? 'block' : 'none';
-    document.getElementById('permission-section').style.display = type === 'permission' ? 'block' : 'none';
-    document.getElementById('notes-section').style.display = type === 'notes' ? 'block' : 'none';
+    // すべて非表示にしてから、選択したものだけ表示
+    document.getElementById('info-section').style.display = 'none';
+    document.getElementById('note-section').style.display = 'none';
+
+    if (type === 'info') {
+      document.getElementById('info-section').style.display = 'block';
+    } else if (type === 'note') {
+      document.getElementById('note-section').style.display = 'block';
+    }
 
     // タブのアクティブ状態を適切に変更
     document.getElementById('info-tab').classList.toggle('active', type === 'info');
-    document.getElementById('permission-tab').classList.toggle('active', type === 'permission');
-    document.getElementById('notes-tab').classList.toggle('active', type === 'notes');
+    document.getElementById('note-tab').classList.toggle('active', type === 'note');
+  }
+
+  function showParentSubSection(type) {
+    // すべて非表示にしてから、選択したものだけ表示
+    document.getElementById('parent-section').style.display = 'none';
+    document.getElementById('child-section').style.display = 'none';
+
+    if (type === 'parent') {
+      document.getElementById('parent-section').style.display = 'block';
+    }
+
+    // タブのアクティブ状態を適切に変更
+    document.getElementById('parent-tab').classList.toggle('active', type === 'parent');
+    document.getElementById('child-tab').classList.remove('active');
   }
 
   function showChildSubSection(type) {
-    // 子側のタブを切り替え
-    document.getElementById('search-section').style.display = type === 'search' ? 'block' : 'none';
-    document.getElementById('result-section').style.display = type === 'result' ? 'block' : 'none';
+    // すべて非表示にしてから、選択したものだけ表示
+    document.getElementById('parent-section').style.display = 'none';
+    document.getElementById('child-section').style.display = 'none';
+
+    if (type === 'child') {
+      document.getElementById('child-section').style.display = 'block';
+    }
 
     // タブのアクティブ状態を適切に変更
-    document.getElementById('search-tab').classList.toggle('active', type === 'search');
-    document.getElementById('result-tab').classList.toggle('active', type === 'result');
+    document.getElementById('parent-tab').classList.remove('active');
+    document.getElementById('child-tab').classList.toggle('active', type === 'child');
   }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // ✅ デフォルトで「ユーザー編集」を開く
+  document.getElementById("info-tab").classList.add("active");
+  document.getElementById("info-section").style.display = "block";
+
+  document.getElementById("note-tab").classList.remove("active");
+  document.getElementById("note-section").style.display = "none";
+});
+
 </script>
 
 
-
-
-
  <!-- タブタブタブタブタブタブタブタブ --------------------------------------------->
-          <!-- 共通入力部分 -->
+
+
+
+
+
  <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS --------------------------------------------->
 
 
@@ -626,5 +583,9 @@
 
 
  <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS ------------------------------------------->
-          <!-- 共通入力部分 -->
+
+
+
+
+
  <!-- ここが最後ですここが最後ですここが最後です ----------------------------------->
