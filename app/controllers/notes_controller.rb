@@ -3,9 +3,34 @@ class NotesController < ApplicationController
 
 
   def index
-    @notes = current_user.notes # ユーザーに紐づくノートを取得
-    @note = current_user.notes.first # 1つ目のノートを取得（存在しない場合は `nil`）
+    @note = current_user.note # ユーザーに紐づくノートを取得
+    @note = current_user.note.first # 1つ目のノートを取得（存在しない場合は `nil`）
   end
+
+  def show
+    @note = current_user.note || current_user.create_note
+  end
+
+
+
+  def update
+    @note = current_user.note
+
+    if @note.update(note_params)
+      respond_to do |format|
+        format.turbo_stream { flash.now[:notice] = "ノートが更新されました。" }
+        format.html { redirect_to note_path, notice: "ノートが更新されました。" }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { flash.now[:alert] = "ノートの更新に失敗しました。" }
+        format.html { render :show, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+
 
   def public_page
     @user = User.find_by(uuid: params[:uuid]) # UUID から公開者(Aさん)を取得
@@ -46,4 +71,8 @@ class NotesController < ApplicationController
       flash[:alert] = '閲覧履歴の更新に失敗しました。'
     end
   end
+end
+
+def note_params
+  params.require(:note).permit(:issue_1, :tytle_1, :content_1, :issue_2, :tytle_2, :content_2)
 end

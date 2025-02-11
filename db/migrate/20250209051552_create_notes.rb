@@ -26,7 +26,7 @@ class CreateNotes < ActiveRecord::Migration[7.1]
       t.string :title_3
       t.string :title_4
       t.string :title_5
-      
+
       t.text :content_1
       t.text :content_2
       t.text :content_3
@@ -36,5 +36,6 @@ class CreateNotes < ActiveRecord::Migration[7.1]
       t.json :metadata, null: true # ✅ default: {} を削除
       t.timestamps
     end
+
   end
 end
