@@ -48,8 +48,6 @@
   <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
 </p>　　
 
-<p>　</p>
-
 
 <h2 style="display: inline;">　　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
 <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
@@ -209,7 +207,9 @@
         <td>
           <% access = ViewAccess.find_by(viewer_id: @user.id, owner_id: vr.user_id) %>
           <% if access&.public_page_url.present? %>
-            <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
+            <a href="<%= access.public_page_url %>" target="_blank" rel="noopener noreferrer">
+              <%= access.public_page_url %>
+            </a>
           <% else %>
             未取得
           <% end %>

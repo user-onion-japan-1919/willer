@@ -13,8 +13,31 @@
 ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
   create_table "notes", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "title"
-    t.text "content"
+    t.string "type_1"
+    t.string "type_2"
+    t.string "type_3"
+    t.string "type_4"
+    t.string "type_5"
+    t.string "issue_1"
+    t.string "issue_2"
+    t.string "issue_3"
+    t.string "issue_4"
+    t.string "issue_5"
+    t.string "requirement_1"
+    t.string "requirement_2"
+    t.string "requirement_3"
+    t.string "requirement_4"
+    t.string "requirement_5"
+    t.string "title_1"
+    t.string "title_2"
+    t.string "title_3"
+    t.string "title_4"
+    t.string "title_5"
+    t.text "content_1"
+    t.text "content_2"
+    t.text "content_3"
+    t.text "content_4"
+    t.text "content_5"
     t.json "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

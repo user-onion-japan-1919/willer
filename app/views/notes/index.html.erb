@@ -156,8 +156,12 @@
   <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
   <br>
 
-  <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（入力内容は自動保存されます。） </h3>
-  <h3 style="color: blue; font-size: 70%;">※空欄も可能です。気負わずにじっくり取り組みましょう!! </h3>
+  <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（空欄も可能です。入力内容は自動保存されます。） </h3>
+  <h3 style="color: blue; font-size: 70%;">※正式書類ではないので、気負わずじっくり取り組みましょう!! </h3>
+  <h3 style="color: blue; font-size: 70%;">※まずは言語化してみましょう!!　やりたいこと、遺したいことがきっと見つかります!! </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※本人と許可したユーザーしか閲覧できない仕様となってはおりますが、<br>　暗号化はされないため、パスワードや金融情報を特定できる入力は極力避けてください。 </h3>
+  <br>
 
 
 
@@ -169,16 +173,7 @@
 
 
 
-<div class="button-container" style="display: flex; gap: 10px;">
 
-  　　　<%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
-                public_page_path(current_user.uuid, (current_user.id + 150150)),
-                method: :get,
-                class: "btn btn-primary",
-                style: "flex: 1;" %>
-
-
-</div>
 
 
 
@@ -200,7 +195,8 @@
   <br>
   <br>
   <br>
-<p> 以上で記入は終わりです。お疲れ様でした!!</p>
+<h3 style="color: blue; font-size: 70%;"> 入力は以上で記入は終わりです。お疲れ様でした!!いい文章が書けましたね!!</h3>
+<h3 style="color: blue; font-size: 70%;"> このまま、ファミリーモードで共有してみませんか??</h3>
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   <br>
@@ -279,7 +275,7 @@
     <br><br>
     
     <!-- ③ー閲覧許可対象者リスト -->
-  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが許可した人の一覧です。</h3>
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが許可した人の一覧</h3>
   <% if current_user.view_permissions.any? %>
     <table border="1">
       <tr>
@@ -380,8 +376,10 @@
     <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください", name: "view_request[blood_type]" %>
   </div>
 
+<br>
+
   <div>
-    <label>検索対象から見た あなた の続柄</label><br>
+    <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
     <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
   </div>
 
@@ -443,23 +441,40 @@
   <h3><%= current_user.first_name %> <%= current_user.last_name %> さんの取得したURLリスト</h3>
   
 <% if current_user.view_accesses_as_viewer.any? %>
+  <% sorted_view_accesses = current_user.view_accesses_as_viewer.map do |access|
+    owner = access.owner
+    view_request = ViewRequest.find_by(user_id: current_user.id, first_name: owner.first_name, last_name: owner.last_name, birthday: owner.birthday)
+    relationship = view_request&.relationship.to_s.presence || "本人"
+    {
+      owner: owner,
+      relationship: relationship,
+      public_page_url: access.public_page_url
+    }
+  end %>
+
+  <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
+
+  <% sorted_view_accesses.sort_by! { |entry| relationship_order.index(entry[:relationship]) || relationship_order.length } %>
+
   <table border="1">
     <tr>
       <th>公開者</th>
+      <th>続柄</th>
       <th>公開ページURL</th>
     </tr>
-    <% current_user.view_accesses_as_viewer.each do |access| %>
+    <% sorted_view_accesses.each do |entry| %>
       <tr>
-        <td><%= access.owner.first_name %> <%= access.owner.last_name %></td>
+        <td><%= entry[:owner].first_name %> <%= entry[:owner].last_name %></td>
+        <td><%= entry[:relationship] %></td>
         <td>
-          <% if access.public_page_url.present? %>
-            <%= link_to "公開ページを見る", access.public_page_url, target: "_blank" %>
+          <% if entry[:public_page_url].present? %>
+            <%= link_to entry[:public_page_url], entry[:public_page_url], target: "_blank", rel: "noopener noreferrer" %>
           <% else %>
             URL未取得
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
   </table>
 <% else %>
   <p>閲覧許可された公開ページはありません。</p>
@@ -675,6 +690,25 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+/* 📌 表のスタイルを統一 */
+  table {
+    width: 80%; /* ✅ 表を横幅いっぱいに */
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
 
 
 
