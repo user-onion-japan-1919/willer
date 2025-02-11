@@ -178,26 +178,52 @@
 
 
 
+<%= form_with model: (@note || Note.new), url: @note ? note_path(@note) : notes_path, method: @note ? :patch : :post, local: true do |f| %>
+  
+  <br>
 
-
-
-
-
-
-
-
-
-
-
+  <!-- 表1 -->
+  <h3>表1</h3>
+  <table border="1">
+    <tr>
+      <th>要件</th>
+      <th>タイトル</th>
+      <th>内容</th>
+    </tr>
+    <tr>
+      <td><%= f.text_field :issue_1, size: 15 %></td>
+      <td><%= f.text_field :tytle_1, size: 20 %></td>
+      <td><%= f.text_area :content_1, rows: 3, cols: 30 %></td>
+    </tr>
+  </table>
 
   <br>
+
+  <!-- 表2 -->
+  <h3>表2</h3>
+  <table border="1">
+    <tr>
+      <th>要件</th>
+      <th>タイトル</th>
+      <th>内容</th>
+    </tr>
+    <tr>
+      <td><%= f.text_field :issue_2, size: 15 %></td>
+      <td><%= f.text_field :tytle_2, size: 20 %></td>
+      <td><%= f.text_area :content_2, rows: 3, cols: 30 %></td>
+    </tr>
+  </table>
+
   <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <%= f.submit "保存する", class: "btn btn-primary" %>
+<% end %>
+
+
+
+
+
+
+
   <br>
   <br>
   <br>

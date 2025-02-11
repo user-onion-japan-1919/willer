@@ -1,6 +1,12 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
 
+
+  def index
+    @notes = current_user.notes # ユーザーに紐づくノートを取得
+    @note = current_user.notes.first # 1つ目のノートを取得（存在しない場合は `nil`）
+  end
+
   def public_page
     @user = User.find_by(uuid: params[:uuid]) # UUID から公開者(Aさん)を取得
     @viewer = current_user # 閲覧者(Bさん or Aさん)
@@ -12,7 +18,8 @@ class NotesController < ApplicationController
     end
 
     # **公開者のノート情報を取得（閲覧のみ）**
-    @notes = @user.notes || [] # `nil` を防ぐために空配列を代入
+    @notes = Note.where(user_id: @user.id) # `nil` を防ぐために適切に取得
+
 
     # **閲覧履歴の取得**
     @view_accesses = ViewAccess.includes(:owner, :viewer)
