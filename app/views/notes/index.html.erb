@@ -156,8 +156,10 @@
   <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
   <br>
 
-  <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（空欄も可能です。入力内容は自動保存されます。） </h3>
-  <h3 style="color: blue; font-size: 70%;">※正式書類ではないので、気負わずじっくり取り組みましょう!! </h3>
+  <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。　　空欄での保存も可能です。　 </h3>
+  <h3 style="color: blue; font-size: 70%;">※入力内容は自動保存されます。 </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※正式書類ではないので、気負わず、じっくり、やれるところから取り組みましょう!! </h3>
   <h3 style="color: blue; font-size: 70%;">※まずは言語化してみましょう!!　やりたいこと、遺したいことがきっと見つかります!! </h3>
   <br>
   <h3 style="color: blue; font-size: 70%;">※本人と許可したユーザーしか閲覧できない仕様となってはおりますが、<br>　暗号化はされないため、パスワードや金融情報を特定できる入力は極力避けてください。 </h3>
@@ -188,15 +190,20 @@
 
 
 
-
   <br>
   <br>
   <br>
   <br>
   <br>
   <br>
-<h3 style="color: blue; font-size: 70%;"> 入力は以上で記入は終わりです。お疲れ様でした!!いい文章が書けましたね!!</h3>
-<h3 style="color: blue; font-size: 70%;"> このまま、ファミリーモードで共有してみませんか??</h3>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+<h3 style="color: blue; font-size: 70%;"> 入力は以上で記入は終わりです。お疲れ様でした!!　　いいノートに仕上がりましたね!!</h3>
+<h3 style="color: blue; font-size: 70%;"> →このまま、ファミリーモードで共有してみませんか??</h3>
 <br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   <br>
@@ -600,8 +607,8 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     // ✅ 初回ロード時にタブの状態をリセット
-    sessionStorage.removeItem("activeTab");
-    sessionStorage.removeItem("activeSubTab");
+    sessionStorage.setItem("activeTab", "single");
+    sessionStorage.setItem("activeSubTab", "info");
 
     // ✅ すべてのセクションを非表示にする
     document.getElementById("single-section").style.display = "block"; // シングルモードをデフォルト表示
@@ -619,6 +626,15 @@
     document.getElementById("info-tab").classList.add("active");
     document.getElementById("note-tab").classList.remove("active");
   });
+
+  function resetToDefaultTab() {
+    sessionStorage.setItem("activeTab", "single");
+    sessionStorage.setItem("activeSubTab", "info");
+
+    // ✅ 画面の表示をリセット
+    showSection("single");
+    showSubSection("info");
+  }
 </script>
 
 
