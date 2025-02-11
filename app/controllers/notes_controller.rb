@@ -1,36 +1,26 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
 
-
   def index
     @notes = current_user.notes
     @note = @notes.first || Note.new
   end
 
-  def show
-    @note = current_user.note || current_user.create_note
-  end
-
-
-
   def update
-    @note = current_user.note
+    @note = current_user.notes.find(params[:id])
 
     if @note.update(note_params)
       respond_to do |format|
         format.turbo_stream { flash.now[:notice] = "ノートが更新されました。" }
-        format.html { redirect_to note_path, notice: "ノートが更新されました。" }
+        format.html { redirect_to notes_path, notice: "ノートが更新されました。" }
       end
     else
       respond_to do |format|
         format.turbo_stream { flash.now[:alert] = "ノートの更新に失敗しました。" }
-        format.html { render :show, status: :unprocessable_entity }
+        format.html { render :index, status: :unprocessable_entity }
       end
     end
   end
-
-
-
 
   def public_page
     @user = User.find_by(uuid: params[:uuid]) # UUID から公開者(Aさん)を取得
@@ -42,9 +32,8 @@ class NotesController < ApplicationController
       return redirect_to root_path
     end
 
- # **公開者のノート情報を取得（閲覧のみ）**
- @notes = Note.where(user_id: @user.id).to_a # `nil` を防ぐために空配列を返す
-
+    # **公開者のノート情報を取得（閲覧のみ）**
+    @notes = Note.where(user_id: @user.id).to_a # `nil` を防ぐために空配列を返す
 
     # **閲覧履歴の取得**
     @view_accesses = ViewAccess.includes(:owner, :viewer)
@@ -71,8 +60,10 @@ class NotesController < ApplicationController
       flash[:alert] = '閲覧履歴の更新に失敗しました。'
     end
   end
-end
 
-def note_params
-  params.require(:note).permit(:issue_1, :title_1, :content_1, :issue_2, :title_2, :content_2)
+  private
+
+  def note_params
+    params.require(:note).permit(:issue_1, :title_1, :content_1, :issue_2, :title_2, :content_2)
+  end
 end

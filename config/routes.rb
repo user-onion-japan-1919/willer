@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :notes, only: [:index, :new, :create, :edit, :update, :destroy] do
+  resources :notes, only: [:index, :create, :edit, :update, :destroy] do
     member do
       get "download_pdf"
     end
