@@ -46,6 +46,6 @@ class UsersController < ApplicationController
 
   # ユーザー情報の更新で許可するパラメータ
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :first_name_furigana, :last_name_furigana, :birthday, :blood_type, :phone_number, :address, notes_attributes: [:id, :issue_1, :tytle_1, :content_1, :issue_2, :tytle_2, :content_2])
+    params.require(:user).permit(:email, :first_name, :last_name, :first_name_furigana, :last_name_furigana, :birthday, :blood_type, :phone_number, :address, notes_attributes: [:id, :issue_1, :title_1, :content_1, :issue_2, :title_2, :content_2])
   end
 end
