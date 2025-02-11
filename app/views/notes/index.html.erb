@@ -599,37 +599,26 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // ✅ リロード時のみデフォルト（ユーザー編集タブ）を表示
-    if (performance.navigation.type === 1 || performance.getEntriesByType("navigation")[0].type === "reload") {
-      sessionStorage.removeItem("activeTab");  // タブの状態をリセット
-      sessionStorage.removeItem("activeSubTab");
-    }
-
-    // ✅ セッションストレージから前回のタブ状態を取得（なければデフォルト「info」）
-    let activeTab = sessionStorage.getItem("activeTab") || "single";
-    let activeSubTab = sessionStorage.getItem("activeSubTab") || "info";
+    // ✅ 初回ロード時にタブの状態をリセット
+    sessionStorage.removeItem("activeTab");
+    sessionStorage.removeItem("activeSubTab");
 
     // ✅ すべてのセクションを非表示にする
-    document.getElementById("single-section").style.display = "none";
+    document.getElementById("single-section").style.display = "block"; // シングルモードをデフォルト表示
     document.getElementById("family-section").style.display = "none";
-    document.getElementById("info-section").style.display = "none";
-    document.getElementById("note-section").style.display = "none";
-    document.getElementById("parent-section").style.display = "none";
-    document.getElementById("child-section").style.display = "none";
+    document.getElementById("info-section").style.display = "block";  // ✅ ユーザー編集を表示
+    document.getElementById("note-section").style.display = "none";   // ✅ ノートを非表示
+    document.getElementById("parent-section").style.display = "none"; // ✅ 閲覧許可を非表示
+    document.getElementById("child-section").style.display = "none";  // ✅ 閲覧検索を非表示
 
-    // ✅ タブの状態を復元
-    showSection(activeTab);
-    showSubSection(activeSubTab);
+    // ✅ タブのアクティブ状態を設定
+    document.getElementById("single-tab").classList.add("active");
+    document.getElementById("family-tab").classList.remove("active");
 
-    // ✅ フォーム送信時にタブの状態を保存（更新後もタブを維持）
-    document.querySelectorAll("form").forEach(form => {
-      form.addEventListener("submit", function () {
-        sessionStorage.setItem("activeTab", activeTab);
-        sessionStorage.setItem("activeSubTab", activeSubTab);
-      });
-    });
+    // ✅ ユーザー編集をアクティブにする
+    document.getElementById("info-tab").classList.add("active");
+    document.getElementById("note-tab").classList.remove("active");
   });
-
 </script>
 
 
