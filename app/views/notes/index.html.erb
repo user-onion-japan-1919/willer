@@ -181,7 +181,8 @@
 
 
 <%= form_with model: (@note || Note.new), url: @note ? note_path(@note) : notes_path, method: @note ? :patch : :post, local: true do |f| %>
-  
+
+
   <br>
 
   <!-- 表1 -->
