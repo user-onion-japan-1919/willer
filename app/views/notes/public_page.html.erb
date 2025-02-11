@@ -1,9 +1,16 @@
+
 <!DOCTYPE html>
+
 <html>
+
 <head>
+
   <meta charset="UTF-8">
   <title>公開ページ - <%= @user.first_name %> <%= @user.last_name %></title>
+
+
   <style>
+
     body {
       font-family: Arial, sans-serif;
       font-size: 12px;
@@ -12,7 +19,6 @@
       color: #333;
     }
     table {
-      width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
     }
@@ -26,21 +32,43 @@
       overflow-wrap: break-word;
       white-space: normal;
     }
-    /* 背景色を適用する範囲を拡張 */
-    .readonly-content {
-      background-color: #E0F7FA;
-      padding: 20px;
-      border-radius: 5px;
-    }
-    .readonly-container {
-      background-color: #E0F7FA; /* 薄めの水色 */
-      padding: 20px;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
+
+    
+    /* 背景色を適用する範囲を拡張（右20%削る） */
+.readonly-content {
+  background-color: #E0F7FA;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 80%;  /* ✅ 右端を20%削る */
+}
+
+.readonly-container {
+  background-color: #E0F7FA; /* 薄めの水色 */
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  max-width: 80%;  /* ✅ 右端を20%削る */
+}
+
+/* hr線の右側を20%削る */
+hr {
+  width: 80%;  /* ✅ 右端を20%削る */
+  margin-left: 0; /* ✅ 左側はそのまま */
+  border: 1px solid #ccc; /* ✅ 線のスタイルはそのまま */
+}
+
+
   </style>
-</head>
-<body>
+
+  </head>
+
+<body style="margin-left: 10%;">
+
+
+
+
+
+<!--ここからが本文です----------------------------------------------------------------->
 
 
 
@@ -48,15 +76,15 @@
 
 <p>　</p>
 
-<p style="color: blue; font-size: 150%; text-align: right; display: block;">
+<p style="color: blue; font-size: 150%; display: block; width: fit-content; margin-left: auto; margin-right: 20%;">
   <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
-</p>　　
+</p>
 
 
 <h2 style="display: inline;">　　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
 <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
   <input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly 
-    style="flex: 1; max-width: 500px;">
+    style="flex: 1; max-width: 480px;">
   <button onclick="copyPublicPageUrl()">このページのURLをコピー</button>
 </div>
 
@@ -81,6 +109,7 @@
   <%= @view_accesses.find { |va| va.viewer_id == @viewer.id }&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
 </p>
 
+<p>　</p>
 <p>　</p>
 
 <h3>　　このページの閲覧履歴詳細</h3>
@@ -142,7 +171,7 @@
     alert("URLをコピーしました: " + urlField.value);
   }
 </script>
-<p style="color: red; font-weight: bold; text-align: right;">
+<p style="color: red; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 20%;">
   ※閲覧を許可した覚えのないユーザーが表示されている場合は、この画面を保存の上、開発者まで連絡してください。
 </p>
 
@@ -246,11 +275,7 @@
 
 
 
-
-
-
-
-<!-- 背景色を適用するエリア -->
+<!--水色背景  適用開始----------------------------------------------------------------->
 
 
 <div id="readonly-child-section" class="readonly-container">
@@ -259,6 +284,10 @@
         </div>
 </div>
 <p style="font-weight: bold; color: blue; text-decoration: underline;">
+
+
+<!--水色背景  適用終了----------------------------------------------------------------->
+
   <br>
   <br>
   ※本日時刻以降の変更内容については保証されません。<br>
