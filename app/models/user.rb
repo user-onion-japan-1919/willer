@@ -5,7 +5,8 @@ class User < ApplicationRecord
        has_many :view_accesses_as_owner, class_name: 'ViewAccess', foreign_key: 'owner_id', dependent: :destroy
        has_many :view_accesses_as_viewer, class_name: 'ViewAccess', foreign_key: 'viewer_id', dependent: :destroy
      
-       has_many :note, dependent: :destroy
+       has_many :notes, dependent: :destroy
+       accepts_nested_attributes_for :notes
      
        ## Deviseの機能を利用
        devise :database_authenticatable, :registerable,

@@ -333,7 +333,7 @@ hr {
 
   <!-- ✅ `readonly` モードで `notes/index` のノート部分を表示 -->
   <div class="readonly-content">
-    <%= render partial: "notes/note_section", locals: { current_user: @user, readonly: true } %>
+    <%= render partial: "notes/note_section", locals: { current_user: @user, notes: @notes } %>
   </div>
 
   <br>

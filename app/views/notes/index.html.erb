@@ -180,7 +180,7 @@
 
 
 
-<%= form_with model: (@note || Note.new), url: @note ? note_path(@note) : notes_path, method: @note ? :patch : :post, local: true do |f| %>
+<%= form_with model: (@notes.first || Note.new), url: notes_path, method: :post, local: true do |f| %>
 
 
   <br>

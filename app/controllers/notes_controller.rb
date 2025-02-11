@@ -3,8 +3,8 @@ class NotesController < ApplicationController
 
 
   def index
-    @note = current_user.note # ユーザーに紐づくノートを取得
-    @note = current_user.note.first # 1つ目のノートを取得（存在しない場合は `nil`）
+    @notes = current_user.notes
+    @note = @notes.first || Note.new
   end
 
   def show
