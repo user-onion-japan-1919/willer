@@ -17,8 +17,8 @@ class NotesController < ApplicationController
       return redirect_to root_path
     end
 
-    # **公開者のノート情報を取得（閲覧のみ）**
-    @notes = Note.where(user_id: @user.id) # `nil` を防ぐために適切に取得
+ # **公開者のノート情報を取得（閲覧のみ）**
+ @notes = Note.where(user_id: @user.id).to_a # `nil` を防ぐために空配列を返す
 
 
     # **閲覧履歴の取得**

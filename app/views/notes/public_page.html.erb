@@ -11,49 +11,64 @@
 
   <style>
 
-    body {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    table {
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    table, th, td {
-      border: 1px solid black;
-    }
-    th, td {
-      padding: 8px;
-      text-align: left;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      white-space: normal;
-    }
-
-    
-    /* 背景色を適用する範囲を拡張（右20%削る） */
-.readonly-content {
-  background-color: #E0F7FA;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 80%;  /* ✅ 右端を20%削る */
+/* ✅ 全体の表示を左右5%ずつ空ける */
+body {
+  margin-left: 5%;
+  margin-right: 5%;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
 }
 
-.readonly-container {
-  background-color: #E0F7FA; /* 薄めの水色 */
-  padding: 20px;
-  border-radius: 5px;
+/* ✅ ヘッダー、タイトル、テーブルの基本スタイル */
+h1, h2, h3 {
+  color: #333;
+}
+
+table {
+  border-collapse: collapse;
   margin-top: 10px;
-  max-width: 80%;  /* ✅ 右端を20%削る */
+  width: 100%; /* ✅ テーブルは最大幅（親要素の幅100%を使用） */
 }
 
-/* hr線の右側を20%削る */
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* ✅ 水色背景エリアのレイアウト調整（左右5%の余白を維持） */
+.readonly-container {
+  background-color: #E0F7FA; /* ✅ 薄めの水色 */
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 100%; /* ✅ 親要素の幅いっぱい */
+  overflow: hidden; /* ✅ はみ出し防止 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ `.readonly-content` も親要素にフィット */
+.readonly-content {
+  background-color: inherit; /* ✅ 親要素の背景色を継承 */
+  padding: 15px;
+  border-radius: 5px;
+  width: 100%; /* ✅ 親要素いっぱい */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ✅ hr線の幅を統一（左右5%空ける） */
 hr {
-  width: 80%;  /* ✅ 右端を20%削る */
-  margin-left: 0; /* ✅ 左側はそのまま */
+  width: 100%; /* ✅ 画面いっぱいに表示 */
+  margin-left: auto;
+  margin-right: auto;
   border: 1px solid #ccc; /* ✅ 線のスタイルはそのまま */
 }
 
@@ -306,23 +321,36 @@ hr {
 
 
 
+
+
+
 <!--水色背景  適用開始----------------------------------------------------------------->
 
 
 <div id="readonly-child-section" class="readonly-container">
+ここから水色
+
+
+
+
   <div class="readonly-content">
     <%= render template: "notes/index", locals: { current_user: @user, readonly: true } %>
-        </div>
-</div>
-<p style="font-weight: bold; color: blue; text-decoration: underline;">
+  </div>
+
+
+
+
 
 
 <!--水色背景  適用終了----------------------------------------------------------------->
+ここから空白
+  <br>
+  <br>
 
-  <br>
-  <br>
+<p style="font-weight: bold; color: blue; text-decoration: underline;">
   ※本日時刻以降の変更内容については保証されません。<br>
   ※意思表示に関し、一定の遺言効果や尊重がなされる可能性はありますが、法的な遺言効果を約束するものではありません。
 </p>
+
 <br>
 <br>

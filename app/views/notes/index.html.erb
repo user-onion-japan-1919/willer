@@ -184,16 +184,16 @@
 
   <!-- 表1 -->
   <h3>表1</h3>
-  <table border="1">
+  <table>
     <tr>
       <th>要件</th>
       <th>タイトル</th>
       <th>内容</th>
     </tr>
     <tr>
-      <td><%= f.text_field :issue_1, size: 15 %></td>
-      <td><%= f.text_field :tytle_1, size: 20 %></td>
-      <td><%= f.text_area :content_1, rows: 3, cols: 30 %></td>
+      <td><%= f.text_field :issue_1 %></td>
+      <td><%= f.text_field :tytle_1 %></td>
+      <td><%= f.text_area :content_1, rows: 3 %></td>
     </tr>
   </table>
 
@@ -201,16 +201,16 @@
 
   <!-- 表2 -->
   <h3>表2</h3>
-  <table border="1">
+  <table>
     <tr>
       <th>要件</th>
       <th>タイトル</th>
       <th>内容</th>
     </tr>
     <tr>
-      <td><%= f.text_field :issue_2, size: 15 %></td>
-      <td><%= f.text_field :tytle_2, size: 20 %></td>
-      <td><%= f.text_area :content_2, rows: 3, cols: 30 %></td>
+      <td><%= f.text_field :issue_2 %></td>
+      <td><%= f.text_field :tytle_2 %></td>
+      <td><%= f.text_area :content_2, rows: 3 %></td>
     </tr>
   </table>
 
@@ -709,7 +709,14 @@ textarea {
     white-space: normal;
   }
 
-
+/* 📌 フォームの入力フィールドの幅を統一 */
+input[type="text"], textarea {
+  width: 100%;
+  max-width: 600px; /* ✅ 最大幅を600pxに設定 */
+  min-width: 250px; /* ✅ 最小幅を設定 */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 
 
 
