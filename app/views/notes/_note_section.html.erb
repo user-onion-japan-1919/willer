@@ -1,0 +1,55 @@
+
+
+
+<!----ビューオンリーにしたいテキストエリアのコピペ----------------------------------------------->
+
+
+<%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
+  <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
+  <br>
+
+  <h3 style="color: blue; font-size: 70%;"> </h3>
+  <br>
+
+  <!-- ✅ 表1 -->
+  <h3>表1</h3>
+  <table border="1">
+    <tr>
+      <th>要件</th>
+      <th>タイトル</th>
+      <th>内容</th>
+    </tr>
+    <tr>
+      <td><%= f.text_field :issue_1, size: 15, readonly: readonly %></td>
+      <td><%= f.text_field :tytle_1, size: 20, readonly: readonly %></td>
+      <td><%= f.text_area :content_1, rows: 3, cols: 30, readonly: readonly %></td>
+    </tr>
+  </table>
+
+  <br>
+
+  <!-- ✅ 表2 -->
+  <h3>表2</h3>
+  <table border="1">
+    <tr>
+      <th>要件</th>
+      <th>タイトル</th>
+      <th>内容</th>
+    </tr>
+    <tr>
+      <td><%= f.text_field :issue_2, size: 15, readonly: readonly %></td>
+      <td><%= f.text_field :tytle_2, size: 20, readonly: readonly %></td>
+      <td><%= f.text_area :content_2, rows: 3, cols: 30, readonly: readonly %></td>
+    </tr>
+  </table>
+
+  <br>
+
+  <% unless readonly %>
+    <%= f.submit "保存する", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
+
+
+
+<!----ビューオンリーにしたいテキストエリアのコピペ----------------------------------------------->

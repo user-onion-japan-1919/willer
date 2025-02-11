@@ -323,29 +323,31 @@ hr {
 
 
 
-
 <!--水色背景  適用開始----------------------------------------------------------------->
-
-
 <div id="readonly-child-section" class="readonly-container">
-ここから水色
 
 
 
 
+
+
+  <!-- ✅ `readonly` モードで `notes/index` のノート部分を表示 -->
   <div class="readonly-content">
-    <%= render template: "notes/index", locals: { current_user: @user, readonly: true } %>
+    <%= render partial: "notes/note_section", locals: { current_user: @user, readonly: true } %>
   </div>
 
+  <br>
+  <br>
 
 
 
 
-
+  </div>
 <!--水色背景  適用終了----------------------------------------------------------------->
-ここから空白
-  <br>
-  <br>
+
+
+<br>
+<br>
 
 <p style="font-weight: bold; color: blue; text-decoration: underline;">
   ※本日時刻以降の変更内容については保証されません。<br>
