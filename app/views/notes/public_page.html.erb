@@ -45,8 +45,6 @@ th, td {
 /* ✅ 水色背景エリアのレイアウト調整（左右5%の余白を維持） */
 .readonly-container {
   background-color: #E0F7FA; /* ✅ 薄めの水色 */
-  padding: 20px;
-  border-radius: 5px;
   margin-top: 20px;
   width: 100%; /* ✅ 親要素の幅いっぱい */
   overflow: hidden; /* ✅ はみ出し防止 */
@@ -77,7 +75,7 @@ hr {
 
   </head>
 
-<body style="margin-left: 10%;">
+<body>
 
 
 
@@ -91,7 +89,7 @@ hr {
 
 <p>　</p>
 
-<p style="color: blue; font-size: 150%; display: block; width: fit-content; margin-left: auto; margin-right: 20%;">
+<p style="color: blue; font-size: 150%; display: block; width: fit-content; margin-left: auto; margin-right: 5%;">
   <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
 </p>
 
@@ -214,10 +212,10 @@ hr {
 </script>
 
 <p>　</p>
-<p style="color: red; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 20%;">
+<p style="color: red; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
   ※閲覧を許可した覚えのないユーザーが表示されている場合は、①<u>このページを保存</u>のうえ、②<u>この行より上の情報を開発者まで連絡して</u>ください。
 </p>
-<p style="color: red; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 20%;">
+<p style="color: red; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
   ※パスワード変更を行っても、ページURLは変更されません。③<u>このアカウントを削除</u>後、④<u>再度、新規登録から作り直して</u>ください。
 </p>
 
@@ -262,6 +260,8 @@ hr {
 
 
 <p>　</p>
+<p>　</p>
+
 
 
 
