@@ -529,7 +529,7 @@
       document.getElementById('single-tab').classList.add('active');
       document.getElementById('family-tab').classList.remove('active');
 
-      // ✅ 「◎1人で作業しよう」から表示し、それ以外を非表示
+      // ✅ デフォルトで「ユーザー編集」を開く
       showSubSection('info');
     } else {
       // ファミリーモードを表示
@@ -547,9 +547,6 @@
       // ✅ 「◎家族と共有しよう」から表示し、それ以外を非表示
       showParentSubSection('parent');
     }
-
-    // ✅ タブ状態を保存
-    sessionStorage.setItem("activeTab", type);
   }
 
   function showSubSection(type) {
@@ -566,9 +563,6 @@
     // タブのアクティブ状態を適切に変更
     document.getElementById('info-tab').classList.toggle('active', type === 'info');
     document.getElementById('note-tab').classList.toggle('active', type === 'note');
-
-    // ✅ サブタブの状態を保存
-    sessionStorage.setItem("activeSubTab", type);
   }
 
   function showParentSubSection(type) {
@@ -583,9 +577,6 @@
     // タブのアクティブ状態を適切に変更
     document.getElementById('parent-tab').classList.toggle('active', type === 'parent');
     document.getElementById('child-tab').classList.remove('active');
-
-    // ✅ サブタブの状態を保存
-    sessionStorage.setItem("activeSubTab", type);
   }
 
   function showChildSubSection(type) {
@@ -600,40 +591,17 @@
     // タブのアクティブ状態を適切に変更
     document.getElementById('parent-tab').classList.remove('active');
     document.getElementById('child-tab').classList.toggle('active', type === 'child');
-
-    // ✅ サブタブの状態を保存
-    sessionStorage.setItem("activeSubTab", type);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // ✅ 初回ロード時にタブの状態をリセット
-    sessionStorage.setItem("activeTab", "single");
-    sessionStorage.setItem("activeSubTab", "info");
-
-    // ✅ すべてのセクションを非表示にする
-    document.getElementById("single-section").style.display = "block"; // シングルモードをデフォルト表示
-    document.getElementById("family-section").style.display = "none";
-    document.getElementById("info-section").style.display = "block";  // ✅ ユーザー編集を表示
-    document.getElementById("note-section").style.display = "none";   // ✅ ノートを非表示
-    document.getElementById("parent-section").style.display = "none"; // ✅ 閲覧許可を非表示
-    document.getElementById("child-section").style.display = "none";  // ✅ 閲覧検索を非表示
-
-    // ✅ タブのアクティブ状態を設定
-    document.getElementById("single-tab").classList.add("active");
-    document.getElementById("family-tab").classList.remove("active");
-
-    // ✅ ユーザー編集をアクティブにする
-    document.getElementById("info-tab").classList.add("active");
-    document.getElementById("note-tab").classList.remove("active");
+    // ✅ ページを開いたときに、常に「シングルモード & ユーザー編集タブ」にする
+    showSection("single");
+    showSubSection("info");
   });
 
   function resetToDefaultTab() {
-    sessionStorage.setItem("activeTab", "single");
-    sessionStorage.setItem("activeSubTab", "info");
-
-    // ✅ 画面の表示をリセット
-    showSection("single");
-    showSubSection("info");
+    // ✅ ページをリロードして、デフォルト状態（シングルモード & ユーザー編集）に戻す
+    location.reload();
   }
 </script>
 

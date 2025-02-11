@@ -92,16 +92,38 @@ hr {
 <p>　</p>
 
 
+
+
+
+
 <p style="text-align: left;">
   <%= button_to "あなたの個人ページに戻る", notes_path, 
     method: :get, 
     class: "btn btn-secondary", 
-    form: { style: "display: inline; margin-left: 50px;" }, 
-    onclick: "resetToDefaultTab()" %>
-  　　　　　　　　<strong style="color: red; text-decoration: underline; font-weight: bold;">
-    <%= Time.current.strftime('%Y-%m-%d %H:%M') %> 現在
-  </strong>
+    id: "return-to-notes", 
+    form: { style: "display: inline; margin-left: 50px;" } %>
 </p>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // ✅ URLに ?reload=true がついていたらリロードする
+    if (window.location.search.includes("reload=true")) {
+      window.history.replaceState({}, document.title, window.location.pathname); // クエリを消す
+      location.reload();
+    }
+  });
+
+  // ✅ ボタンを押したら、個人ページに移動し、その後リロードする
+  document.getElementById("return-to-notes").addEventListener("click", function(event) {
+    event.preventDefault(); // 通常のリンク動作を止める
+    window.location.href = "<%= notes_path %>?reload=true"; // クエリをつけて移動
+  });
+</script>
+
+
+
+
 
 <p>　</p>
 
