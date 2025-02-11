@@ -39,7 +39,7 @@ class User < ApplicationRecord
        validates :address, presence: true
      
        # 電話番号（10桁または11桁の半角数字）
-       validates :phone_number, presence: true, uniqueness: true, format: { with: /\A\d{10,11}\z/ }
+       validates :phone_number, presence: true, format: { with: /\A\d{10,11}\z/ }
      
        # **6つの情報が完全一致するユーザーの登録を禁止**
        validate :unique_user_combination
@@ -51,8 +51,6 @@ class User < ApplicationRecord
      
        def passwords_match
          return unless password.present? && password_confirmation.present? && password != password_confirmation
-     
-         errors.add(:password_confirmation, 'がパスワードと一致しません。')
        end
      
        # **UUID を自動生成**
@@ -62,7 +60,7 @@ class User < ApplicationRecord
      
        # **カスタムバリデーション: 6つの情報が完全一致するユーザーの登録を禁止**
        def unique_user_combination
-         if User.exists?(first_name: first_name, last_name: last_name,
+         if User.where.not(id: id).exists?(first_name: first_name, last_name: last_name,
                          first_name_furigana: first_name_furigana, last_name_furigana: last_name_furigana,
                          birthday: birthday, blood_type: blood_type)
            errors.add(:base, 'このユーザー情報の組合せは既に登録されています。')

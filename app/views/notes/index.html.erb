@@ -79,10 +79,10 @@
   <br>
   
 
-<%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
+<%= form_with model: current_user, url: user_path(current_user), method: :patch do |f| %>
   <div>
     <label>Eメール</label><br>
-    <%= f.text_field :email, value: current_user.email, readonly: true %>
+    <%= f.text_field :email, value: current_user.email %>
   </div>
 
   <div>

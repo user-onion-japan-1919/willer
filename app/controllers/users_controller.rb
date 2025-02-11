@@ -1,14 +1,14 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-  # ユーザー情報の更新
-  def update
+   # ユーザー情報の更新
+   def update
     if current_user.update(user_params)
       flash[:notice] = '登録情報が更新されました。'
       redirect_to notes_path
     else
       flash[:alert] = '登録情報の更新に失敗しました。'
-      render :edit
+      render 'notes/index', status: :unprocessable_entity
     end
   end
 
