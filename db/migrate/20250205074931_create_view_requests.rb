@@ -1,4 +1,4 @@
-class CreateViewRequests < ActiveRecord::Migration[7.0]
+class CreateViewRequests < ActiveRecord::Migration[7.1]
   def change
     create_table :view_requests do |t|
       t.references :user, null: false, foreign_key: true  # 閲覧をリクエストしたユーザー（子側）
@@ -10,7 +10,7 @@ class CreateViewRequests < ActiveRecord::Migration[7.0]
       t.date :birthday, null: false
       t.string :blood_type, null: false
       t.string :relationship, null: false
-
+      t.string :url, null: true
       t.timestamps
     end
   end

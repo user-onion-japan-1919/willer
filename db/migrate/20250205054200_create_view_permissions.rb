@@ -1,4 +1,4 @@
-class CreateViewPermissions < ActiveRecord::Migration[7.0]
+class CreateViewPermissions < ActiveRecord::Migration[7.1]
   def change
     create_table :view_permissions do |t|
       t.references :owner, null: false, foreign_key: { to_table: :users } # 公開ページの持ち主
