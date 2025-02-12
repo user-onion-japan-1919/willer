@@ -1,32 +1,35 @@
 require 'prawn'
+require 'prawn/table'
 
 class NotePdf < Prawn::Document
   def initialize(note)
     super()
+
+    # ✅ 日本語フォントを正しく登録
+    font_path = Rails.root.join('app/assets/fonts/ipaexg.ttf')
+
+    font_families.update(
+      'IPAex' => {
+        normal: font_path,
+        bold: font_path
+      }
+    )
+
+    font 'IPAex' # ✅ フォントを適用
+
     @note = note
     header
     content
   end
 
   def header
-    text "ノートPDF", size: 20, style: :bold, align: :center
-    move_down 10
+    text 'ノート情報', size: 18, style: :bold
   end
 
   def content
-    text "問題: #{@note.issue_1 || '未入力'}", size: 14, style: :bold
+    move_down 10
+    text "タイトル: #{@note.title_1}", size: 14, style: :bold
     move_down 5
-    text "タイトル: #{@note.title_1 || '未入力'}", size: 14, style: :bold
-    move_down 5
-    text "内容:", size: 14, style: :bold
-    text @note.content_1 || '未入力', size: 12
-    move_down 20
-
-    text "問題: #{@note.issue_2 || '未入力'}", size: 14, style: :bold
-    move_down 5
-    text "タイトル: #{@note.title_2 || '未入力'}", size: 14, style: :bold
-    move_down 5
-    text "内容:", size: 14, style: :bold
-    text @note.content_2 || '未入力', size: 12
+    text "内容:\n#{@note.content_1}", size: 12
   end
 end
