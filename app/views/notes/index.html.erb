@@ -643,6 +643,19 @@
         <th>続柄</th>
         <th>公開ページURL</th>
       </tr>
+
+ <!-- 🔹 1行目：本人の情報を表示 -->
+
+    <tr>
+      <td><%= current_user.first_name %> <%= current_user.last_name %></td>
+      <td>本人</td>
+      <td>
+        <%= link_to "あなたの公開ページ", public_page_path(current_user.uuid, (current_user.id + 150150)), target: "_blank", rel: "noopener noreferrer" %>
+      </td>
+    </tr>
+
+<!-- 🔹 2行目以降：登録したview_requestsを表示 -->
+
       <% current_user.view_requests.each do |vr| %>
         <tr>
           <td><%= vr.first_name %> <%= vr.last_name %></td>
