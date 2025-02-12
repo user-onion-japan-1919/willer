@@ -6,11 +6,6 @@
   <%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　ーーーーーーーーーーーーーーーーーーーーーーーーーー
 </h1>
 
-
-<%= button_to "URLを取得", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
-
-
-
 <br>
 
 <div class="button-container" style="display: flex; gap: 10px;">
@@ -338,7 +333,7 @@
   <% else %>
 
   <p>　</p>
-    <p>現在、登録されている閲覧許可対象者はありません。</p>
+    <p style="color: red;">　※現在、あなたが許可している相手はいません。</p>
 
     <br>
         ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -459,14 +454,16 @@
   <% else %>
 
   <p>　</p>
-    <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
+    <p style="color: red;">　※現在、あなたが登録している親の情報（閲覧したい対象者）は存在しません。</p>
 
   <% end %>
 
   <br>
 
   <p>
-    <%= button_to "　公開ページURLを更新・取得する　", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+ 
+    <%= button_to "公開ページURLを取得・更新する", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+
   </p>
 
   <br>
@@ -485,9 +482,11 @@
       </tr>
 
 
+<% base_url = request.base_url %>  <!-- ✅ 事前に `request.base_url` を変数に格納 -->
+
  <!-- 🔹 1行目：本人の情報を表示 -->
 
-<% user_url = "#{request.base_url}/public_page/#{current_user.uuid}/#{current_user.id + 150150}" %>
+<% user_url = "#{base_url}/public_page/#{current_user.uuid}/#{current_user.id + 150150}" %>
 
     <tr>
       <td><%= current_user.first_name %> <%= current_user.last_name %></td>
@@ -498,30 +497,46 @@
     </tr>
 
 <!-- 🔹 2行目以降：登録したview_requestsを表示 -->
+<% current_user.view_requests.each do |vr| %>
+  <% owner = User.find_by(
+    first_name: vr.first_name,
+    first_name_furigana: vr.first_name_furigana,
+    last_name: vr.last_name,
+    last_name_furigana: vr.last_name_furigana,
+    birthday: vr.birthday,
+    blood_type: vr.blood_type
+  ) %>
 
-      <% current_user.view_requests.each do |vr| %>
-       <% vr_url = vr.url.present? ? vr.url : "#{request.base_url}/public_page/#{vr.user.uuid}/#{vr.user.id + 150150}" %>
-        <tr>
-          <td><%= vr.first_name %> <%= vr.last_name %></td>
-          <td><%= vr.relationship %></td>
-          <td>
-            <% if vr.url.present? %>
-              <%= link_to vr.url, vr.url, target: "_blank", rel: "noopener noreferrer" %>
-            <% else %>
-              未取得　　（ ※ ユーザー登録情報 または URL が存在しません ）
-            <% end %>
-          </td>
-        </tr>
+  <% vr_url = owner.present? ? "#{base_url}/public_page/#{owner.uuid}/#{owner.id + 150150}" : nil %>
+
+  <tr>
+    <td><%= vr.first_name %> <%= vr.last_name %></td>
+    <td><%= vr.relationship %></td>
+    <td>
+      <% if vr_url.present? %>
+        <%= link_to vr_url, vr_url, target: "_blank", rel: "noopener noreferrer" %>
+      <% else %>
+        未取得　　（ ※ ユーザー登録情報 または URL が存在しません ）
       <% end %>
-    </table>
-  <% else %>
+    </td>
+  </tr>
+<% end %>
+</table>
 
-<p>　</p>
-    <p>閲覧許可された公開ページはありません。</p>
-  
-<p>　</p>
 
-  <% end %>
+
+
+<% if current_user.view_requests.empty? %>
+
+  <p>　</p>
+
+  <p style="color: red;">　※閲覧許可された公開ページはありません。</p>
+
+  <p>　</p>
+
+
+<% end %>
+<% end %>
 
 <p>　</p>
 
