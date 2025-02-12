@@ -597,7 +597,7 @@
   <br>
   <br>
 
-  <h3>登録した閲覧対象者</h3>
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが登録した閲覧対象者</h3>
   <% if current_user.view_requests.any? %>
     <table border="1">
       <tr>
@@ -634,7 +634,7 @@
   <br>
   <br>
 
-  <h3>取得したURLリスト</h3>
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんの取得したURLリスト</h3>
   
   <% if current_user.view_requests.any? %>
     <table border="1">
