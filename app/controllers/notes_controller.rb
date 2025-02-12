@@ -11,12 +11,12 @@ class NotesController < ApplicationController
 
     if @note.update(note_params)
       respond_to do |format|
-        format.turbo_stream { flash.now[:notice] = "ノートが更新されました。" }
-        format.html { redirect_to notes_path, notice: "ノートが更新されました。" }
+        format.turbo_stream { flash.now[:notice] = 'ノートが更新されました。' }
+        format.html { redirect_to notes_path, notice: 'ノートが更新されました。' }
       end
     else
       respond_to do |format|
-        format.turbo_stream { flash.now[:alert] = "ノートの更新に失敗しました。" }
+        format.turbo_stream { flash.now[:alert] = 'ノートの更新に失敗しました。' }
         format.html { render :index, status: :unprocessable_entity }
       end
     end
@@ -58,6 +58,20 @@ class NotesController < ApplicationController
     else
       Rails.logger.debug "⚠️ 閲覧履歴の更新に失敗: #{view_access.errors.full_messages}"
       flash[:alert] = '閲覧履歴の更新に失敗しました。'
+    end
+  end
+
+  # ✅ **PDFダウンロードアクションを追加**
+  def download_pdf
+    @note = Note.find(params[:id]) # 指定したノートを取得
+
+    respond_to do |format|
+      format.pdf do
+        pdf = NotePdf.new(@note) # PDFを生成
+        send_data pdf.render, filename: "note_#{@note.id}.pdf",
+                              type: 'application/pdf',
+                              disposition: 'attachment'
+      end
     end
   end
 
