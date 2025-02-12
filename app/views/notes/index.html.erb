@@ -646,11 +646,13 @@
 
  <!-- 🔹 1行目：本人の情報を表示 -->
 
+<% user_url = "#{request.base_url}/public_page/#{current_user.uuid}/#{current_user.id + 150150}" %>
+
     <tr>
       <td><%= current_user.first_name %> <%= current_user.last_name %></td>
       <td>本人</td>
       <td>
-        <%= link_to "あなたの公開ページ", public_page_path(current_user.uuid, (current_user.id + 150150)), target: "_blank", rel: "noopener noreferrer" %>
+        <%= link_to user_url, user_url, target: "_blank", rel: "noopener noreferrer" %>
       </td>
     </tr>
 
