@@ -495,7 +495,7 @@
             <% if vr.url.present? %>
               <%= link_to vr.url, vr.url, target: "_blank", rel: "noopener noreferrer" %>
             <% else %>
-              未取得
+              未取得　　（ ※ ユーザー登録 または URL が存在しません ）
             <% end %>
           </td>
         </tr>
@@ -608,13 +608,21 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // ✅ ページを開いたときに、常に「シングルモード & ユーザー編集タブ」にする
+    // ✅ 画面リロードやURL直接入力時にデフォルト状態に戻す
+    sessionStorage.removeItem('selectedSection');
+    sessionStorage.removeItem('selectedSubSection');
+
     showSection("single");
     showSubSection("info");
+
+    // ✅ 画面のスクロールを一番上に戻す
+    window.scrollTo(0, 0);
   });
 
   function resetToDefaultTab() {
     // ✅ ページをリロードして、デフォルト状態（シングルモード & ユーザー編集）に戻す
+    sessionStorage.removeItem('selectedSection');
+    sessionStorage.removeItem('selectedSubSection');
     location.reload();
   }
 </script>
