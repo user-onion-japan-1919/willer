@@ -61,18 +61,14 @@ class NotesController < ApplicationController
     end
   end
 
-  # ✅ **PDFダウンロードアクションを追加**
+  # ✅ **PDFダウンロードアクションを修正**
   def download_pdf
-    @note = Note.find(params[:id]) # 指定したノートを取得
+    @note = current_user.notes.find_by(id: params[:id]) || Note.new(issue_1: '未入力', title_1: '未入力', content_1: '未入力')
 
-    respond_to do |format|
-      format.pdf do
-        pdf = NotePdf.new(@note) # PDFを生成
-        send_data pdf.render, filename: "note_#{@note.id}.pdf",
-                              type: 'application/pdf',
-                              disposition: 'attachment'
-      end
-    end
+    pdf = NotePdf.new(@note)
+    send_data pdf.render, filename: "note_#{params[:id] || 'empty'}.pdf",
+                          type: 'application/pdf',
+                          disposition: 'attachment'
   end
 
   private
