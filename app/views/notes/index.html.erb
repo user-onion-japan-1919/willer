@@ -645,7 +645,7 @@
       </tr>
       <% current_user.view_requests.each do |vr| %>
         <tr>
-          <td><%= vr.first_name %>（<%= vr.first_name_furigana %>）　<%= vr.last_name %>（<%= vr.last_name_furigana %>）</td>
+          <td><%= vr.first_name %> <%= vr.last_name %></td>
           <td><%= vr.relationship %></td>
           <td>
             <% if vr.url.present? %>
