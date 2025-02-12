@@ -28,7 +28,7 @@
 <br>
 <br>
 
-<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ シングルとファミリーの分岐タブ ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
+<!-- ⭐️⭐️⭐️⭐️ シングルとファミリーの分岐タブ ⭐️⭐️⭐️⭐️ -->
 <div class="tabs">
   　　　<button id="single-tab" class="active" onclick="showSection('single')"> Single_Note 📖 <br><br>シングルモード</button>
   　　　<button id="family-tab" onclick="showSection('family')"> Family's_Note 📚 <br><br>ファミリーモード</button>
@@ -39,27 +39,25 @@
 <br>
 <br>
 
-<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ シングルの小タブ（infoとnoteを定義） ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
+<!-- ⭐️⭐️⭐️⭐️ シングルの小タブ（infoとnoteを定義） ⭐️⭐️⭐️⭐️ -->
 <div id="single-section">
   <div class="sub-tabs">
     　◎1人で作業しよう<br>
     <br>
     　　　<button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
     　　<button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
- </div>
- </div>
+  </div>
+</div>
 
-
-
-<!-- ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ ファミリーの小タブ（parentとchildを定義） ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ -->
- <div id="family-section" style="display: none;">
+<!-- ⭐️⭐️⭐️⭐️ ファミリーの小タブ（parentとchildを定義） ⭐️⭐️⭐️⭐️ -->
+<div id="family-section" style="display: none;">
   <div class="sub-tabs">
     　◎家族と共有しよう<br>
     <br>
     　　　<button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用  <br>(閲覧許可)</button>
     　　<button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用  <br>(閲覧検索)</button>
- </div>
- </div>
+  </div>
+</div>
 
 
 
@@ -648,6 +646,35 @@
 
 
 <style>
+
+/* ✅ シングルモードのタブはそのまま（既存のコードを変更しない） */
+
+/* ✅ ファミリーモードのタブ（非アクティブ: 薄い青系） */
+.tabs #family-tab, .sub-tabs #parent-tab, .sub-tabs #child-tab {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #C0D8F0; /* ✅ 薄い青 */
+  border: 1px solid #4A90E2; /* ✅ 縁取りは青系 */
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* ✅ アクティブなファミリーモードのタブ（中程度の青） */
+.tabs #family-tab.active, .sub-tabs #parent-tab.active, .sub-tabs #child-tab.active {
+  background-color: #5B9BD5; /* ✅ 中程度の青 */
+}
+
+/* ✅ ホバー時のファミリーモードのタブ（さらに濃い青） */
+.tabs #family-tab:hover, .sub-tabs #parent-tab:hover, .sub-tabs #child-tab:hover {
+  background-color: #2F4F6F; /* ✅ 濃い青 */
+}
+
+
+
+
   /* タブボタンの共通スタイル（通常時は薄めの黄緑） */
   .tabs button, .sub-tabs button {
     padding: 10px;
