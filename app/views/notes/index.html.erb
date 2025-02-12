@@ -608,22 +608,20 @@
     document.getElementById('child-tab').classList.toggle('active', type === 'child');
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    // ✅ 画面リロードやURL直接入力時にデフォルト状態に戻す
-    sessionStorage.removeItem('selectedSection');
-    sessionStorage.removeItem('selectedSubSection');
 
+
+ // ✅ ページのロードが完全に終わってからデフォルト状態を適用する
+  window.onload = function () {
+    // ✅ シングルモード & ユーザー編集タブをデフォルト表示
     showSection("single");
     showSubSection("info");
 
-    // ✅ 画面のスクロールを一番上に戻す
+    // ✅ ページのスクロールを一番上に戻す
     window.scrollTo(0, 0);
-  });
+  };
 
   function resetToDefaultTab() {
     // ✅ ページをリロードして、デフォルト状態（シングルモード & ユーザー編集）に戻す
-    sessionStorage.removeItem('selectedSection');
-    sessionStorage.removeItem('selectedSubSection');
     location.reload();
   }
 </script>
