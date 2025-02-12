@@ -231,7 +231,7 @@
   <br>
 <h3 style="color: blue; font-size: 70%;"> 入力は以上で記入は終わりです。お疲れ様でした。🍵<br>いいノートに仕上がりましたね。</h3>
 <br>
-<h3 style="color: blue; font-size: 70%; display: inline; "id="family-tab" onclick="showSection('family')">> →もしよかったら このまま、<b>ファミリーモード</b>で共有してみませんか？</h3>
+<h3 style="color: blue; font-size: 70%; display: inline; "id="family-tab" onclick="showSection('family')">> →もしよかったら このまま、 <b>ファミリーモード </b>で共有してみませんか？</h3>
 
 
 <p>　</p>
@@ -548,6 +548,9 @@
 
       // ✅ デフォルトで「ユーザー編集」を開く
       showSubSection('info');
+
+      // ✅ タブを切り替えた時のみ、画面を最上部にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // ファミリーモードを表示
       document.getElementById('single-section').style.display = 'none';
@@ -563,6 +566,9 @@
 
       // ✅ 「◎家族と共有しよう」から表示し、それ以外を非表示
       showParentSubSection('parent');
+
+      // ✅ タブを切り替えた時のみ、画面を最上部にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -573,13 +579,14 @@
 
     if (type === 'info') {
       document.getElementById('info-section').style.display = 'block';
+      document.getElementById('info-tab').classList.add('active');
+      document.getElementById('note-tab').classList.remove('active');
     } else if (type === 'note') {
       document.getElementById('note-section').style.display = 'block';
+      document.getElementById('note-tab').classList.add('active');
+      document.getElementById('info-tab').classList.remove('active');
     }
-
-    // タブのアクティブ状態を適切に変更
-    document.getElementById('info-tab').classList.toggle('active', type === 'info');
-    document.getElementById('note-tab').classList.toggle('active', type === 'note');
+    // ❌ ここではスクロールをさせない（修正済）
   }
 
   function showParentSubSection(type) {
@@ -589,11 +596,9 @@
 
     if (type === 'parent') {
       document.getElementById('parent-section').style.display = 'block';
+      document.getElementById('parent-tab').classList.add('active');
+      document.getElementById('child-tab').classList.remove('active');
     }
-
-    // タブのアクティブ状態を適切に変更
-    document.getElementById('parent-tab').classList.toggle('active', type === 'parent');
-    document.getElementById('child-tab').classList.remove('active');
   }
 
   function showChildSubSection(type) {
@@ -603,16 +608,12 @@
 
     if (type === 'child') {
       document.getElementById('child-section').style.display = 'block';
+      document.getElementById('child-tab').classList.add('active');
+      document.getElementById('parent-tab').classList.remove('active');
     }
-
-    // タブのアクティブ状態を適切に変更
-    document.getElementById('parent-tab').classList.remove('active');
-    document.getElementById('child-tab').classList.toggle('active', type === 'child');
   }
 
-
-
- // ✅ ページのロードが完全に終わってからデフォルト状態を適用する
+  // ✅ ページのロードが完全に終わってからデフォルト状態を適用する
   window.onload = function () {
     // ✅ シングルモード & ユーザー編集タブをデフォルト表示
     showSection("single");
@@ -627,6 +628,11 @@
     location.reload();
   }
 </script>
+
+
+
+
+
 
 
  <!-- タブタブタブタブタブタブタブタブ --------------------------------------------->
