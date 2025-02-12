@@ -414,9 +414,12 @@
     <br>
 
     <div>
-      <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
-      <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
-    </div>
+  <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
+  <%= f.select :relationship, 
+      ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], 
+      { include_blank: "選択してください" }, 
+      { required: true } %> <!-- ✅ **required: true を追加** -->
+</div>
 
     <br>
     <%= f.submit "　閲覧したい対象者を登録する　", class: "btn btn-primary" %>
