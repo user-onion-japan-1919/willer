@@ -6,6 +6,11 @@
   <%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　ーーーーーーーーーーーーーーーーーーーーーーーーーー
 </h1>
 
+
+<%= button_to "URLを取得", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+
+
+
 <br>
 
 <div class="button-container" style="display: flex; gap: 10px;">
