@@ -270,6 +270,8 @@ hr {
 <h3>　　<%= @user.first_name %> <%= @user.last_name %> さんが閲覧したいと検索をかけた人の一覧</h3>
 
 <% if @user.view_requests.any? %>
+  <% base_url = request.base_url %>  <!-- ✅ 事前に `request.base_url` を変数に格納 -->
+
   <table border="1">
     <tr>
       <th>閲覧したい対象者</th>
@@ -277,7 +279,13 @@ hr {
       <th>血液型</th>
       <th>公開ページURL</th>
     </tr>
+
     <% @user.view_requests.each do |vr| %>
+      <% 
+        # URLが存在する場合、"http://" または "https://" が含まれているかチェック
+        formatted_url = vr.url.present? ? (vr.url =~ /\Ahttp(s)?:\/\// ? vr.url : "#{base_url}/#{vr.url}") : nil 
+      %>
+
       <tr>
         <td>
           <%= vr.first_name %> (<%= vr.first_name_furigana %>) 
@@ -286,10 +294,8 @@ hr {
         <td><%= vr.birthday.strftime('%Y-%m-%d') if vr.birthday %></td>
         <td><%= vr.blood_type %></td>
         <td>
-          <% if vr.url.present? %>
-            <a href="<%= vr.url %>" target="_blank" rel="noopener noreferrer">
-              <%= vr.url %>
-            </a>
+          <% if formatted_url.present? %>
+            <%= link_to formatted_url, formatted_url, target: "_blank", rel: "noopener noreferrer" %>
           <% else %>
             未取得（ ※ ユーザー登録情報 または URL が存在しません ）
           <% end %>
