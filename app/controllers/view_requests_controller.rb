@@ -62,7 +62,7 @@ class ViewRequestsController < ApplicationController
     Rails.logger.debug "📌 照合された公開者: #{owner.inspect}"
 
     # **公開ページURLを作成**
-    public_page_url = "https://example.com/public_page/#{owner.uuid}/#{owner.id + 150_150}"
+    public_page_url = "http://localhost:3000/public_page/#{owner.uuid}/#{owner.id + 150_150}"
 
     # `view_accesses` にデータを保存 or 更新
     view_access = ViewAccess.find_or_initialize_by(owner_id: owner.id, viewer_id: current_user.id)
