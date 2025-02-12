@@ -484,6 +484,7 @@
         <th>公開ページURL</th>
       </tr>
 
+
  <!-- 🔹 1行目：本人の情報を表示 -->
 
 <% user_url = "#{request.base_url}/public_page/#{current_user.uuid}/#{current_user.id + 150150}" %>
@@ -499,6 +500,7 @@
 <!-- 🔹 2行目以降：登録したview_requestsを表示 -->
 
       <% current_user.view_requests.each do |vr| %>
+       <% vr_url = vr.url.present? ? vr.url : "#{request.base_url}/public_page/#{vr.user.uuid}/#{vr.user.id + 150150}" %>
         <tr>
           <td><%= vr.first_name %> <%= vr.last_name %></td>
           <td><%= vr.relationship %></td>
@@ -517,7 +519,18 @@
 <p>　</p>
     <p>閲覧許可された公開ページはありません。</p>
   
+<p>　</p>
+
   <% end %>
+
+<p>　</p>
+
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 20%;">
+  ※あなたの閲覧履歴もまた、公開者（親側）に通知されます。目的に合わない使用はお控えください。
+</p>
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 20%;">
+  ※通報があったり、管理者が悪質な利用(リスト型攻撃等)と判断した際には、アカウントを停止のうえ、法的措置をとります。
+</p>
 
   <br>
   ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
