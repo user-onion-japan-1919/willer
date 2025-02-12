@@ -286,21 +286,20 @@ hr {
         <td><%= vr.birthday.strftime('%Y-%m-%d') if vr.birthday %></td>
         <td><%= vr.blood_type %></td>
         <td>
-          <% access = ViewAccess.find_by(viewer_id: @user.id, owner_id: vr.user_id) %>
-          <% if access&.public_page_url.present? %>
-            <a href="<%= access.public_page_url %>" target="_blank" rel="noopener noreferrer">
-              <%= access.public_page_url %>
+          <% if vr.url.present? %>
+            <a href="<%= vr.url %>" target="_blank" rel="noopener noreferrer">
+              <%= vr.url %>
             </a>
           <% else %>
-            未取得
+            未取得（ ※ ユーザー登録情報 または URL が存在しません ）
           <% end %>
         </td>
       </tr>
     <% end %>
   </table>
 <% else %>
-<p>　</p>
-   <p style="color: red;">　※現在、検索をかけたリストは存在しません。</p>
+  <p>　</p>
+  <p style="color: red;">　※現在、検索をかけたリストは存在しません。</p>
 <% end %>
 
 
