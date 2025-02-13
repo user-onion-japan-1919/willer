@@ -89,16 +89,19 @@ hr {
 
 <p>　</p>
 
-<p style="color: blue; font-size: 150%; display: block; width: fit-content; margin-left: auto; margin-right: 5%;">
+<p style="color: blue; font-size: 180%; display: block; width: fit-content; margin-left: auto; margin-right: 5%;">
   <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
 </p>
 
-
-<h2 style="display: inline;">　　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
-<div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+<h2 style="color: blue">　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
+<p>　</p>
+<div style="display: flex; align-items: center; gap: 10px; margin-left: 35px;">
   <input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly 
-    style="flex: 1; max-width: 480px;">
-  <button onclick="copyPublicPageUrl()">このページのURLをコピー</button>
+    style="flex: 1; max-width: 500px; height: 25px; padding: 5px;">　
+  <button onclick="copyPublicPageUrl()" 
+    style="height: 25px; padding: 5px 10px; display: flex; align-items: center;">
+    このページのURLをコピー
+  </button>
 </div>
 
 
@@ -114,7 +117,7 @@ hr {
     method: :get, 
     class: "btn btn-secondary", 
     id: "return-to-notes", 
-    form: { style: "display: inline; margin-left: 50px;" } %>
+    form: { style: "display: inline; margin-left: 35px;" } %>
 </p>
 
 
@@ -227,12 +230,6 @@ hr {
 <p>　</p>
 <p>　</p>
 
-<hr>
-
-
-<p>　</p>
-<p>　</p>
-
 
 
 <h3>　　<%= @user.first_name %> <%= @user.last_name %> さんが許可した人の一覧</h3>
@@ -259,7 +256,6 @@ hr {
 <p>　</p>
     <p style="color: red;">　※現在、許可した相手はいません。</p>
 <% end %>
-
 
 <p>　</p>
 <p>　</p>
@@ -311,14 +307,15 @@ hr {
 
 
 <p>　</p>
-<p>　</p>
-<p>　</p>
 
+
+<p>　</p>
+<p>　</p>
 <hr>
-
-
 <p>　</p>
 <p>　</p>
+
+
 
 
 <p style="font-weight: bold; color: blue; text-decoration: underline;">

@@ -4,9 +4,15 @@
 
   <h2 style="color: darkbrown; font-size: 150%;">遺言の作成・管理・共有  - Will_Note -  📓</h2>
 
-  <div id="error_explanation">
-    <%= render "devise/shared/error_messages", resource: resource %>
+<% if resource.errors.any? %>
+  <div id="error_explanation" style="font-size: 80%; color: red;">
+    <ul>
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
   </div>
+<% end %>
 
   <br>
 

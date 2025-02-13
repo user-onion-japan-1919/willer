@@ -1,11 +1,14 @@
-<body style="margin-left: 5%; margin-right: 5%;">
+<body style="margin-left: 5%;">
 
+<br>
 <br>
 
 <h1>
-  <%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　ーーーーーーーーーーーーーーーーーーーーーーーーーー
+  ◎<%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　
 </h1>
 
+
+<br>
 <br>
 
 <div class="button-container" style="display: flex; gap: 10px;">
@@ -24,18 +27,23 @@
 </div>
 
 <br>
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 <br>
+
+<hr style=" margin-right: 40%;">
+
 <br>
 
 <!-- ⭐️⭐️⭐️⭐️ シングルとファミリーの分岐タブ ⭐️⭐️⭐️⭐️ -->
 <div class="tabs">
+
   　　　<button id="single-tab" class="active" onclick="showSection('single')"> Single_Note 📖 <br><br>シングルモード</button>
   　　　<button id="family-tab" onclick="showSection('family')"> Family's_Note 📚 <br><br>ファミリーモード</button>
 </div>
 
 <br>
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+<hr style=" margin-right: 40%;">
+
 <br>
 <br>
 
@@ -63,10 +71,14 @@
 
 
   <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①infoの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
 <br>
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+<hr style=" margin-right: 40%;">
+
 <br>
 <br>
+
   <div id="info-section">
   <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
   <br>
@@ -132,7 +144,7 @@
   <br>
   <br>
   <br>
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<hr style=" margin-right: 40%;">
   <br>
   <br>
 
@@ -233,7 +245,7 @@
 
 
 <p>　</p>
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<hr style=" margin-right: 40%;">
   <br>
   <br>
 
@@ -307,7 +319,7 @@
 <% end %>
 
   <br><br>
-    ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    <hr style=" margin-right: 40%;">
     <br><br>
     
     <!-- ③ー閲覧許可対象者リスト -->
@@ -339,7 +351,7 @@
 
     <br>
     <br>
-        ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+        <hr style=" margin-right: 40%;">
     <br>
     <br>
 
@@ -427,7 +439,7 @@
   <% end %>
 
   <br>
-  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <hr style=" margin-right: 40%;">
   <br>
   <br>
 
@@ -469,7 +481,7 @@
   </p>
 
   <br>
-  ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー
+  <hr style=" margin-right: 40%;">
   <br>
   <br>
 
@@ -478,8 +490,8 @@
   <% if current_user.view_requests.any? %>
     <table border="1">
       <tr>
-        <th>公開者</th>
-        <th>続柄</th>
+        <th>公開者　　　</th>
+        <th>続柄　　　　</th>
         <th>公開ページURL</th>
       </tr>
 
@@ -541,17 +553,17 @@
 
 <p>　</p>
 
-<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 20%;">
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 40%;">
   ※あなたの閲覧履歴もまた、公開者（親側）に通知されます。目的に合わない使用はお控えください。
 </p>
-<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 20%;">
-  ※通報があったり、管理者が悪質な利用(リスト型攻撃等)と判断した際には、アカウントを停止のうえ、法的措置をとります。
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  ※不正な利用記録(リスト型攻撃・DDoS攻撃など)の通報があり、管理者が悪質と判断した際には、アカウントを停止のうえ、法的措置をとります。
 </p>
 
 <% end %>
 
   <br>
-  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <hr style=" margin-right: 40%;">
   <br>
   <br>
 
@@ -766,7 +778,7 @@ textarea {
 
 /* 📌 表のスタイルを統一 */
   table {
-    width: 80%; /* ✅ 表を横幅いっぱいに */
+    width: 60%; /* ✅ 表を横幅いっぱいに */
     border-collapse: collapse;
     margin-top: 10px;
   }
