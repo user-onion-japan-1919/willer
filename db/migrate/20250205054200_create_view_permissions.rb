@@ -2,7 +2,7 @@ class CreateViewPermissions < ActiveRecord::Migration[7.1]
   def change
     create_table :view_permissions do |t|
       t.references :owner, null: false, foreign_key: { to_table: :users } # 公開ページの持ち主
-      t.references :viewer, null: false, foreign_key: { to_table: :users } # 許可された閲覧者
+      t.references :viewer, null: true, foreign_key: { to_table: :users } # 許可された閲覧者
 
       # 許可された閲覧者の情報（検索・認証用）
       t.string :first_name, null: false
