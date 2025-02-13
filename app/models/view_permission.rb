@@ -15,7 +15,7 @@ class ViewPermission < ApplicationRecord
 
   after_initialize :set_default_values
 
-  validate :unique_combination
+  validate :unique_combination, on: :create # 修正
 
   # ✅ ON に戻すべきか判定
   def should_reset_on?

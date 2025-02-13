@@ -1,5 +1,6 @@
 class ViewPermissionsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :verify_authenticity_token, only: [:update_on_mode, :update_on_timer_value_and_unit]
 
   # ✅ 許可設定の一括更新API
   def update_all
@@ -45,6 +46,24 @@ class ViewPermissionsController < ApplicationController
     redirect_to notes_path
   end
 
+  def update_on_mode
+    @view_permission = ViewPermission.find(params[:id])
+    if @view_permission.update(on_mode: params[:on_mode])
+      render json: { success: true }
+    else
+      render json: { success: false, errors: @view_permission.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update_on_timer_value_and_unit
+    @view_permission = ViewPermission.find(params[:id])
+    if @view_permission.update(on_timer_value: params[:on_timer_value], on_timer_unit: params[:on_timer_unit])
+      render json: { success: true }
+    else
+      render json: { success: false, errors: @view_permission.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @view_permission = current_user.view_permissions.find(params[:id])
 
@@ -55,6 +74,26 @@ class ViewPermissionsController < ApplicationController
     end
 
     redirect_to notes_path
+  end
+
+  # ＜追記＞ON/OFFモードを更新するアクション
+  def update_on_mode
+    @view_permission = current_user.view_permissions.find(params[:id])
+    if @view_permission.update(on_mode: params[:on_mode])
+      render json: { success: true }
+    else
+      render json: { success: false, errors: @view_permission.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  # ＜追記＞タイマー値と単位を更新するアクション
+  def update_on_timer_value_and_unit
+    @view_permission = current_user.view_permissions.find(params[:id])
+    if @view_permission.update(on_timer_value: params[:on_timer_value], on_timer_unit: params[:on_timer_unit])
+      render json: { success: true }
+    else
+      render json: { success: false, errors: @view_permission.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private

@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     collection do
       post "request_access"
     end
+    member do
+      patch "update_on_mode"                  # モード更新用ルート
+      patch "update_on_timer_value_and_unit"  # タイマー更新用ルート（修正済み）
+    end
   end
 
   resources :view_requests, only: [:index, :new, :create, :destroy] do
