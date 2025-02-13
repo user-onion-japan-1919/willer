@@ -83,6 +83,11 @@ class User < ApplicationRecord
     self.uuid ||= SecureRandom.uuid
   end
 
+  # ✅ ログアウト時に記録
+  def set_last_logout
+    update(last_logout_at: Time.current)
+  end
+
   # **カスタムバリデーション: 6つの情報が完全一致するユーザーの登録を禁止**
   def unique_user_combination
     if User.where.not(id: id).exists?(first_name: first_name, last_name: last_name,

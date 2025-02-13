@@ -12,14 +12,19 @@ class CreateViewPermissions < ActiveRecord::Migration[7.1]
       t.date :birthday, null: false
       t.string :blood_type, null: false
 
-       # ✅ ON/OFFスイッチ（デフォルトはON）
-       t.boolean :on_off, null: false, default: true
+          # ✅ ON/OFF モード（0: 常にOFF, 1: 常にON, 2: タイマーON）
+      t.integer :on_mode, null: false, default: 1
 
-       # ✅ タイマー機能（ON に戻るまでの時間を分単位で保存）
-       t.integer :on_timer_minutes, default: 30, null: false
+      # ✅ タイマー機能（秒・分・時間・日・月・年 をサポート）
+      t.integer :on_timer_value, null: false, default: 1
+      t.string :on_timer_unit, null: false, default: "day" # "second", "minute", "hour", "day", "month", "year"
+
+      # ✅ 最終ログアウト時刻（ONに戻すトリガー用）
+      t.datetime :last_logout_at, default: nil
 
       t.timestamps
     end
+
 
     ## **同じユーザーが重複して許可されないように一意制約**
     add_index :view_permissions, [:owner_id, :viewer_id], unique: true
