@@ -164,7 +164,7 @@
  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
 
   <div id="note-section">
-  <%= form_with model: current_user, url: user_path(current_user), method: :patch, local: true do |f| %>
+ 
   <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
   <br>
 
@@ -190,7 +190,7 @@
 
 
 
-<%= form_with model: (@notes.first || Note.new), url: notes_path, method: :post, local: true do |f| %>
+<%= form_with model: @note, url: @note.persisted? ? note_path(@note) : notes_path, method: @note.persisted? ? :patch : :post, local: true do |f| %>
 
 
   <br>
@@ -205,7 +205,7 @@
     </tr>
     <tr>
       <td><%= f.text_area :issue_1, rows: 3 %></td>
-      <td><%= f.text_area :tytle_1, rows: 3 %></td>
+      <td><%= f.text_area :title_1, rows: 3 %></td>
       <td><%= f.text_area :content_1, rows: 3 %></td>
     </tr>
   </table>
@@ -222,7 +222,7 @@
     </tr>
     <tr>
       <td><%= f.text_area :issue_2, rows: 3 %></td>
-      <td><%= f.text_area :tytle_2, rows: 3 %></td>
+      <td><%= f.text_area :title_2, rows: 3 %></td>
       <td><%= f.text_area :content_2, rows: 3 %></td>
     </tr>
   </table>
@@ -251,7 +251,7 @@
 
 
 
-<% end %>  <!--form with-->
+
   </div>   <!--noteの閉じタグ-->
 
   <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->

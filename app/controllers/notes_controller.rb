@@ -2,23 +2,29 @@ class NotesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @notes = current_user.notes
-    @note = @notes.first || Note.new
+    @note = current_user.notes.order(created_at: :desc).first || Note.new
+  end
+
+  def create
+    @note = current_user.notes.order(created_at: :desc).first_or_initialize
+    @note.assign_attributes(note_params)
+
+    if @note.save
+      redirect_to notes_path, notice: 'ノートを保存しました。'
+    else
+      render :index, status: :unprocessable_entity
+    end
   end
 
   def update
     @note = current_user.notes.find(params[:id])
-
     if @note.update(note_params)
-      respond_to do |format|
-        format.turbo_stream { flash.now[:notice] = 'ノートが更新されました。' }
-        format.html { redirect_to notes_path, notice: 'ノートが更新されました。' }
-      end
+      Rails.logger.debug "✅ 更新成功: #{@note.inspect}"
+      redirect_to notes_path, notice: 'ノートを更新しました。'
     else
-      respond_to do |format|
-        format.turbo_stream { flash.now[:alert] = 'ノートの更新に失敗しました。' }
-        format.html { render :index, status: :unprocessable_entity }
-      end
+      Rails.logger.debug "⚠️ 更新失敗: #{@note.errors.full_messages}"
+      flash.now[:alert] = 'ノートの更新に失敗しました。'
+      render :index, status: :unprocessable_entity
     end
   end
 
