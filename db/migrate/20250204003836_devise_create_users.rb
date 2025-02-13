@@ -26,6 +26,11 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string :phone_number, null: false
       t.string :uuid, null: false
 
+
+ ## ✅ ログアウト時刻を記録するカラムを追加
+ t.datetime :last_logout_at, null: true
+
+
       t.timestamps null: false
     end
 

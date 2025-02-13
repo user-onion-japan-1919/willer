@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
     t.string "address", null: false
     t.string "phone_number", null: false
     t.string "uuid", null: false
+    t.datetime "last_logout_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
