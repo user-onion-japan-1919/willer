@@ -1,6 +1,20 @@
 class ViewPermissionsController < ApplicationController
   before_action :authenticate_user!
 
+  # ✅ 許可設定の一括更新API
+  def update_all
+    ActiveRecord::Base.transaction do
+      params[:view_permissions].each do |vp_params|
+        view_permission = current_user.view_permissions.find(vp_params[:id])
+        view_permission.update!(on_mode: vp_params[:on_mode], on_timer_value: vp_params[:on_timer_value],
+                                on_timer_unit: vp_params[:on_timer_unit])
+      end
+    end
+    render json: { success: true }
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { success: false, errors: e.record.errors.full_messages }, status: :unprocessable_entity
+  end
+
   def create
     # 📌 フォームのパラメータを取得
     permission_params = view_permission_params

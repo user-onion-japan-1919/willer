@@ -140,7 +140,7 @@
   </div>
 
   <br>
-  <%= f.submit "　更新して保存する　" %>
+  <%= f.submit " 📌 更新して保存する　" %>
   <br>
   <br>
   <br>
@@ -169,7 +169,7 @@
   <br>
 
   <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。　　空欄での保存も可能です。　 </h3>
-  <h3 style="color: blue; font-size: 70%;">※入力内容は自動保存されます。 </h3>
+  <h3 style="color: blue; font-size: 70%;">※入力後は保存ボタンで更新してください。 </h3>
   <br>
   <h3 style="color: blue; font-size: 70%;">※正式書類ではないので、気負わず、じっくり、やれるところから取り組みましょう!! </h3>
   <h3 style="color: blue; font-size: 70%;">※まずは言語化してみましょう!!　やりたいこと、遺したいことがきっと見つかります!! </h3>
@@ -228,7 +228,7 @@
   </table>
 
   <br>
-  <%= f.submit "保存する", class: "btn btn-primary" %>
+  <%= f.submit " 📌 保存する　", class: "btn btn-primary" %>
 <% end %>
 
 
@@ -314,7 +314,7 @@
     </div>
 
     <br>
-    <%= f.submit "　閲覧を許可する相手を保存　" %>
+    <%= f.submit " 📌 閲覧を許可する相手を保存　" %>
   <% end %>
 
   <br><br>
@@ -363,6 +363,15 @@
         </tr>
       <% end %>
     </table>
+
+
+<!-- ✅ 一括更新ボタンを表の外に設置 -->
+  <br>
+  <button id="update-all-permissions">📌 内容を一括更新する</button>
+
+
+
+
   <% else %>
     <p>　</p>
     <p style="color: red;">　※現在、あなたが許可している相手はいません。</p>
@@ -489,7 +498,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 
     <br>
-    <%= f.submit "　閲覧したい対象者を登録する　", class: "btn btn-primary" %>
+    <%= f.submit " 📌 閲覧したい対象者を登録する　", class: "btn btn-primary" %>
     <br>
 
   <% end %>
@@ -532,7 +541,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   <p>
  
-    <%= button_to "公開ページURLを取得・更新する", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+    <%= button_to " 📌 公開ページURLを取得・更新する　", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
 
   </p>
 
@@ -613,7 +622,10 @@ document.addEventListener("DOMContentLoaded", function() {
   ※あなたの閲覧履歴もまた、公開者（親側）に通知されます。目的に合わない使用はお控えください。
 </p>
 <p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 40%;">
-  ※不正な利用記録(リスト型攻撃・DDoS攻撃など)の通報があり、管理者が悪質と判断した際には、アカウントを停止のうえ、法的措置をとります。
+  ※不正な利用(リスト型攻撃・DDoS攻撃等)について通報があり、
+</p>
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  管理者が悪質と判断した際には、アカウントを停止のうえ、法的措置をとります。
 </p>
 
 <% end %>
