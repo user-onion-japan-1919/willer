@@ -319,23 +319,23 @@
 
   <br><br>
   <hr style=" margin-right: 40%;">
-  <br><br>
+  <br>
 
   <!-- ③ー閲覧許可対象者リスト -->
  <% if current_user.view_permissions.any? %>
     <table border="1">
       <tr>
-        <th>苗字　　　　　　　</th>
-        <th>名前　　　　　　　</th>
+        <th>苗字　　　　　</th>
+        <th>名前　　　　　</th>
         <th>生年月日　　　　　</th>
         <th>血液型　　　</th>
-        <th>許可設定　　　　　</th>
+        <th>許可設定　　　</th>
         <th>削除　　</th>
       </tr>
       <% current_user.view_permissions.each do |vp| %>
         <tr>
-          <td><%= vp.first_name %> (<%= vp.first_name_furigana %>)</td>
-          <td><%= vp.last_name %> (<%= vp.last_name_furigana %>)</td>
+          <td><%= vp.first_name %> <br>(<%= vp.first_name_furigana %>)</td>
+          <td><%= vp.last_name %> <br>(<%= vp.last_name_furigana %>)</td>
           <td><%= vp.birthday.strftime('%Y-%m-%d') %></td>
           <td><%= vp.blood_type %></td>
           <td>
@@ -365,13 +365,8 @@
     </table>
 
 
-<!-- ✅ 一括更新ボタンを表の外に設置 -->
   <br>
-  <button id="update-all-permissions">📌 内容を一括更新する</button>
-
-
-
-
+ 
   <% else %>
     <p>　</p>
     <p style="color: red;">　※現在、あなたが許可している相手はいません。</p>
