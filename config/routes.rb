@@ -1,4 +1,12 @@
+
+
+
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq' # Sidekiqの管理画面を/sidekiqで開けるようにする
+
+
   root to: "notes#index" # 仮のトップページ
   devise_for :users, controllers: {
     registrations: "users/registrations",

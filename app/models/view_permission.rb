@@ -41,6 +41,13 @@ class ViewPermission < ApplicationRecord
     update!(on_mode: '許可') # "許可" に戻す
   end
 
+  # ✅ 全`ViewPermission`のタイマーを確認し、必要ならリセット
+  def self.reset_all_timers!
+    where(on_mode: 'タイマー').find_each do |vp|
+      vp.reset_on_if_needed!
+    end
+  end
+
   private
 
   # ✅ デフォルト値の設定

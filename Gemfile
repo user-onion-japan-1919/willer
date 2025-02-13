@@ -79,3 +79,6 @@ gem "wkhtmltopdf-binary", "~> 0.12.6"
 
 gem 'prawn'
 gem 'prawn-table'
+
+gem 'sidekiq'
+gem 'whenever', require: false
