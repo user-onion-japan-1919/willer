@@ -2,33 +2,28 @@ class ViewPermissionsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    # フォームからのパラメータでユーザーを検索（同じ名前・誕生日のユーザーを探す）
-    viewer = begin
-      User.find_by(
-        first_name: params[:view_permission][:first_name],
-        first_name_furigana: params[:view_permission][:first_name_furigana],
-        last_name: params[:view_permission][:last_name],
-        last_name_furigana: params[:view_permission][:last_name_furigana],
-        birthday: parse_birthday(params[:view_permission]), # ✅ `UsersController` に統一
-        blood_type: params[:view_permission][:blood_type]
-      )
-    rescue StandardError
-      nil
-    end # **エラー回避: 日付が不正な場合 nil をセット**
+    # 📌 フォームのパラメータを取得
+    permission_params = view_permission_params
 
-    unless viewer
-      flash[:alert] = '該当するユーザーが見つかりませんでした。'
-      return redirect_to notes_path
-    end
+    # 📌 `users` テーブルに一致するユーザーを検索（存在すれば `viewer_id` にセット）
+    viewer = User.find_by(
+      first_name: permission_params[:first_name],
+      first_name_furigana: permission_params[:first_name_furigana],
+      last_name: permission_params[:last_name],
+      last_name_furigana: permission_params[:last_name_furigana],
+      birthday: permission_params[:birthday],
+      blood_type: permission_params[:blood_type]
+    )
 
-    # `view_permission_params` で取り出したデータをセット
-    @view_permission = current_user.view_permissions.new(view_permission_params)
-    @view_permission.viewer = viewer if viewer.present?
+    # 📌 `view_permissions` に保存
+    @view_permission = current_user.view_permissions.new(permission_params)
+    @view_permission.viewer_id = viewer.id if viewer.present? # ✅ 存在すれば `viewer_id` をセット
 
     if current_user.view_permissions.count >= 5
       flash[:alert] = '閲覧許可対象者は最大5人まで登録できます。'
     elsif @view_permission.save
-      flash[:notice] = '閲覧許可対象者を登録しました。'
+      flash[:notice] =
+        viewer.present? ? "閲覧許可対象者を登録しました。（登録済みユーザー: #{viewer.first_name} #{viewer.last_name}）" : '閲覧許可対象者を登録しました。（未登録ユーザー）'
     else
       flash[:alert] = "登録に失敗しました: #{@view_permission.errors.full_messages.join(', ')}"
     end
@@ -52,10 +47,9 @@ class ViewPermissionsController < ApplicationController
 
   def view_permission_params
     params.require(:view_permission).permit(
-      :first_name, :first_name_furigana, :last_name, :last_name_furigana,
-      :blood_type
+      :first_name, :first_name_furigana, :last_name, :last_name_furigana, :blood_type
     ).merge(
-      birthday: parse_birthday(params[:view_permission]) # ✅ 統一
+      birthday: parse_birthday(params[:view_permission]) # ✅ `birthday` のフォーマット統一
     )
   end
 
