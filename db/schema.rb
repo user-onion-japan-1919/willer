@@ -90,6 +90,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
     t.string "last_name_furigana", null: false
     t.date "birthday", null: false
     t.string "blood_type", null: false
+    t.boolean "on_off", default: true, null: false
+    t.integer "on_timer_minutes", default: 30, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id", "viewer_id"], name: "index_view_permissions_on_owner_id_and_viewer_id", unique: true

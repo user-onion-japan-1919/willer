@@ -12,6 +12,12 @@ class CreateViewPermissions < ActiveRecord::Migration[7.1]
       t.date :birthday, null: false
       t.string :blood_type, null: false
 
+       # ✅ ON/OFFスイッチ（デフォルトはON）
+       t.boolean :on_off, null: false, default: true
+
+       # ✅ タイマー機能（ON に戻るまでの時間を分単位で保存）
+       t.integer :on_timer_minutes, default: 30, null: false
+
       t.timestamps
     end
 
