@@ -12,8 +12,8 @@ class CreateViewPermissions < ActiveRecord::Migration[7.1]
       t.date :birthday, null: false
       t.string :blood_type, null: false
 
-          # ✅ ON/OFF モード（0: 常にOFF, 1: 常にON, 2: タイマーON）
-      t.integer :on_mode, null: false, default: 1
+           # ✅ ON/OFF モード（"拒否"・"許可"・"タイマー"）
+      t.string :on_mode, null: false, default: "許可"
 
       # ✅ タイマー機能（秒・分・時間・日・月・年 をサポート）
       t.integer :on_timer_value, null: false, default: 1

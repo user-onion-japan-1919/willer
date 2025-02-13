@@ -90,7 +90,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
     t.string "last_name_furigana", null: false
     t.date "birthday", null: false
     t.string "blood_type", null: false
-    t.integer "on_mode", default: 1, null: false
+    t.string "on_mode", default: "許可", null: false
     t.integer "on_timer_value", default: 1, null: false
     t.string "on_timer_unit", default: "day", null: false
     t.datetime "last_logout_at"

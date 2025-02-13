@@ -322,8 +322,7 @@
   <br><br>
 
   <!-- ③ー閲覧許可対象者リスト -->
-  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが許可した人の一覧</h3>
-  <% if current_user.view_permissions.any? %>
+ <% if current_user.view_permissions.any? %>
     <table border="1">
       <tr>
         <th>苗字　　　　　　　</th>
@@ -342,16 +341,16 @@
           <td>
             <!-- ON/OFF モード選択 -->
             <select class="on-mode-select" data-id="<%= vp.id %>">
-              <option value="0" <%= "selected" if vp.on_mode == 0 %>>常に拒否する</option>
-              <option value="1" <%= "selected" if vp.on_mode == 1 %>>常に許可する</option>
-              <option value="2" <%= "selected" if vp.on_mode == 2 %>>ログアウトタイマー作動中！！</option>
+              <option value="拒否" <%= "selected" if vp.on_mode == "拒否" %>>常に拒否する</option>
+              <option value="許可" <%= "selected" if vp.on_mode == "許可" %>>常に許可する</option>
+              <option value="タイマー" <%= "selected" if vp.on_mode == "タイマー" %>>ログアウトタイマー作動中！！</option>
             </select>
 
             <!-- タイマー時間設定 -->
-            <input type="number" class="on-timer-input" data-id="<%= vp.id %>" value="<%= vp.on_timer_value %>" min="1" <%= "disabled" if vp.on_mode != 2 %> >
+            <input type="number" class="on-timer-input" data-id="<%= vp.id %>" value="<%= vp.on_timer_value %>" min="1" <%= "disabled" if vp.on_mode != "タイマー" %> >
 
             <!-- タイマー単位設定 -->
-            <select class="on-timer-unit-select" data-id="<%= vp.id %>" <%= "disabled" if vp.on_mode != 2 %>>
+            <select class="on-timer-unit-select" data-id="<%= vp.id %>" <%= "disabled" if vp.on_mode != "タイマー" %>>
               <option value="second" <%= "selected" if vp.on_timer_unit == "second" %>>__秒後　に自動で許可に切替えます</option>
               <option value="minute" <%= "selected" if vp.on_timer_unit == "minute" %>>__分後　に自動で許可に切替えます</option>
               <option value="hour" <%= "selected" if vp.on_timer_unit == "hour" %>>時間後　に自動で許可に切替えます</option>
@@ -386,14 +385,19 @@ document.addEventListener("DOMContentLoaded", function() {
       const timerInput = document.querySelector(`.on-timer-input[data-id="${id}"]`);
       const timerUnit = document.querySelector(`.on-timer-unit-select[data-id="${id}"]`);
 
-      timerInput.disabled = (mode != 2);
-      timerUnit.disabled = (mode != 2);
+      timerInput.disabled = (mode !== "タイマー");
+      timerUnit.disabled = (mode !== "タイマー");
 
       fetch(`/view_permissions/${id}/update_on_mode`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ on_mode: mode })
-      });
+      }).then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            alert("更新に失敗しました");
+          }
+        });
     });
   });
 
@@ -407,7 +411,12 @@ document.addEventListener("DOMContentLoaded", function() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ on_timer_value: timerValue, on_timer_unit: timerUnit })
-      });
+      }).then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            alert("更新に失敗しました");
+          }
+        });
     });
   });
 });
