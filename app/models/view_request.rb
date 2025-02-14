@@ -1,5 +1,6 @@
 class ViewRequest < ApplicationRecord
-  belongs_to :user # 閲覧をリクエストしたユーザー（子側）
+  belongs_to :viewer, class_name: 'User'
+  belongs_to :owner, class_name: 'User', optional: true # 公開者（owner）を追加
 
   validates :first_name, presence: true
   validates :first_name_furigana, presence: true

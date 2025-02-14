@@ -159,7 +159,7 @@ hr {
 <% if @view_accesses.any? %>
   <% sorted_view_accesses = @view_accesses.map do |access|
     viewer = access.viewer
-    view_request = ViewRequest.find_by(user_id: viewer.id, first_name: @user.first_name, last_name: @user.last_name, birthday: @user.birthday)
+    view_request = ViewRequest.find_by(viewer_id: viewer.id, first_name: @user.first_name, last_name: @user.last_name, birthday: @user.birthday)
     relationship = view_request&.relationship.presence || "本人"
     {
       viewer: viewer,

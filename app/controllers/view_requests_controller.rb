@@ -5,7 +5,7 @@ class ViewRequestsController < ApplicationController
     Rails.logger.debug "📌 Received Params: #{params.inspect}" # デバッグ用ログ
 
     @view_request = ViewRequest.new(
-      user_id: current_user.id,
+      viewer_id: current_user.id,
       first_name: params[:view_request][:first_name],
       first_name_furigana: params[:view_request][:first_name_furigana],
       last_name: params[:view_request][:last_name],

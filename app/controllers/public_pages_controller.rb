@@ -12,10 +12,10 @@ class PublicPagesController < ApplicationController
     end
 
     # **閲覧履歴の取得**
-    @view_requests = ViewRequest.where(parent_id: @user.id).order(last_accessed_at: :desc)
+    @view_requests = ViewRequest.where(owner_id: @user.id).order(last_accessed_at: :desc)
 
     # **閲覧履歴の更新**
-    view_request = ViewRequest.find_by(user_id: @viewer.id, parent_id: @user.id)
+    view_request = ViewRequest.find_by(viewer_id: @viewer.id, parent_id: @user.id)
     if view_request
       unless view_request.update(last_accessed_at: Time.current, access_count: view_request.access_count + 1)
         flash[:alert] = '閲覧履歴の更新に失敗しました。'
