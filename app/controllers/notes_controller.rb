@@ -111,6 +111,13 @@ class NotesController < ApplicationController
 
     return if is_permitted
 
+    # <!-- 追記開始 --> アクセス拒否時にview_accessesを保存
+    view_access = ViewAccess.find_or_initialize_by(viewer_id: current_user.id, owner_id: @user.id)
+    view_access.rejected_count = (view_access.rejected_count || 0) + 1
+    view_access.last_rejected_at = Time.current
+    view_access.save
+    # <!-- 追記終了 -->
+
     redirect_to root_path, alert: 'この公開ページを閲覧する権限がありません。'
   end
 
