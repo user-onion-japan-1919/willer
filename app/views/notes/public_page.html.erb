@@ -156,11 +156,18 @@ hr {
 
 <h3>　　このページの閲覧履歴詳細</h3>
 
-<% if @view_accesses.any? %>
-  <% sorted_view_accesses = @view_accesses.map do |access|
+<% if @view_access_logs.any? %>
+  <% sorted_view_accesses = @view_access_logs.map do |access|
     viewer = access.viewer
-    view_request = ViewRequest.find_by(viewer_id: viewer.id, first_name: @user.first_name, last_name: @user.last_name, birthday: @user.birthday)
-    relationship = view_request&.relationship.presence || "本人"
+
+    # 閲覧者が公開者本人なら「本人」と表示
+    if viewer == @user
+      relationship = "本人"
+    else
+      view_request = ViewRequest.find_by(viewer_id: viewer.id)
+      relationship = view_request&.relationship.presence || "本人"
+    end
+ 
     {
       viewer: viewer,
       relationship: relationship,
@@ -169,9 +176,12 @@ hr {
     }
   end %>
 
-  <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
+  <% sorted_view_accesses.reject! { |va| va[:access_count].to_i.zero? } %>  <!-- 追記: アクセス回数0は非表示 -->
 
+
+  <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
   <% sorted_view_accesses.sort_by! { |va| relationship_order.index(va[:relationship]) || relationship_order.length } %>
+
 
   <table border="1">
     <tr>
@@ -202,7 +212,7 @@ hr {
   </table>
 <% else %>
 <p>　</p>
-    <p style="color: red;">　※まだ誰にも閲覧されていません。</p>
+<p style="color: red;">　※まだ誰にも閲覧されていません。</p>
 <% end %>
 
 <script>
@@ -226,7 +236,42 @@ hr {
 
 
 
+<!-- 追記開始: アクセス拒否ユーザー一覧 -->
+<h3>　　このURLへアクセスし、拒否された履歴</h3>
 
+<% rejected_accesses = @view_accesses.select { |va| va.access_count == 0 && va.rejected_count > 0 } %>
+
+<% if rejected_accesses.any? %>
+  <table border="1">
+    <tr>
+      <th>拒否ユーザー</th>
+      <th>本人から見た続柄</th>
+      <th>最終アクセス拒否</th>
+      <th>アクセス拒否回数</th>
+      <th>メールアドレス</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>住所</th>
+      <th>電話番号</th>
+    </tr>
+    <% rejected_accesses.each do |va| %>
+      <tr>
+        <td><%= va.viewer.first_name %>　(<%= va.viewer.first_name_furigana %>) <%= va.viewer.last_name %>　(<%= va.viewer.last_name_furigana %>)</td>
+        <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user.id)&.relationship.presence || "不明" %></td>
+        <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+        <td><%= va.rejected_count %> 回</td>
+        <td><%= va.viewer.email %></td>
+        <td><%= va.viewer.birthday.strftime('%Y-%m-%d') if va.viewer.birthday %></td>
+        <td><%= va.viewer.blood_type %></td>
+        <td><%= va.viewer.address %></td>
+        <td><%= va.viewer.phone_number %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p style="color: red;">　※不正アクセスはありません。</p>
+<% end %>
+<!-- 追記終了: アクセス拒否ユーザー一覧 -->
 
 
 

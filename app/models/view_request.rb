@@ -35,7 +35,7 @@ class ViewRequest < ApplicationRecord
       last_name_furigana: last_name_furigana,
       birthday: birthday,
       blood_type: blood_type,
-      user_id: user_id
+      viewer_id: viewer_id
     ).where.not(id: id).exists?
       errors.add(:base, '同じ閲覧申請がすでに登録されています。')
     end
