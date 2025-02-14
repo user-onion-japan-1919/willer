@@ -60,6 +60,9 @@ class User < ApplicationRecord
   }
 
   # ✅ `view_requests` の情報をもとに公開ページURLを取得
+
+  include Rails.application.routes.url_helpers # ← 追加
+
   def find_matching_view_requests
     view_requests.map do |view_request|
       owner = User.matching_view_requests(view_request).first
@@ -67,7 +70,7 @@ class User < ApplicationRecord
 
       {
         view_request: view_request,
-        public_page_url: "http://localhost:3000/public_page/#{owner.uuid}/#{owner.id + 150_150}"
+        public_page_url: public_page_url(owner.uuid, custom_id: owner.id + 150_150)
       }
     end.compact
   end
