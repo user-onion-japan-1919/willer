@@ -52,9 +52,8 @@ class NotesController < ApplicationController
     # アクセス拒否ユーザーを抽出
     @view_accesses = ViewAccess.includes(:owner, :viewer)
                                .where(owner_id: @user.id)
-                               .where('rejected_count > 0 AND access_count = 0') # アクセス拒否回数が0またはアクセス回数が1以上を除外
                                .order(last_rejected_at: :desc)
-                               .to_a # `nil` の場合は空配列にする
+                               .to_a
 
     # **閲覧履歴の更新**
     view_access = ViewAccess.find_or_initialize_by(viewer_id: @viewer.id, owner_id: @user.id)
