@@ -224,6 +224,7 @@ hr {
   }
 </script>
 
+<p>　</p>
 
 <p style="color: red; font-size: 95%; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
   ※閲覧を許可した覚えのないユーザーが表示されている場合は、①<u>このページを保存</u>のうえ、②<u>この行より上の情報を開発者まで連絡して</u>ください。
@@ -267,7 +268,17 @@ hr {
 <% rejected_accesses = @view_accesses.select { |va| va.access_count == 0 && va.rejected_count > 0 } %>
 
 <% if rejected_accesses.any? %>
-  <table border="1">
+
+<table border="1" style="
+
+border: 5px double black; 
+  border-collapse: collapse;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 3px yellow;
+
+">
+
+
     <tr>
       <th>拒否されたユーザー</th>
       <th>本人から見た続柄</th>
@@ -297,6 +308,8 @@ hr {
 <p>　</p>
   <p style="color: red;">　※不正なアクセスはありませんでした。</p>
 <% end %>
+
+
 <!-- 追記終了: アクセス拒否ユーザー一覧 -->
 
 

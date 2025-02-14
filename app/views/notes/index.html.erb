@@ -351,7 +351,7 @@
     </div>
 
     <br>
-    <%= f.submit " 📌 閲覧を許可する相手を保存　" %>
+    <%= f.submit " 📌 閲覧を許可したい相手を保存　" %>
   <% end %>
 
   <br><br>
@@ -359,7 +359,7 @@
   <br>
 
 
-<h3> 🏠 <%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへのアクセス権限 </h3>
+<h3> 🏠 <%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへのアクセス権限表 </h3>
 
   <!-- ③ー閲覧許可対象者リスト -->
  <% if current_user.view_permissions.any? %>
@@ -429,6 +429,113 @@
   <hr style=" margin-right: 40%;">
   <br>
   <br>
+
+
+
+
+
+
+
+<!--アクセスエラーハンドリング -->
+
+<div style="display: flex; align-items: center; gap: 10px;">
+  　<div style="
+    display: inline-block;
+    background: repeating-linear-gradient(
+      45deg,
+      yellow,
+      yellow 10px,
+      black 10px,
+      black 20px
+    );
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3.2px 3.2px;
+    border: 2px solid red;
+    text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;
+  ">
+    ⚠️ Caution!
+  </div>
+
+  <h3 style="margin: 0;">⚠️あなたの公開ページURLへアクセスし,拒否されたユーザー⚠️</h3>
+
+  
+</div>
+
+
+
+<!-- 追記開始: アクセス拒否ユーザー一覧 -->
+
+<% rejected_accesses = @view_accesses.select { |va| va.access_count == 0 && va.rejected_count > 0 } %>
+
+<% if rejected_accesses.any? %>
+
+
+
+<table border="1" style="
+
+border: 5px double black; 
+  border-collapse: collapse;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 3px yellow;
+
+">
+
+
+    <tr>
+      <th>拒否されたユーザー</th>
+      <th>本人から見た続柄</th>
+      <th>最終アクセス拒否</th>
+      <th>アクセス拒否回数</th>
+      <th>メールアドレス</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>住所</th>
+      <th>電話番号</th>
+      <th>完全に削除</th>
+      <th>保留</th>
+
+    </tr>
+    <% rejected_accesses.each do |va| %>
+ <% next if va.viewer.nil? %> <!-- 追記: viewerがnilの場合はスキップ -->
+
+      <tr>
+        <td><%= va.viewer.first_name %>　(<%= va.viewer.first_name_furigana %>)　<%= va.viewer.last_name %>　(<%= va.viewer.last_name_furigana %>)</td>
+        <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user&.id)&.relationship.presence || "不明" %></td>
+        <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+        <td><%= va.rejected_count %> 回</td>
+        <td><%= va.viewer.email %></td>
+        <td><%= va.viewer.birthday.strftime('%Y-%m-%d') if va.viewer.birthday %></td>
+        <td><%= va.viewer.blood_type %></td>
+        <td><%= va.viewer.address %></td>
+        <td><%= va.viewer.phone_number %></td>
+        <td>削除</td>
+        <td>保留して保存</td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+<p>　</p>
+  <p style="color: red;">　※不正なアクセスはありませんでした。</p>
+<% end %>
+
+<p>　</p>
+※保留して保存＝　①保存情報を"アクセス権限表"に複製（default:常に拒否）<br>
+　　　　　　　　　②アクセス拒否回数のリセット（0回のとき:”公開ページ”で表が非表示になる）
+<p>　</p>
+
+<!-- 追記終了: アクセス拒否ユーザー一覧 -->
+
+
+<p>　</p>
+
+<br>
+<hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
 </div>
 </div>
 

@@ -5,6 +5,7 @@ class NotesController < ApplicationController
 
   def index
     @note = current_user.notes.order(created_at: :desc).first || Note.new
+    @view_accesses = ViewAccess.includes(:owner, :viewer).where(owner_id: current_user.id).to_a # <!-- 追記 -->
   end
 
   def create
