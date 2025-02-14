@@ -372,6 +372,18 @@
         <th>許可設定　　　</th>
         <th>削除　　</th>
       </tr>
+
+ <!-- ✅ 1行目に本人の情報を追加 -->
+    <tr>
+      <td><%= current_user.first_name %> <br>(<%= current_user.first_name_furigana %>)</td>
+      <td><%= current_user.last_name %> <br>(<%= current_user.last_name_furigana %>)</td>
+      <td><%= current_user.birthday.strftime('%Y-%m-%d') %></td>
+      <td><%= current_user.blood_type %></td>
+      <td>常に許可する</td> <!-- ✅ 許可設定 -->
+      <td>本人</td>          <!-- ✅ 削除欄 -->
+    </tr>
+
+
       <% current_user.view_permissions.each do |vp| %>
         <tr>
           <td><%= vp.first_name %> <br>(<%= vp.first_name_furigana %>)</td>
