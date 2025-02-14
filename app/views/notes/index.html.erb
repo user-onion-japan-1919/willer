@@ -358,6 +358,9 @@
   <hr style=" margin-right: 40%;">
   <br>
 
+
+<h3> 🏠 <%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへのアクセス権限 </h3>
+
   <!-- ③ー閲覧許可対象者リスト -->
  <% if current_user.view_permissions.any? %>
     <table border="1">
