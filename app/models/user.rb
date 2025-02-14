@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_many :view_permissions, foreign_key: :owner_id, class_name: 'ViewPermission', dependent: :destroy
-  has_many :view_requests, foreign_key: :user_id, class_name: 'ViewRequest', dependent: :destroy
+  has_many :view_requests, foreign_key: :viewer_id, class_name: 'ViewRequest', dependent: :destroy
 
   has_many :view_accesses_as_owner, class_name: 'ViewAccess', foreign_key: 'owner_id', dependent: :destroy
   has_many :view_accesses_as_viewer, class_name: 'ViewAccess', foreign_key: 'viewer_id', dependent: :destroy
