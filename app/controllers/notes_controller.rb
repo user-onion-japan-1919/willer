@@ -43,10 +43,11 @@ class NotesController < ApplicationController
     # **公開者のノート情報を取得（閲覧のみ）**
     @notes = Note.where(user_id: @user.id).to_a # `nil` を防ぐために空配列を返す
 
-    # **閲覧履歴の取得**
+    # アクセス拒否ユーザーを抽出
     @view_accesses = ViewAccess.includes(:owner, :viewer)
                                .where(owner_id: @user.id)
-                               .order(last_accessed_at: :desc)
+                               .where('rejected_count > 0 AND access_count = 0') # アクセス拒否回数が0またはアクセス回数が1以上を除外
+                               .order(last_rejected_at: :desc)
                                .to_a # `nil` の場合は空配列にする
 
     # **閲覧履歴の更新**
