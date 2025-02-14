@@ -1,6 +1,7 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
   before_action :check_view_permission, only: [:public_page] # <!-- 追記 --> 公開ページのアクセス制限を追加
+  # (上の一行をコメントアウトとすると、アクセス権限の設定が外れます。)
 
   def index
     @note = current_user.notes.order(created_at: :desc).first || Note.new

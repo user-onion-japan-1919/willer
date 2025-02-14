@@ -74,7 +74,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_09_051552) do
     t.bigint "viewer_id", null: false
     t.string "public_page_url"
     t.datetime "last_accessed_at"
-    t.integer "access_count", default: 0, null: false
+    t.integer "access_count", default: 0
+    t.datetime "last_rejected_at"
+    t.integer "rejected_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id", "viewer_id"], name: "index_view_accesses_on_owner_id_and_viewer_id", unique: true
