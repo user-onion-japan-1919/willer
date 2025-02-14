@@ -144,17 +144,16 @@ hr {
 <p>　</p>
 
 <p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：
-  <%= @view_accesses.select { |va| va.viewer_id == @user.id }
-      .max_by(&:last_accessed_at)&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
+  <%= ViewAccess.where(owner_id: @user.id, viewer_id: @user.id).order(last_accessed_at: :desc).limit(1).pluck(:last_accessed_at).first&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
 </p>
 <p><strong>　　現在の閲覧者　：　</strong> <%= @viewer.first_name %> <%= @viewer.last_name %>　　　最終アクセス時間：
-  <%= @view_accesses.find { |va| va.viewer_id == @viewer.id }&.last_accessed_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
+  <%= ViewAccess.where(owner_id: @user.id, viewer_id: @viewer.id).order(last_accessed_at: :desc).limit(1).pluck(:last_accessed_at).first&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
 </p>
 
 <p>　</p>
 <p>　</p>
 
-<h3>　　このページの閲覧履歴詳細</h3>
+<h3>　このページの閲覧履歴</h3>
 
 <% if @view_access_logs.any? %>
   <% sorted_view_accesses = @view_access_logs.map do |access|
@@ -234,17 +233,43 @@ hr {
 </p>
 
 
+ 
+<div style="display: flex; align-items: center; gap: 10px;">
+  　<div style="
+    display: inline-block;
+    background: repeating-linear-gradient(
+      45deg,
+      yellow,
+      yellow 10px,
+      black 10px,
+      black 20px
+    );
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3.2px 3.2px;
+    border: 2px solid red;
+    text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;
+  ">
+    ⚠️ Caution!
+  </div>
+
+  <h3 style="margin: 0;">⚠️このURLへアクセスし,拒否されたユーザー⚠️</h3>
+
+  
+</div>
+
 
 
 <!-- 追記開始: アクセス拒否ユーザー一覧 -->
-<h3>　　このURLへアクセスし、拒否された履歴</h3>
 
 <% rejected_accesses = @view_accesses.select { |va| va.access_count == 0 && va.rejected_count > 0 } %>
 
 <% if rejected_accesses.any? %>
   <table border="1">
     <tr>
-      <th>拒否ユーザー</th>
+      <th>拒否されたユーザー</th>
       <th>本人から見た続柄</th>
       <th>最終アクセス拒否</th>
       <th>アクセス拒否回数</th>
@@ -256,7 +281,7 @@ hr {
     </tr>
     <% rejected_accesses.each do |va| %>
       <tr>
-        <td><%= va.viewer.first_name %>　(<%= va.viewer.first_name_furigana %>) <%= va.viewer.last_name %>　(<%= va.viewer.last_name_furigana %>)</td>
+        <td><%= va.viewer.first_name %>　(<%= va.viewer.first_name_furigana %>)　<%= va.viewer.last_name %>　(<%= va.viewer.last_name_furigana %>)</td>
         <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user.id)&.relationship.presence || "不明" %></td>
         <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
         <td><%= va.rejected_count %> 回</td>
@@ -276,7 +301,11 @@ hr {
 
 
 
-
+<p>　</p>
+<p>　</p>
+<p>　</p>
+<hr>
+<p>　</p>
 
 
 
@@ -301,8 +330,8 @@ hr {
     <% @user.view_permissions.each do |vp| %>
       <tr>
         <td>
-          <%= vp.first_name %> (<%= vp.first_name_furigana %>) 
-          <%= vp.last_name %> (<%= vp.last_name_furigana %>)
+          <%= vp.first_name %> （<%= vp.first_name_furigana %>）　 
+          <%= vp.last_name %> （<%= vp.last_name_furigana %>）
         </td>
         <td><%= vp.birthday.strftime('%Y-%m-%d') if vp.birthday %></td>
         <td><%= vp.blood_type %></td>
@@ -341,8 +370,8 @@ hr {
 
       <tr>
         <td>
-          <%= vr.first_name %> (<%= vr.first_name_furigana %>) 
-          <%= vr.last_name %> (<%= vr.last_name_furigana %>)
+          <%= vr.first_name %> （<%= vr.first_name_furigana %>）　 
+          <%= vr.last_name %> （<%= vr.last_name_furigana %>）
         </td>
         <td><%= vr.birthday.strftime('%Y-%m-%d') if vr.birthday %></td>
         <td><%= vr.blood_type %></td>
