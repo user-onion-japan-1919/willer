@@ -1,5 +1,6 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_view_permission, only: [:public_page] # <!-- 追記 --> 公開ページのアクセス制限を追加
 
   def index
     @note = current_user.notes.order(created_at: :desc).first || Note.new
@@ -78,6 +79,39 @@ class NotesController < ApplicationController
   end
 
   private
+
+  # <!-- 追記 --> 公開ページアクセス権限の確認メソッド
+  def check_view_permission
+    @user = User.find_by(uuid: params[:uuid])
+    return redirect_to root_path, alert: '公開ページは存在しません。' if @user.nil?
+
+    # 公開者本人はアクセス許可
+    return if current_user == @user
+
+    # 公開者のview_permissionsからon_modeが「許可」のユーザーを取得
+    permitted_users = @user.view_permissions.where(on_mode: '許可')
+
+    # 許可されたユーザーの情報で完全一致するか確認
+    is_permitted = permitted_users.any? do |vp|
+      User.exists?(
+        first_name: current_user.first_name,
+        first_name_furigana: current_user.first_name_furigana,
+        last_name: current_user.last_name,
+        last_name_furigana: current_user.last_name_furigana,
+        birthday: current_user.birthday,
+        blood_type: current_user.blood_type
+      ) && vp.first_name == current_user.first_name &&
+        vp.first_name_furigana == current_user.first_name_furigana &&
+        vp.last_name == current_user.last_name &&
+        vp.last_name_furigana == current_user.last_name_furigana &&
+        vp.birthday == current_user.birthday &&
+        vp.blood_type == current_user.blood_type
+    end
+
+    return if is_permitted
+
+    redirect_to root_path, alert: 'この公開ページを閲覧する権限がありません。'
+  end
 
   def note_params
     params.require(:note).permit(
