@@ -51,12 +51,11 @@
 <div id="single-section">
   <div class="sub-tabs">
     　◎1人で作業しよう<br>
-    <br>
     　　　<button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
     　　<button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
 
 <!-- 1つ目のボタン -->
-　　　　　<button id="scrollAndReloadBtn1" style="padding: 10px 20px; background-color: #4CAF50; color:#eedcb3; border-radius: 5px; border: none; cursor: pointer;">
+　　　　　<button id="scrollAndReloadBtn1" style="padding: 10px 20px; background-color: #4CAF50; color:black; border-radius: 5px; border: none; cursor: pointer;">
   ⤴️ 上へ戻ってリロード<br>　 (保存はされません)
 </button>
 
@@ -69,12 +68,11 @@
 <div id="family-section" style="display: none;">
   <div class="sub-tabs">
     　◎家族と共有しよう<br>
-    <br>
     　　　<button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用  <br>(閲覧許可)</button>
     　　<button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用  <br>(閲覧検索)</button>
 
 <!-- 2つ目のボタン -->
-　　　　　<button id="scrollAndReloadBtn2" style="padding: 10px 20px; background-color: #4CAF50; color:#eedcb3; border-radius: 5px; border: none; cursor: pointer;">
+　　　　　<button id="scrollAndReloadBtn2" style="padding: 10px 20px; background-color: #4CAF50; color:black; border-radius: 5px; border: none; cursor: pointer;">
   ⤴️ 上へ戻ってリロード<br>　 (保存はされません)
 </button>
 
@@ -1190,37 +1188,45 @@ input[type="text"], textarea {
 </style>
 
 
-<!-- ⭐️⭐️⭐️⭐️ シングル・ファミリーモード スクロール追従 (背景透明・最上部配置) ⭐️⭐️⭐️⭐️ -->
+<!-- ⭐️⭐️⭐️⭐️ スクロール追従 (下枠線のみ・背景50%透過ぼかし) ⭐️⭐️⭐️⭐️ -->
 <style>
-  /* ✅ シングルモード固定部分 (背景透明) */
+  /* ✅ シングルモード固定部分 */
   .sticky-single {
     position: fixed;
-    top: 0; /* 画面最上部に配置 */
+    top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0); /* 背景を完全透明 */
-    border: 4px solid #9ACD32; /* 黄緑色の枠線 */
-    z-index: 9999; /* 常に最前面に */
+    background-color: rgba(255, 255, 255, 0.5); /* 白背景・透過50% */
+    border-bottom: 4px solid #9ACD32; /* 下部のみ黄緑枠線 */
+    border-left: none; /* 横の枠線なし */
+    border-right: none; /* 横の枠線なし */
+    border-top: none; /* 上部の枠線なし */
+    backdrop-filter: blur(5px); /* ぼかし効果 */
+    z-index: 9999; 
     padding: 10px;
     box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
   }
 
-  /* ✅ ファミリーモード固定部分 (背景透明) */
+  /* ✅ ファミリーモード固定部分 */
   .sticky-family {
     position: fixed;
-    top: 0; /* 画面最上部に配置 */
+    top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0); /* 背景を完全透明 */
-    border: 4px solid #5B9BD5; /* 青色の枠線 */
-    z-index: 9999; /* 常に最前面に */
+    background-color: rgba(255, 255, 255, 0.5); /* 白背景・透過50% */
+    border-bottom: 4px solid #5B9BD5; /* 下部のみ青色枠線 */
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    backdrop-filter: blur(5px); /* ぼかし効果 */
+    z-index: 9999; 
     padding: 10px;
     box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
   }
 
   /* スクロール時の余白調整 */
   .scroll-offset {
-    margin-top: 150px; /* 固定部分の高さ分だけ余白 */
+    margin-top: 120px; /* 固定部分の高さ分だけ余白 */
   }
 </style>
 
@@ -1229,8 +1235,8 @@ input[type="text"], textarea {
     const singleSection = document.querySelector("#single-section .sub-tabs");
     const familySection = document.querySelector("#family-section .sub-tabs");
 
-    const headerHeight = 100; // 他に固定要素がある場合に調整
-    const offsetHeight = 150; // 固定する際の高さ調整
+    const headerHeight = 100; // 固定前の基準位置
+    const offsetHeight = 120; // 余白の高さ
 
     window.addEventListener("scroll", () => {
       const scrollPosition = window.scrollY;
@@ -1259,7 +1265,6 @@ input[type="text"], textarea {
     });
   });
 </script>
-
 
 
  <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS ------------------------------------------->
