@@ -1190,37 +1190,37 @@ input[type="text"], textarea {
 </style>
 
 
-<!-- ⭐️⭐️⭐️⭐️ シングル・ファミリーモード スクロール追従実装 ⭐️⭐️⭐️⭐️ -->
+<!-- ⭐️⭐️⭐️⭐️ シングル・ファミリーモード スクロール追従 (背景透明・最上部配置) ⭐️⭐️⭐️⭐️ -->
 <style>
-  /* ✅ シングルモード固定部分 */
+  /* ✅ シングルモード固定部分 (背景透明) */
   .sticky-single {
     position: fixed;
-    top: 0;
-    left: 5%;
-    width: 90%;
-    background-color: white;
-    border: 2px solid #9ACD32; /* 黄緑色の境界線 */
-    z-index: 100;
-    padding: 10px;
+    top: 0; /* 画面最上部に配置 */
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0); /* 背景を完全透明 */
+    border: 3px solid #9ACD32; /* 黄緑色の枠線 */
+    z-index: 110;
+    padding: 15px;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
   }
 
-  /* ✅ ファミリーモード固定部分 */
+  /* ✅ ファミリーモード固定部分 (背景透明) */
   .sticky-family {
     position: fixed;
-    top: 0;
-    left: 5%;
-    width: 90%;
-    background-color: white;
-    border: 2px solid #5B9BD5; /* 青色の境界線 */
-    z-index: 100;
-    padding: 10px;
+    top: 0; /* 画面最上部に配置 */
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0); /* 背景を完全透明 */
+    border: 3px solid #5B9BD5; /* 青色の枠線 */
+    z-index: 110;
+    padding: 15px;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
   }
 
-  /* スクロール時の下側の余白調整 */
+  /* スクロール時の余白調整 */
   .scroll-offset {
-    margin-top: 100px;
+    margin-top: 120px; /* 固定部分の高さ分だけ余白 */
   }
 </style>
 
@@ -1259,7 +1259,6 @@ input[type="text"], textarea {
     });
   });
 </script>
-
 
 
 
