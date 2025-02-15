@@ -39,4 +39,7 @@ Rails.application.routes.draw do
 
   get "/search_users", to: "users#search", as: :search_users
   get "/public_page/:uuid/:custom_id", to: "notes#public_page", as: :public_page
+
+  post "/view_permissions/hold", to: "view_permissions#hold", as: :view_permissions_hold
+
 end

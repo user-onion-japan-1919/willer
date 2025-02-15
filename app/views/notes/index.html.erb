@@ -542,53 +542,89 @@
 
 <% if rejected_accesses.any? %>
 
-
-
 <table border="1" style="
-
-width: 95% !important;
-border: 5px double black; 
+  width: 95% !important;
+  border: 5px double black; 
   border-collapse: collapse;
   background-clip: padding-box;
   box-shadow: 0 0 0 3px yellow;
-
 ">
 
+  <tr>
+    <th>拒否されたユーザー</th>
+    <th>本人から見た続柄</th>
+    <th>最終アクセス拒否</th>
+    <th>アクセス拒否回数</th>
+    <th>メールアドレス</th>
+    <th>生年月日</th>
+    <th>血液型</th>
+    <th>住所</th>
+    <th>電話番号</th>
+    <th>削除</th>
+    <th>保留</th>
+  </tr>
+
+  <% rejected_accesses.each do |va| %>
+    <% next if va.viewer.nil? %> <!-- 追記: viewerがnilの場合はスキップ -->
 
     <tr>
-      <th>拒否されたユーザー</th>
-      <th>本人から見た続柄</th>
-      <th>最終アクセス拒否</th>
-      <th>アクセス拒否回数</th>
-      <th>メールアドレス</th>
-      <th>生年月日</th>
-      <th>血液型</th>
-      <th>住所</th>
-      <th>電話番号</th>
-      <th>削除</th>
-      <th>保留</th>
-
+      <td><%= va.viewer.first_name %> (<%= va.viewer.first_name_furigana %>) <%= va.viewer.last_name %> (<%= va.viewer.last_name_furigana %>)</td>
+      <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user&.id)&.relationship.presence || "不明" %></td>
+      <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+      <td id="reject_count_<%= va.viewer.id %>"><%= va.rejected_count %> 回</td>
+      <td><%= va.viewer.email %></td>
+      <td><%= va.viewer.birthday.strftime('%Y-%m-%d') if va.viewer.birthday %></td>
+      <td><%= va.viewer.blood_type %></td>
+      <td><%= va.viewer.address %></td>
+      <td><%= va.viewer.phone_number %></td>
+      <td>完全に削除</td>
+      <td>
+        <!-- 追記: 「保留して保存」ボタン -->
+        <button class="hold-btn" data-viewer-id="<%= va.viewer.id %>" id="hold_btn_<%= va.viewer.id %>">保留して保存</button>
+      </td>
     </tr>
-    <% rejected_accesses.each do |va| %>
- <% next if va.viewer.nil? %> <!-- 追記: viewerがnilの場合はスキップ -->
+  <% end %>
+</table>
 
-      <tr>
-        <td><%= va.viewer.first_name %>　(<%= va.viewer.first_name_furigana %>)　<%= va.viewer.last_name %>　(<%= va.viewer.last_name_furigana %>)</td>
-        <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user&.id)&.relationship.presence || "不明" %></td>
-        <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
-        <td><%= va.rejected_count %> 回</td>
-        <td><%= va.viewer.email %></td>
-        <td><%= va.viewer.birthday.strftime('%Y-%m-%d') if va.viewer.birthday %></td>
-        <td><%= va.viewer.blood_type %></td>
-        <td><%= va.viewer.address %></td>
-        <td><%= va.viewer.phone_number %></td>
-        <td>完全に削除</td>
-        <td>保留して保存</td>
-      </tr>
-    <% end %>
-  </table>
+<!-- ✅ ＜追記＞「保留して保存」ボタンのJavaScript処理 -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".hold-btn").forEach(button => {
+      button.addEventListener("click", function() {
+        const viewerId = this.dataset.viewerId;
+        const button = this;
+
+        fetch("/view_permissions/hold", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+          },
+          body: JSON.stringify({ viewer_id: viewerId })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            // ✅ 成功時のUI更新
+            button.textContent = "保留済み";
+            button.disabled = true; // ボタンを無効化
+            document.getElementById(`reject_count_${viewerId}`).textContent = "0 回"; // 拒否回数をリセット
+            alert("保留が完了しました！");
+          } else {
+            alert("処理に失敗しました：" + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("通信エラー:", error);
+          alert("サーバーとの通信に失敗しました。");
+        });
+      });
+    });
+  });
+</script>
+
 <% else %>
-<p>　</p>
+  <p>　</p>
   <p style="color: red;">　※不正なアクセスはありませんでした。</p>
 <% end %>
 
