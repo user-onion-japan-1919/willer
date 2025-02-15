@@ -1,14 +1,20 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-   # ユーザー情報の更新
-   def update
+  # ユーザー情報の更新
+  def update
     if current_user.update(user_params)
-      flash[:notice] = '登録情報が更新されました。'
-      redirect_to notes_path
+      respond_to do |format|
+        format.html { redirect_to user_path(current_user), notice: 'ユーザー情報を更新しました。' }
+        format.json { render json: { status: 'success' }, status: :ok }
+        format.js # JS形式のレスポンス
+      end
     else
-      flash[:alert] = '登録情報の更新に失敗しました。'
-      render 'notes/index', status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :edit }
+        format.json { render json: { status: 'error' }, status: :unprocessable_entity }
+        format.js
+      end
     end
   end
 
@@ -46,6 +52,7 @@ class UsersController < ApplicationController
 
   # ユーザー情報の更新で許可するパラメータ
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :first_name_furigana, :last_name_furigana, :birthday, :blood_type, :phone_number, :address, notes_attributes: [:id, :issue_1, :title_1, :content_1, :issue_2, :title_2, :content_2])
+    params.require(:user).permit(:email, :first_name, :last_name, :first_name_furigana, :last_name_furigana, :birthday,
+                                 :blood_type, :phone_number, :address, notes_attributes: [:id, :issue_1, :title_1, :content_1, :issue_2, :title_2, :content_2])
   end
 end

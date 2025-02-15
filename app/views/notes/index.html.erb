@@ -128,7 +128,7 @@
   <br>
   
 
-<%= form_with model: current_user, url: user_path(current_user), method: :patch do |f| %>
+<%= form_with model: current_user, url: user_path(current_user), method: :patch, remote: true do |f| %>
   <div>
     <label>Eメール</label><br>
     <%= f.text_field :email, value: current_user.email %>
@@ -1078,6 +1078,27 @@ document.addEventListener("DOMContentLoaded", function() {
     // ✅ ページをリロードして、デフォルト状態（シングルモード & ユーザー編集）に戻す
     location.reload();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 </script>
 
 
@@ -1294,6 +1315,18 @@ input[type="text"], textarea {
       }
     });
   });
+
+
+
+
+
+
+
+
+
+
+
+  
 </script>
 
 
