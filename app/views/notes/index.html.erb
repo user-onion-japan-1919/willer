@@ -1199,10 +1199,10 @@ input[type="text"], textarea {
     left: 0;
     width: 100%;
     background-color: rgba(255, 255, 255, 0); /* 背景を完全透明 */
-    border: 3px solid #9ACD32; /* 黄緑色の枠線 */
-    z-index: 110;
-    padding: 15px;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    border: 4px solid #9ACD32; /* 黄緑色の枠線 */
+    z-index: 9999; /* 常に最前面に */
+    padding: 10px;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
   }
 
   /* ✅ ファミリーモード固定部分 (背景透明) */
@@ -1212,15 +1212,15 @@ input[type="text"], textarea {
     left: 0;
     width: 100%;
     background-color: rgba(255, 255, 255, 0); /* 背景を完全透明 */
-    border: 3px solid #5B9BD5; /* 青色の枠線 */
-    z-index: 110;
-    padding: 15px;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    border: 4px solid #5B9BD5; /* 青色の枠線 */
+    z-index: 9999; /* 常に最前面に */
+    padding: 10px;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
   }
 
   /* スクロール時の余白調整 */
   .scroll-offset {
-    margin-top: 120px; /* 固定部分の高さ分だけ余白 */
+    margin-top: 150px; /* 固定部分の高さ分だけ余白 */
   }
 </style>
 
@@ -1229,31 +1229,31 @@ input[type="text"], textarea {
     const singleSection = document.querySelector("#single-section .sub-tabs");
     const familySection = document.querySelector("#family-section .sub-tabs");
 
-    const originalSingleTop = singleSection ? singleSection.offsetTop : 0;
-    const originalFamilyTop = familySection ? familySection.offsetTop : 0;
+    const headerHeight = 100; // 他に固定要素がある場合に調整
+    const offsetHeight = 150; // 固定する際の高さ調整
 
     window.addEventListener("scroll", () => {
       const scrollPosition = window.scrollY;
 
       // ✅ シングルモードのスクロール固定処理
       if (singleSection && singleSection.style.display !== "none") {
-        if (scrollPosition > originalSingleTop) {
+        if (scrollPosition > headerHeight) {
           singleSection.classList.add("sticky-single");
-          singleSection.classList.add("scroll-offset");
+          document.body.classList.add("scroll-offset");
         } else {
           singleSection.classList.remove("sticky-single");
-          singleSection.classList.remove("scroll-offset");
+          document.body.classList.remove("scroll-offset");
         }
       }
 
       // ✅ ファミリーモードのスクロール固定処理
       if (familySection && familySection.style.display !== "none") {
-        if (scrollPosition > originalFamilyTop) {
+        if (scrollPosition > headerHeight) {
           familySection.classList.add("sticky-family");
-          familySection.classList.add("scroll-offset");
+          document.body.classList.add("scroll-offset");
         } else {
           familySection.classList.remove("sticky-family");
-          familySection.classList.remove("scroll-offset");
+          document.body.classList.remove("scroll-offset");
         }
       }
     });
