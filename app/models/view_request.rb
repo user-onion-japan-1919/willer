@@ -12,6 +12,10 @@ class ViewRequest < ApplicationRecord
 
   validate :unique_combination
 
+  # <!-- 追記開始 --> `before_save` で `owner_id` を自動設定
+  before_save :set_owner_id
+  # <!-- 追記終了 -->
+
   # ✅ `users` テーブルの情報と一致するユーザーを検索
   def matching_user
     User.where(
@@ -25,6 +29,20 @@ class ViewRequest < ApplicationRecord
   end
 
   private
+
+  # <!-- 追記開始 --> `owner_id` を自動設定するメソッド
+  def set_owner_id
+    return unless owner_id.nil?
+
+    matched_user = matching_user
+    if matched_user.present?
+      self.owner_id = matched_user.id
+      Rails.logger.debug "✅ owner_id を自動設定: #{matched_user.id}"
+    else
+      Rails.logger.debug '⚠️ owner_id の自動設定に失敗 (該当ユーザーなし)'
+    end
+  end
+  # <!-- 追記終了 -->
 
   # **同じ情報のリクエストが登録されないようにする**
   def unique_combination

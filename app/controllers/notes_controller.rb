@@ -1,11 +1,26 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
   before_action :check_view_permission, only: [:public_page] # <!-- 追記 --> 公開ページのアクセス制限を追加
-  # (上の一行をコメントアウトとすると、アクセス権限の設定が外れます。)
+  before_action :set_page_owner, only: [:index, :public_page] # <!-- 追記 --> ページ所有者を設定
 
   def index
     @note = current_user.notes.order(created_at: :desc).first || Note.new
     @view_accesses = ViewAccess.includes(:owner, :viewer).where(owner_id: current_user.id).to_a # <!-- 追記 -->
+
+    # <!-- 追記開始 --> 親か子かで表示する閲覧履歴を切り替え
+    if @page_owner.blank?
+      Rails.logger.error '🚨 ページ所有者が設定されていません'
+      flash[:alert] = 'ページ所有者が見つかりません。'
+      @view_requests = []
+      return
+    end
+
+    @view_requests = if current_user_is_owner?
+                       ViewRequest.where(owner_id: current_user.id)
+                     else
+                       ViewRequest.where(viewer_id: current_user.id, owner_id: @page_owner.id)
+                     end
+    # <!-- 追記終了 -->
   end
 
   def create
@@ -87,6 +102,21 @@ class NotesController < ApplicationController
   end
 
   private
+
+  # <!-- 追記 --> ページ所有者を設定するメソッド
+  def set_page_owner
+    @page_owner = User.find_by(id: params[:owner_id]) || current_user
+    Rails.logger.debug "👤 ページ所有者: #{@page_owner&.inspect || 'なし'}"
+  end
+
+  # <!-- 追記 --> 親ユーザー判定メソッド
+  def current_user_is_owner?
+    if @page_owner.blank?
+      Rails.logger.error '🚨 current_user_is_owner?: @page_owner が nil です'
+      return false
+    end
+    current_user.present? && current_user.id == @page_owner.id
+  end
 
   # <!-- 追記 --> 公開ページアクセス権限の確認メソッド
   def check_view_permission
