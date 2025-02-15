@@ -74,6 +74,19 @@ class ViewRequestsController < ApplicationController
     redirect_to notes_path
   end
 
+  # ✅ 【追加】destroyアクション
+  def destroy
+    @view_request = ViewRequest.find(params[:id])
+
+    if @view_request.destroy
+      flash[:notice] = '閲覧リクエストを削除しました。'
+    else
+      flash[:alert] = '閲覧リクエストの削除に失敗しました。'
+    end
+
+    redirect_to notes_path
+  end
+
   private
 
   def view_request_params
