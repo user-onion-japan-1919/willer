@@ -1125,11 +1125,19 @@ document.addEventListener("DOMContentLoaded", function() {
     background-color: #9ACD32; /* ✅ 黄緑 */
   }
 
-  /* ホバー時の色を #556B2F（濃いオリーブグリーン）に変更 */
-  .tabs button:hover, .sub-tabs button:hover {
-    background-color: #556B2F; /* ✅ ダークオリーブグリーン */
-  }
+  /* ✅ ホバー時の文字色を白に変更 (既存の .tabs, .sub-tabs に追加) */
+.tabs button:hover, 
+.sub-tabs button:hover {
+  background-color: #556B2F; /* 既存の濃いオリーブグリーン */
+  color: white; /* ✅ ホバー時に文字色を白に変更 */
+}
 
+.tabs #family-tab:hover, 
+.sub-tabs #parent-tab:hover, 
+.sub-tabs #child-tab:hover {
+  background-color: #2F4F6F; /* 既存の濃い青 */
+  color: white; /* ✅ ホバー時に文字色を白に変更 */
+}
 
 /* ✅ すべてのテキストフィールドを画面幅の50%に設定 */
 input[type="text"], select {
