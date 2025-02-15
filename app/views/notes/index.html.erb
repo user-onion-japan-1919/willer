@@ -192,11 +192,7 @@
 
 <%= form_with model: @note, url: @note.persisted? ? note_path(@note) : notes_path, method: @note.persisted? ? :patch : :post, local: true do |f| %>
 
-
   <br>
-
-
-
 
   <!-- 表1 -->
   <h3><b> 生前 </b>に決めておきたいこと</h3>
@@ -209,18 +205,33 @@
       <th>やっておきたいリスト<br></th>
     </tr>
     <tr>
-<td><%= f.text_area :type_1, rows: 4, placeholder: "<遠慮せず自由に記載しよう>" %></td>
-<td><%= f.text_area :type_2, rows: 4, placeholder: "・税金の支払い関係\n・優先順位の決定\n・事前手続き関係\n・その他" %></td>
-<td><%= f.text_area :type_3, rows: 4, placeholder: "・財産と相続の対象者\n・財産(株式/家宝/土地/家/車)\n・使い道の希望\n・その他\n" %></td>
-<td><%= f.text_area :type_4, rows: 4, placeholder: "・契約中の家賃水道光熱費\n・連絡先や書類の保管先\n・契約継続の是非\n・注意事項と補足" %></td>
-<td><%= f.text_area :type_5, rows: 4, placeholder: "・〇〇へ旅行する\n・創作物を仕上げる\n・子とお酒を飲む\n・孫の顔を見る" %></td>
+      <td>
+        <div class="placeholder">＜遠慮せず自由に記載しよう＞</div>
+        <%= f.text_area :type_1, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">・税金の支払い関係<br>・優先順位の決定<br>・事前手続き関係<br>・その他</div>
+        <%= f.text_area :type_2, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">・財産と相続の対象者<br>・財産(株式/家宝/土地/家/車)<br>・使い道の希望<br>・その他</div>
+        <%= f.text_area :type_3, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">・契約中の家賃水道光熱費<br>・連絡先や書類の保管先<br>・契約継続の是非<br>・注意事項と補足</div>
+        <%= f.text_area :type_4, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">・〇〇へ旅行する<br>・創作物を仕上げる<br>・子とお酒を飲む<br>・孫の顔を見る</div>
+        <%= f.text_area :type_5, rows: 4 %>
+      </td>
     </tr>
   </table>
 
   <br>
 
   <!-- 表2 -->
- <h3><b> 逝去後 </b>のご希望</h3>
+  <h3><b> 逝去後 </b>のご希望</h3>
   <table>
     <tr>
       <th>死後７日間以内に必要な手続き</th>
@@ -230,44 +241,100 @@
       <th>エンディングノート<br>(実際に自筆したメモや遺言書)</th>
     </tr>
     <tr>
-<td><%= f.text_area :issue_1, rows: 4, placeholder: "※この項目は本来、子が実行\n　することですので空欄も可\n・死亡届・手続者の指名\n・その他行政手続き書類"%></td>
-<td><%= f.text_area :issue_2, rows: 4, placeholder: "・希望する葬儀屋\n・葬儀の種類と予算\n・招待する人\n・その他の希望" %></td>
-<td><%= f.text_area :issue_3, rows: 4, placeholder: "・希望の墓地・霊園・納骨堂\n・墓石・入墓の予算\n・維持管理費の記入\n・その他の希望" %></td>
-<td><%= f.text_area :issue_4, rows: 4, placeholder: "<配偶者/祖父母/兄弟>\n<こども/孫/いとこ>\n<友人/恩人/お得意先>\n・関係継続の是非" %></td>
-<td><%= f.text_area :issue_5, rows: 4, placeholder: "<ここには金融情報記載不可>\n<ここにはパスワ-ド記載不可>\n・保管先と公正証書の有無\n・開封の時期と開封者の指名" %></td>
+      <td>
+        <div class="placeholder">※この項目は本来、子が実行することですので空欄も可<br>・死亡届・手続者の指名<br>・その他行政手続き書類</div>
+        <%= f.text_area :issue_1, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">・希望する葬儀屋<br>・葬儀の種類と予算<br>・招待する人<br>・その他の希望</div>
+        <%= f.text_area :issue_2, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">・希望の墓地・霊園・納骨堂<br>・墓石・入墓の予算<br>・維持管理費の記入<br>・その他の希望</div>
+        <%= f.text_area :issue_3, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">＜配偶者/祖父母/兄弟＞<br>＜こども/孫/いとこ＞<br>＜友人/恩人/お得意先＞<br>・関係継続の是非</div>
+        <%= f.text_area :issue_4, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">＜ここには金融情報記載不可＞<br>＜ここにはパスワ-ド記載不可＞<br>・保管先と公正証書の有無<br>・開封の時期と開封者の指名</div>
+        <%= f.text_area :issue_5, rows: 4 %>
+      </td>
     </tr>
   </table>
-
 
   <br>
 
   <!-- 表0 -->
- <h3><b> 自由記述 </b>　🗒️</h3>
+  <h3><b> 自由記述 </b>　🗒️</h3>
   <table>
     <tr>
-      <th><%= f.text_area :title_1, rows: 2, placeholder: "タイトル１"%></th>
-      <th><%= f.text_area :title_2, rows: 2, placeholder: "タイトル2"%></th>
-      <th><%= f.text_area :title_3, rows: 2, placeholder: "タイトル3"%></th>
-      <th><%= f.text_area :title_4, rows: 2, placeholder: "タイトル4"%></th>
-      <th><%= f.text_area :title_5, rows: 2, placeholder: "タイトル5"%></th>
+      <th>
+        <div class="placeholder">タイトル１</div>
+        <%= f.text_area :title_1, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル2</div>
+        <%= f.text_area :title_2, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル3</div>
+        <%= f.text_area :title_3, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル4</div>
+        <%= f.text_area :title_4, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル5</div>
+        <%= f.text_area :title_5, rows: 2 %>
+      </th>
     </tr>
     <tr>
-<td><%= f.text_area :content_1, rows: 4, placeholder: "要件を入力"%></td>
-<td><%= f.text_area :content_2, rows: 4, placeholder: "要件を入力" %></td>
-<td><%= f.text_area :content_3, rows: 4, placeholder: "要件を入力" %></td>
-<td><%= f.text_area :content_4, rows: 4, placeholder: "要件を入力" %></td>
-<td><%= f.text_area :content_5, rows: 4, placeholder: "要件を入力" %></td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_1, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_2, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_3, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_4, rows: 4 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_5, rows: 4 %>
+      </td>
     </tr>
   </table>
 
   <br>
 
-
-
-  <br>
   <%= f.submit " 📌 保存する　", class: "btn btn-primary" %>
 <% end %>
 
+<!-- 追記: プレースホルダーCSS -->
+<style>
+  .placeholder {
+    position: absolute;
+    color: grey;
+    pointer-events: none;
+    padding: 5px;
+    opacity: 0.5;
+    z-index: 10; /* 追加: プレースホルダーを最前面に */
+  }
+  textarea {
+    position: relative;
+    z-index: 1; /* テキストエリアを背景に配置 */
+  }
+</style>
 
 
 
