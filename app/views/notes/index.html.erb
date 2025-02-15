@@ -54,6 +54,28 @@
     <br>
     　　　<button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
     　　<button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
+
+<!-- 追記開始: 上部に戻りリロードボタン -->
+　　　　　<button id="scrollAndReloadBtn" style="padding: 10px 20px; background-color: #4CAF50; color: white; border-radius: 5px; border: none; cursor: pointer;">
+  ⤴️ 上へ戻ってリロード
+</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const scrollAndReloadBtn = document.getElementById("scrollAndReloadBtn");
+
+    // ボタンクリック時の動作
+    scrollAndReloadBtn.addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        location.reload();
+      }, 600); // スクロールが終わる0.6秒後にリロード
+    });
+  });
+</script>
+
+<!-- 追記終了 -->
+
   </div>
 </div>
 
@@ -64,6 +86,30 @@
     <br>
     　　　<button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用  <br>(閲覧許可)</button>
     　　<button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用  <br>(閲覧検索)</button>
+
+<!-- 追記開始: 上部に戻りリロードボタン -->
+　　　　　<button id="scrollAndReloadBtn" style="padding: 10px 20px; background-color: #4CAF50; color: white; border-radius: 5px; border: none; cursor: pointer;">
+  ⤴️ 上へ戻ってリロード
+</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const scrollAndReloadBtn = document.getElementById("scrollAndReloadBtn");
+
+    // ボタンクリック時の動作
+    scrollAndReloadBtn.addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        location.reload();
+      }, 600); // スクロールが終わる0.6秒後にリロード
+    });
+  });
+</script>
+
+
+
+<!-- 追記終了 -->
+
   </div>
 </div>
 
