@@ -65,8 +65,11 @@ class ViewPermissionsController < ApplicationController
       )
 
       # ✅ `view_accesses` の `rejected_count` をリセット
-      view_access = ViewAccess.find_by(viewer_id: viewer.id, owner_id: current_user.id)
-      view_access.update(rejected_count: 0) if view_access
+      view_access = ViewAccess.find_or_initialize_by(viewer_id: viewer.id, owner_id: current_user.id)
+      view_access.update!(
+        rejected_count: 0, # 拒否回数をリセット
+        access_count: view_access.access_count.to_i + 1 # ✅ アクセス回数を+1 (追記)
+      )
 
       render json: { status: 'success' }
     else
