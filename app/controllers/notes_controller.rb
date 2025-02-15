@@ -91,7 +91,10 @@ class NotesController < ApplicationController
   # <!-- 追記 --> 公開ページアクセス権限の確認メソッド
   def check_view_permission
     @user = User.find_by(uuid: params[:uuid])
-    return redirect_to root_path, alert: '公開ページは存在しません。' if @user.nil?
+    if @user.nil?
+      flash[:alert] = '公開ページは存在しません。'
+      return render inline: "<script>alert('公開ページは存在しません。'); window.close();</script>".html_safe
+    end
 
     # 公開者本人はアクセス許可
     return if current_user == @user
@@ -125,7 +128,13 @@ class NotesController < ApplicationController
     view_access.save
     # <!-- 追記終了 -->
 
-    redirect_to root_path, alert: 'この公開ページを閲覧する権限がありません。'
+    # ✅ 別ウインドウにエラー通知を表示
+    render inline: <<-HTML.html_safe
+      <script>
+        alert('※アクセス権限がないため、あなたの個人ページへリダイレクトします。\\n→アクセスの履歴はURL公開者に通知されます。');
+        window.location.href = '#{root_path}';
+      </script>
+    HTML
   end
 
   def note_params
