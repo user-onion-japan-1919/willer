@@ -439,6 +439,7 @@ border: 5px double black;
   <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
   <br>
   <br>
+  <br>
 
 <!-- 生前に決めておきたいこと -->
 
@@ -461,6 +462,8 @@ border: 5px double black;
 </table>
 
 <br>
+<br>
+<br>
 
 <!-- 逝去後のご希望 -->
 <h3><b> 逝去後 </b>のご希望</h3>
@@ -481,6 +484,8 @@ border: 5px double black;
   </tr>
 </table>
 
+<br>
+<br>
 <br>
 
 <!-- 自由記述 -->
@@ -572,8 +577,18 @@ border: 5px double black;
   font-weight: bold !important;
   color: #2C3E50 !important;
   margin-bottom: 10px !important;
-  border-bottom: 2px solid #00796B !important;
+  border-bottom: none !important;
   padding-bottom: 5px !important;
+}
+
+/* ✅ 水色背景エリアを左右3%ずつ広げる */
+.readonly-container {
+  margin-left: -2% !important; /* 左側を3%広げる */
+  margin-right: -2% !important; /* 右側を3%広げる */
+  padding-left: 2% !important; /* 内側も左側に3%の余白 */
+  padding-right: 2% !important; /* 内側も右側に3%の余白 */
+  width: calc(100% + 4%) !important; /* 合計6%分広げる */
+  box-sizing: border-box; /* パディング含めた幅計算 */
 }
 
 </style>
