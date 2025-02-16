@@ -5,7 +5,9 @@
 
 <!-- ✅ 個人ページのURLをQRコード表示 -->
 <% if @user.present? %>
+<div style="width: 25%; height: auto;">
   <%= generate_qr_code(notes_url) %> 
+  </div>
 <% else %>
   <p style="color: red;">⚠️ ユーザー情報が見つかりません。</p>
 <% end %>
