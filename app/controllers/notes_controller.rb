@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
   before_action :authenticate_user!
   before_action :check_view_permission, only: [:public_page] # <!-- 追記 --> 公開ページのアクセス制限を追加
-  before_action :set_page_owner, only: [:index, :public_page] # <!-- 追記 --> ページ所有者を設定
+  before_action :set_page_owner, only: [:index, :public_page, :download_pdf] # <!-- 修正 --> PDFにもページ所有者を設定
 
   def index
     @user = current_user # ✅ @userをcurrent_userに設定
@@ -58,20 +58,17 @@ class NotesController < ApplicationController
       return redirect_to root_path
     end
 
-    # 公開者のノート情報を取得
-    @owner_note = @user.notes.order(created_at: :desc).first || Note.new # ✅ 公開者の最新ノートを取得
-
-    # 閲覧履歴用のview_accesses
+    # <!-- 修正開始 --> HTML用の変数を元のインスタンス名に戻す
     @view_access_logs = ViewAccess.includes(:owner, :viewer)
                                   .where(owner_id: @user.id)
                                   .order(last_accessed_at: :desc)
                                   .to_a
-
-    # アクセス拒否ユーザーを抽出
     @view_accesses = ViewAccess.includes(:owner, :viewer)
                                .where(owner_id: @user.id)
                                .order(last_rejected_at: :desc)
                                .to_a
+    @owner_note = @user.notes.order(created_at: :desc).first || Note.new
+    # <!-- 修正終了 -->
 
     # ✅ 閲覧履歴の更新
     view_access = ViewAccess.find_or_initialize_by(viewer_id: @viewer.id, owner_id: @user.id)
@@ -97,9 +94,18 @@ class NotesController < ApplicationController
   def download_pdf
     @user = User.find(params[:id])
     @viewer = current_user
+
+    # <!-- 修正開始 --> PDF用のビューで必要な変数を統一
+    @view_access_logs = ViewAccess.includes(:viewer)
+                                  .where(owner_id: @user.id)
+                                  .order(last_accessed_at: :desc)
+                                  .to_a
+    @view_accesses = ViewAccess.includes(:viewer)
+                               .where(owner_id: @user.id)
+                               .order(last_rejected_at: :desc)
+                               .to_a
     @owner_note = @user.notes.order(created_at: :desc).first || Note.new
-    @view_access_logs = ViewAccess.includes(:viewer).where(owner_id: @user.id).order(last_accessed_at: :desc)
-    @view_accesses = ViewAccess.includes(:viewer).where(owner_id: @user.id)
+    # <!-- 修正終了 -->
 
     respond_to do |format|
       format.pdf do
