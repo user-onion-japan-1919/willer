@@ -1,6 +1,8 @@
 
 <!DOCTYPE html>
 
+
+
 <html>
 
 <head>
@@ -98,10 +100,7 @@ hr {
 <div style="display: flex; align-items: center; gap: 10px; margin-left: 35px;">
   <input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly 
     style="flex: 1; max-width: 500px; height: 25px; padding: 5px;">　
-  <button onclick="copyPublicPageUrl()" 
-    style="height: 25px; padding: 5px 10px; display: flex; align-items: center;">
-    このページのURLをコピー
-  </button>　　　　　　　　　　　　　　<p style="color: red; font-size: 90%;"> ※第三者に見られない場所で閲覧または書類管理してください。</p>
+　　　　　　　　　　　　　　<p style="color: red; font-size: 90%;"> ※第三者に見られない場所で閲覧または書類管理してください。</p>
 </div>
 
 
@@ -112,13 +111,7 @@ hr {
 
 
 
-<p style="text-align: left;">
-  <%= button_to "あなたの個人ページに戻る", notes_path, 
-    method: :get, 
-    class: "btn btn-secondary", 
-    id: "return-to-notes", 
-    form: { style: "display: inline; margin-left: 35px;" } %>
-</p>
+
 
 
 <script>

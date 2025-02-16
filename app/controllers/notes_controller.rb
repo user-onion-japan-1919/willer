@@ -94,12 +94,27 @@ class NotesController < ApplicationController
 
   # ✅ PDFダウンロードアクションを修正
   def download_pdf
-    @note = current_user.notes.find_by(id: params[:id]) || Note.new(issue_1: '未入力', title_1: '未入力', content_1: '未入力')
+    @user = User.find(params[:id])
+    @viewer = current_user
+    @owner_note = @user.notes.order(created_at: :desc).first || Note.new
+    @view_access_logs = ViewAccess.includes(:viewer).where(owner_id: @user.id).order(last_accessed_at: :desc)
+    @view_accesses = ViewAccess.includes(:viewer).where(owner_id: @user.id)
 
-    pdf = NotePdf.new(@note)
-    send_data pdf.render, filename: "note_#{params[:id] || 'empty'}.pdf",
-                          type: 'application/pdf',
-                          disposition: 'attachment'
+    respond_to do |format|
+      format.pdf do
+        render pdf: "#{@user.first_name}_#{@user.last_name}_公開ページ",
+               template: 'notes/public_page',
+               layout: 'pdf', # 📌 pdf用レイアウトを使用
+               encoding: 'UTF-8',
+               page_size: 'A4',
+               margin: { top: 10, bottom: 10, left: 5, right: 5 },
+               disable_smart_shrinking: true, # 📌 改ページを最適化
+               zoom: 0.75, # 📌 横幅を縮小
+               dpi: 96,
+               stylesheets: ['pdf'] # 📌 pdf.css を適用
+      end
+      format.html { head :not_acceptable }
+    end
   end
 
   private

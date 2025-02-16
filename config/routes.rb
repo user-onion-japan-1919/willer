@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   resources :notes, only: [:index, :create, :edit, :update, :destroy] do
     member do
-      get "download_pdf"
+      get :download_pdf, defaults: { format: :pdf }
     end
   end
 

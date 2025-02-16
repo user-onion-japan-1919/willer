@@ -2,49 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>公開ページ - <%= @user.first_name %> <%= @user.last_name %></title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    table, th, td {
-      border: 1px solid black;
-    }
-    th, td {
-      padding: 8px;
-      text-align: left;
-    }
-    .header {
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-    .footer {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 10px;
-    }
+    <%= WickedPdf.stylesheet_link_tag 'pdf' %>
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1><%= @user.first_name %> <%= @user.last_name %> さんの公開ページ</h1>
-  </div>
-
   <%= yield %>
-
-  <div class="footer">
-    <p>このPDFは <%= Time.current.strftime('%Y-%m-%d %H:%M') %> に生成されました。</p>
-  </div>
 </body>
 </html>
