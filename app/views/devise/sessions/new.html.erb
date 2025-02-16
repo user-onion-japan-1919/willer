@@ -8,7 +8,15 @@
   <div id="error_explanation" style="font-size: 80%; color: red;">
     <ul>
       <% resource.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <% if message.include?('このユーザー情報の組合せは既に登録されています。') %>
+          <li style="font-size: 150%; font-weight: bold;  color: red;">
+            <br>⚠️このユーザー情報の組合せが既に登録されています⚠️
+            <br>エラーメッセージがこれ以外になく、あなたが既にアカウントを作っていなければ、
+            <br>乗っ取り・なりすましの可能性が考えられます。直ちに管理者へ報告をお願いします。<br><br><br>
+          </li>
+        <% else %>
+          <li><%= message %></li>
+        <% end %>
       <% end %>
     </ul>
   </div>
