@@ -653,6 +653,39 @@ button#scrollAndReloadBtn2:hover {
   <% end %>
 </table>
 
+<!-- ✅ 新規追加: 全員分「完全に削除」ボタン（表の右端揃え） -->
+<div style="position: relative; margin-top: 20px;">
+  <button id="clearRejectionsBtn" class="hold-btn" style="
+    font-size: 110%; /* ⭐️文字サイズ110% */
+    position: absolute; 
+    right: 7%; /*  ⭐️表の右端から7%左に配置 */
+  ">
+    🚨 リスト全員を完全に非表示　
+  </button>
+
+
+<p>　</p>
+<br>
+　※　『 非表示 』　　　＝　　　選択したユーザー情報を全て非表示（データ自体は存在）<br>
+　※『移動して保存』　　　　＝　　 　①アクセス拒否回数をリセット（n=0のとき:拒否リストから非表示）<br>
+　　　　　　　　　　　　　　　　　　②アクセス回数を+1（n>0のとき:閲覧履歴として表示）<br>
+　　　　　　　　　　　　　　　　　　③『閲覧を許可したい相手』にデータを移動し保存　(上部許可リストに”default:常に拒否”で保存）<br>
+<p>　</p>
+
+
+
+</div>
+
+
+
+<% else %>
+  <p>　</p>
+  <p style="color: red;">　※不正なアクセスはありませんでした。</p>
+<% end %>
+
+
+
+
 <!-- ✅ ＜追記＞「保留して保存」ボタンのJavaScript処理 -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -698,29 +731,9 @@ button#scrollAndReloadBtn2:hover {
   });
 </script>
 
-<% else %>
-  <p>　</p>
-  <p style="color: red;">　※不正なアクセスはありませんでした。</p>
-<% end %>
 
-<!-- ✅ 新規追加: 全員分「完全に削除」ボタン（表の右端揃え） -->
-<div style="position: relative; margin-top: 20px;">
-  <button id="clearRejectionsBtn" class="hold-btn" style="
-    font-size: 110%; /* ⭐️文字サイズ110% */
-    position: absolute; 
-    right: 7%; /*  ⭐️表の右端から7%左に配置 */
-  ">
-    🚨 リスト全員を完全に非表示　
-  </button>
-</div>
 
-<p>　</p>
-<br>
-　※　『 非表示 』　　　＝　　　選択したユーザー情報を全て非表示（データ自体は存在）<br>
-　※『移動して保存』　　　　＝　　 　①アクセス拒否回数をリセット（n=0のとき:拒否リストから非表示）<br>
-　　　　　　　　　　　　　　　　　　②アクセス回数を+1（n>0のとき:閲覧履歴として表示）<br>
-　　　　　　　　　　　　　　　　　　③『閲覧を許可したい相手』にデータを移動し保存　(上部許可リストに”default:常に拒否”で保存）<br>
-<p>　</p>
+
 
 <!-- 追記終了: アクセス拒否ユーザー一覧 -->
 
