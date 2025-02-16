@@ -7,7 +7,7 @@ class NotesController < ApplicationController
     @note = current_user.notes.order(created_at: :desc).first || Note.new
     @view_accesses = ViewAccess.includes(:owner, :viewer).where(owner_id: current_user.id).to_a # <!-- 追記 -->
 
-    # <!-- 追記開始 --> 親か子かで表示する閲覧履歴を切り替え
+    # <!-- 追記開始 --> ページ所有者が未設定の場合は即時終了
     if @page_owner.blank?
       Rails.logger.error '🚨 ページ所有者が設定されていません'
       flash[:alert] = 'ページ所有者が見つかりません。'
@@ -15,6 +15,7 @@ class NotesController < ApplicationController
       return
     end
 
+    # 閲覧履歴の取得
     @view_requests = if current_user_is_owner?
                        ViewRequest.where(owner_id: current_user.id)
                      else
@@ -56,10 +57,10 @@ class NotesController < ApplicationController
       return redirect_to root_path
     end
 
-    # **公開者のノート情報を取得（閲覧のみ）**
+    # 公開者のノート情報を取得
     @notes = Note.where(user_id: @user.id).to_a # `nil` を防ぐために空配列を返す
 
-    # <!-- 追記 --> 閲覧履歴用のview_accesses
+    # 閲覧履歴用のview_accesses
     @view_access_logs = ViewAccess.includes(:owner, :viewer)
                                   .where(owner_id: @user.id)
                                   .order(last_accessed_at: :desc)
@@ -71,7 +72,7 @@ class NotesController < ApplicationController
                                .order(last_rejected_at: :desc)
                                .to_a
 
-    # **閲覧履歴の更新**
+    # ✅ 閲覧履歴の更新
     view_access = ViewAccess.find_or_initialize_by(viewer_id: @viewer.id, owner_id: @user.id)
 
     # 初回アクセス時にURLを保存
@@ -82,7 +83,7 @@ class NotesController < ApplicationController
       view_access.save
     end
 
-    # **履歴の更新**
+    # 履歴の更新
     if view_access.update(last_accessed_at: Time.current, access_count: (view_access.access_count || 0) + 1)
       Rails.logger.debug "📌 閲覧履歴更新成功: #{view_access.inspect}"
     else
@@ -91,7 +92,7 @@ class NotesController < ApplicationController
     end
   end
 
-  # ✅ **PDFダウンロードアクションを修正**
+  # ✅ PDFダウンロードアクションを修正
   def download_pdf
     @note = current_user.notes.find_by(id: params[:id]) || Note.new(issue_1: '未入力', title_1: '未入力', content_1: '未入力')
 
@@ -103,13 +104,13 @@ class NotesController < ApplicationController
 
   private
 
-  # <!-- 追記 --> ページ所有者を設定するメソッド
+  # ✅ ページ所有者を設定するメソッド（修正済み）
   def set_page_owner
     @page_owner = User.find_by(id: params[:owner_id]) || current_user
     Rails.logger.debug "👤 ページ所有者: #{@page_owner&.inspect || 'なし'}"
   end
 
-  # <!-- 追記 --> 親ユーザー判定メソッド
+  # ✅ 親ユーザー判定メソッド
   def current_user_is_owner?
     if @page_owner.blank?
       Rails.logger.error '🚨 current_user_is_owner?: @page_owner が nil です'
@@ -118,7 +119,7 @@ class NotesController < ApplicationController
     current_user.present? && current_user.id == @page_owner.id
   end
 
-  # <!-- 追記 --> 公開ページアクセス権限の確認メソッド
+  # ✅ 公開ページアクセス権限の確認メソッド
   def check_view_permission
     @user = User.find_by(uuid: params[:uuid])
     if @user.nil?
@@ -129,34 +130,26 @@ class NotesController < ApplicationController
     # 公開者本人はアクセス許可
     return if current_user == @user
 
-    # 公開者のview_permissionsからon_modeが「許可」のユーザーを取得
+    # 許可されたユーザー判定
     permitted_users = @user.view_permissions.where(on_mode: '許可')
 
-    # 許可されたユーザーの情報で完全一致するか確認
-    is_permitted = permitted_users.any? do |vp|
-      User.exists?(
-        first_name: current_user.first_name,
-        first_name_furigana: current_user.first_name_furigana,
-        last_name: current_user.last_name,
-        last_name_furigana: current_user.last_name_furigana,
-        birthday: current_user.birthday,
-        blood_type: current_user.blood_type
-      ) && vp.first_name == current_user.first_name &&
-        vp.first_name_furigana == current_user.first_name_furigana &&
-        vp.last_name == current_user.last_name &&
-        vp.last_name_furigana == current_user.last_name_furigana &&
-        vp.birthday == current_user.birthday &&
-        vp.blood_type == current_user.blood_type
-    end
+    # ✅ ロジックを簡略化：許可リストと`current_user`を照合
+    is_permitted = permitted_users.exists?(
+      first_name: current_user.first_name,
+      first_name_furigana: current_user.first_name_furigana,
+      last_name: current_user.last_name,
+      last_name_furigana: current_user.last_name_furigana,
+      birthday: current_user.birthday,
+      blood_type: current_user.blood_type
+    )
 
     return if is_permitted
 
-    # <!-- 追記開始 --> アクセス拒否時にview_accessesを保存
+    # アクセス拒否時にview_accessesを保存
     view_access = ViewAccess.find_or_initialize_by(viewer_id: current_user.id, owner_id: @user.id)
     view_access.rejected_count = (view_access.rejected_count || 0) + 1
     view_access.last_rejected_at = Time.current
     view_access.save
-    # <!-- 追記終了 -->
 
     # ✅ 別ウインドウにエラー通知を表示
     render inline: <<-HTML.html_safe
@@ -167,6 +160,7 @@ class NotesController < ApplicationController
     HTML
   end
 
+  # ✅ Strong Parameters
   def note_params
     params.require(:note).permit(
       :type_1, :type_2, :type_3, :type_4, :type_5,

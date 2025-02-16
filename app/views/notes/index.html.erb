@@ -794,39 +794,47 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
+// ✅ 「全員を非表示」専用処理
 document.addEventListener("DOMContentLoaded", function() {
-    const clearButton = document.getElementById("clearRejectionsBtn");
+  const clearButton = document.getElementById("clearRejectionsBtn");
 
-    clearButton.addEventListener("click", function() {
-      if (!confirm("⚠️ 本当にリスト全員を非表示にしますか？\n（この操作は取り消せません）")) {
-        return;
-      }
+  if (!clearButton) {
+    console.warn("⚠️ clearRejectionsBtn ボタンが見つかりません。");
+    return;
+  }
 
-      fetch("/view_permissions/clear_rejections", {
+  clearButton.addEventListener("click", async function() {
+    if (!confirm("⚠️ 本当にリスト全員を非表示にしますか？\n（この操作は取り消せません）")) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/view_permissions/clear_rejections", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
         },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === "success") {
-          // ✅ 成功時UI更新
-          document.querySelectorAll("[id^='reject_count_']").forEach(el => {
-            el.textContent = "0 回"; // 全ユーザーの拒否回数を即座に0表示
-          });
-          alert("✅ 全てのアクセス拒否回数をリセットしました。");
-        } else {
-          alert("❌ リセットに失敗しました：" + data.message);
-        }
-      })
-      .catch(error => {
-        console.error("通信エラー:", error);
-        alert("サーバーとの通信に失敗しました。");
       });
-    });
+
+      const data = await response.json();
+
+      // ✅ 【追加】無関係なエラー表示を抑止
+      if (data.status === "success") {
+        document.querySelectorAll("[id^='reject_count_']").forEach(el => {
+          el.textContent = "0 回"; // 全ユーザーの拒否回数を即座に0表示
+        });
+        alert("✅ 全てのアクセス拒否回数をリセットしました。");
+      } else {
+        // ✅ 「全員を非表示」用のエラーメッセージのみ表示
+        alert("❌ 全員を非表示処理でエラー発生：" + (data.message || "不明なエラー"));
+      }
+    } catch (error) {
+      console.error("通信エラー:", error);
+      alert("❌ サーバー通信に失敗しました。エラー詳細: " + error.message);
+    }
   });
+});
 
 
 
