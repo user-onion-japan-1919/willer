@@ -680,9 +680,13 @@ button#scrollAndReloadBtn2:hover {
             document.getElementById(`reject_count_${viewerId}`).textContent = "0 回";
 
             // ✅ 新規追加: アクセス回数を+1にした旨を表示
-            alert("保留が完了しました！（アクセス回数が1加算されました）");
+            alert( "『保留して保存』が完了しました！\n" +
+              "　　　　　　　　　　　　　　　　　　　\n" +
+              "・アクセス拒否回数をリセットしました。\n" +
+              "・アクセス回数を+1しました。\n" +
+              "・保存情報をアクセス権限 許可リストに複製しました。");
           } else {
-            alert("処理に失敗しました：" + data.message);
+            alert("『保留して保存』に失敗しました：" + data.message);
           }
         })
         .catch(error => {
