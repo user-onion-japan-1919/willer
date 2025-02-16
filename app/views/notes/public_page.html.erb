@@ -1,8 +1,6 @@
 
 <!DOCTYPE html>
 
-
-
 <html>
 
 <head>
@@ -86,31 +84,10 @@ hr {
 <!--ここからが本文です----------------------------------------------------------------->
 
 
-
-
-
-<p>　</p>
-
-<p style="color: blue; font-size: 180%; display: block; width: fit-content; margin-left: auto; margin-right: 5%;">
-  <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
-</p>
-
 <h2 style="color: blue">　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
-<p>　</p>
 <div style="display: flex; align-items: center; gap: 10px; margin-left: 35px;">
-  <input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly 
-    style="flex: 1; max-width: 500px; height: 25px; padding: 5px;">　
-　　　　　　　　　　　　　　<p style="color: red; font-size: 90%;"> ※第三者に見られない場所で閲覧または書類管理してください。</p>
+<p style="color: red; font-size: 90%;"> ※第三者に見られない場所で閲覧または書類管理してください。</p>
 </div>
-
-
-<p>　</p>
-
-
-
-
-
-
 
 
 
@@ -131,11 +108,6 @@ hr {
 </script>
 
 
-
-
-
-<p>　</p>
-
 <p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：
   <%= ViewAccess.where(owner_id: @user.id, viewer_id: @user.id).order(last_accessed_at: :desc).limit(1).pluck(:last_accessed_at).first&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
 </p>
@@ -143,7 +115,6 @@ hr {
   <%= ViewAccess.where(owner_id: @user.id, viewer_id: @viewer.id).order(last_accessed_at: :desc).limit(1).pluck(:last_accessed_at).first&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
 </p>
 
-<p>　</p>
 <p>　</p>
 
 <h3>　このページの閲覧履歴</h3>
@@ -219,37 +190,13 @@ hr {
 
 <p>　</p>
 
-<p style="color: red; font-size: 95%; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
-  ※閲覧を許可した覚えのないユーザーが表示されている場合は、①<u>このページを保存</u>のうえ、②<u>この行より上の情報を開発者まで連絡して</u>ください。
-</p>
-<p style="color: red; font-size: 95%; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
-  ※パスワード変更を行っても、ページURLは変更されません。③<u>このアカウントを削除</u>後、④<u>再度、新規登録から作り直して</u>ください。
-</p>
+
 
 
  
 <div style="display: flex; align-items: center; gap: 10px;">
-  　<div style="
-    display: inline-block;
-    background: repeating-linear-gradient(
-      45deg,
-      yellow,
-      yellow 10px,
-      black 10px,
-      black 20px
-    );
-    color: black;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: center;
-    padding: 3.2px 3.2px;
-    border: 2px solid red;
-    text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;
-  ">
-    ⚠️ Caution!
-  </div>
 
-  <h3 style="margin: 0;">⚠️このURLへアクセスし,拒否されたユーザー⚠️</h3>
+  <h3 style="margin: 0;">このページへアクセスし、拒否されたユーザー</h3>
 
   
 </div>
@@ -310,9 +257,7 @@ border: 5px double black;
 
 <p>　</p>
 <p>　</p>
-<p>　</p>
 <hr>
-<p>　</p>
 
 
 
@@ -400,16 +345,16 @@ border: 5px double black;
 
 
 <p>　</p>
-
-
-<p>　</p>
 <p>　</p>
 <hr>
 <p>　</p>
 <p>　</p>
 
 
+<!-- ✅ 改ページしたい箇所にこの記述を挿入 -->
+<div style="page-break-before: always;"></div>
 
+<br>
 
 <p style="font-weight: bold; color: blue; text-decoration: underline;">
   ↓↓↓以下は閲覧専用であり、編集やリンク先への移動は一切できません。↓↓↓
@@ -429,7 +374,7 @@ border: 5px double black;
 
   <br>
   <br>
-  <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
+  <h3> <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート </h3>
   <br>
   <br>
   <br>
@@ -482,7 +427,7 @@ border: 5px double black;
 <br>
 
 <!-- 自由記述 -->
-<h3><b> 自由記述 </b>　🗒️</h3>
+<h3><b> 自由記述 </b></h3>
 <table>
   <tr>
     <th>タイトル1</th>
