@@ -675,8 +675,12 @@ button#scrollAndReloadBtn2:hover {
             // ✅ 成功時のUI更新
             button.textContent = "保留済み";
             button.disabled = true; // ボタンを無効化
-            document.getElementById(`reject_count_${viewerId}`).textContent = "0 回"; // 拒否回数をリセット
-            alert("保留が完了しました！");
+
+            // ✅ アクセス拒否回数をリセット
+            document.getElementById(`reject_count_${viewerId}`).textContent = "0 回";
+
+            // ✅ 新規追加: アクセス回数を+1にした旨を表示
+            alert("保留が完了しました！（アクセス回数が1加算されました）");
           } else {
             alert("処理に失敗しました：" + data.message);
           }
@@ -698,7 +702,8 @@ button#scrollAndReloadBtn2:hover {
 <p>　</p>
 　※『 完全に削除 』　　　　＝　　　　個人情報を含む閲覧記録の全てを削除<br>
 　※『保留して保存』　　　　＝　　 　①保存情報を"アクセス権限　許可リスト"に複製（default:常に拒否）<br>
-　　　　　　　　　　　　　　　　　　②アクセス拒否回数のリセット（0回のとき:表では非表示。データは存在）
+　　　　　　　　　　　　　　　　　　②アクセス拒否回数のリセット（0回のとき:表では非表示。データは存在）<br>
+　　　　　　　　　　　　　　　　　　③アクセス回数を +1 増加（保留の意味を記録）
 <p>　</p>
 
 <!-- 追記終了: アクセス拒否ユーザー一覧 -->

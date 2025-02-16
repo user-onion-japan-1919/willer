@@ -7,8 +7,11 @@ class ViewPermissionsController < ApplicationController
     ActiveRecord::Base.transaction do
       params[:view_permissions].each do |vp_params|
         view_permission = current_user.view_permissions.find(vp_params[:id])
-        view_permission.update!(on_mode: vp_params[:on_mode], on_timer_value: vp_params[:on_timer_value],
-                                on_timer_unit: vp_params[:on_timer_unit])
+        view_permission.update!(
+          on_mode: vp_params[:on_mode],
+          on_timer_value: vp_params[:on_timer_value],
+          on_timer_unit: vp_params[:on_timer_unit]
+        )
       end
     end
     render json: { success: true }
@@ -16,11 +19,11 @@ class ViewPermissionsController < ApplicationController
     render json: { success: false, errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
+  # ✅ 新規作成API
   def create
-    # 📌 フォームのパラメータを取得
     permission_params = view_permission_params
 
-    # 📌 `users` テーブルに一致するユーザーを検索（存在すれば `viewer_id` にセット）
+    # 📌 `users` テーブルに一致するユーザーを検索
     viewer = User.find_by(
       first_name: permission_params[:first_name],
       first_name_furigana: permission_params[:first_name_furigana],
@@ -32,13 +35,16 @@ class ViewPermissionsController < ApplicationController
 
     # 📌 `view_permissions` に保存
     @view_permission = current_user.view_permissions.new(permission_params)
-    @view_permission.viewer_id = viewer.id if viewer.present? # ✅ 存在すれば `viewer_id` をセット
+    @view_permission.viewer_id = viewer.id if viewer.present?
 
     if current_user.view_permissions.count >= 5
       flash[:alert] = '閲覧許可対象者は最大5人まで登録できます。'
     elsif @view_permission.save
-      flash[:notice] =
-        viewer.present? ? "閲覧許可対象者を登録しました。（登録済みユーザー: #{viewer.first_name} #{viewer.last_name}）" : '閲覧許可対象者を登録しました。（未登録ユーザー）'
+      flash[:notice] = if viewer.present?
+                         "閲覧許可対象者を登録しました。（登録済みユーザー: #{viewer.first_name} #{viewer.last_name}）"
+                       else
+                         '閲覧許可対象者を登録しました。（未登録ユーザー）'
+                       end
     else
       flash[:alert] = "登録に失敗しました: #{@view_permission.errors.full_messages.join(', ')}"
     end
@@ -46,29 +52,30 @@ class ViewPermissionsController < ApplicationController
     redirect_to notes_path
   end
 
-  # ✅ ＜追記＞「保留して保存」ボタン機能
+  # ✅ 「保留して保存」ボタン機能
   def hold
     viewer = User.find_by(id: params[:viewer_id])
 
     if viewer
       # ✅ `view_permissions` に保存
-      ViewPermission.create!(
+      ViewPermission.find_or_create_by!(
         owner_id: current_user.id,
-        viewer_id: viewer.id,
-        first_name: viewer.first_name,
-        first_name_furigana: viewer.first_name_furigana,
-        last_name: viewer.last_name,
-        last_name_furigana: viewer.last_name_furigana,
-        birthday: viewer.birthday,
-        blood_type: viewer.blood_type,
-        on_mode: '拒否' # デフォルトは「拒否」
-      )
+        viewer_id: viewer.id
+      ) do |vp|
+        vp.first_name = viewer.first_name
+        vp.first_name_furigana = viewer.first_name_furigana
+        vp.last_name = viewer.last_name
+        vp.last_name_furigana = viewer.last_name_furigana
+        vp.birthday = viewer.birthday
+        vp.blood_type = viewer.blood_type
+        vp.on_mode = '拒否' # デフォルトは「拒否」
+      end
 
-      # ✅ `view_accesses` の `rejected_count` をリセット
+      # ✅ `view_accesses` の更新: 拒否回数をリセット & アクセス回数を+1
       view_access = ViewAccess.find_or_initialize_by(viewer_id: viewer.id, owner_id: current_user.id)
       view_access.update!(
         rejected_count: 0, # 拒否回数をリセット
-        access_count: view_access.access_count.to_i + 1 # ✅ アクセス回数を+1 (追記)
+        access_count: view_access.access_count.to_i + 1 # アクセス回数を+1
       )
 
       render json: { status: 'success' }
@@ -77,6 +84,7 @@ class ViewPermissionsController < ApplicationController
     end
   end
 
+  # ✅ モード更新API
   def update_on_mode
     @view_permission = ViewPermission.find(params[:id])
     if @view_permission.update(on_mode: params[:on_mode])
@@ -86,15 +94,20 @@ class ViewPermissionsController < ApplicationController
     end
   end
 
+  # ✅ タイマー更新API
   def update_on_timer_value_and_unit
     @view_permission = ViewPermission.find(params[:id])
-    if @view_permission.update(on_timer_value: params[:on_timer_value], on_timer_unit: params[:on_timer_unit])
+    if @view_permission.update(
+      on_timer_value: params[:on_timer_value],
+      on_timer_unit: params[:on_timer_unit]
+    )
       render json: { success: true }
     else
       render json: { success: false, errors: @view_permission.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+  # ✅ 閲覧許可削除API
   def destroy
     @view_permission = current_user.view_permissions.find(params[:id])
 
@@ -109,15 +122,18 @@ class ViewPermissionsController < ApplicationController
 
   private
 
+  # ✅ Strong Parameters
   def view_permission_params
     params.require(:view_permission).permit(
-      :first_name, :first_name_furigana, :last_name, :last_name_furigana, :blood_type
+      :first_name, :first_name_furigana,
+      :last_name, :last_name_furigana,
+      :blood_type
     ).merge(
-      birthday: parse_birthday(params[:view_permission]) # ✅ `birthday` のフォーマット統一
+      birthday: parse_birthday(params[:view_permission])
     )
   end
 
-  # ✅ `UsersController` と統一した `birthday` 変換処理
+  # ✅ `birthday` をパラメータから正しいフォーマットに変換
   def parse_birthday(params)
     return unless params['birthday(1i)'].present? && params['birthday(2i)'].present? && params['birthday(3i)'].present?
 
@@ -129,6 +145,6 @@ class ViewPermissionsController < ApplicationController
       )
     rescue StandardError
       nil
-    end # **エラー回避**
+    end
   end
 end
