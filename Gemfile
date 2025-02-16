@@ -82,3 +82,5 @@ gem 'prawn-table'
 
 gem 'sidekiq'
 gem 'whenever', require: false
+
+gem 'rqrcode'
