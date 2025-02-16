@@ -4,18 +4,25 @@
 
   <h2 style="color: darkbrown; font-size: 150%;">遺言の作成・管理・共有  - Will_Note -  📓</h2>
 
+<br>
 <% if resource.errors.any? %>
   <div id="error_explanation" style="font-size: 80%; color: red;">
     <ul>
       <% resource.errors.full_messages.each do |message| %>
         <% if message.include?('このユーザー情報の組合せは既に登録されています。') %>
-          <li style="font-size: 150%; font-weight: bold;  color: red;">
-            <br>⚠️このユーザー情報の組合せが既に登録されています⚠️
+          <li>
+        <span style="font-size: 150%; font-weight: bold; color: red;">
+          <br>⚠️このユーザー情報の組合せが既に登録されています⚠️
             <br>エラーメッセージがこれ以外になく、あなたが既にアカウントを作っていなければ、
-            <br>乗っ取り・なりすましの可能性が考えられます。直ちに管理者へ報告をお願いします。<br><br><br>
-          </li>
-        <% else %>
-          <li><%= message %></li>
+            <br>乗っ取り・なりすましの可能性が考えられます。直ちに管理者へ報告をお願いします。<br>
+        </span><br>
+        <span>
+          ”Email ：このメールアドレスは既に使用されています”  が表示される場合は、<br>
+          既にご登録済みの可能性が高いです。一度ご確認いただくようお願いします。<br><br><br>
+        </span>
+      </li>
+    <% else %>
+      <li><%= message %></li>
         <% end %>
       <% end %>
     </ul>
