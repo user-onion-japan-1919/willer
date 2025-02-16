@@ -644,7 +644,7 @@ button#scrollAndReloadBtn2:hover {
       <td><%= va.viewer.blood_type %></td>
       <td><%= va.viewer.address %></td>
       <td><%= va.viewer.phone_number %></td>
-      <td>完全に削除</td>
+      <td>ユーザー削除</td>
       <td>
         <!-- 追記: 「保留して保存」ボタン -->
         <button class="hold-btn" data-viewer-id="<%= va.viewer.id %>" id="hold_btn_<%= va.viewer.id %>">保留して保存</button>
@@ -703,11 +703,16 @@ button#scrollAndReloadBtn2:hover {
   <p style="color: red;">　※不正なアクセスはありませんでした。</p>
 <% end %>
 
+
 <p>　</p>
-　※『 完全に削除 』　　　　＝　　　　個人情報を含む閲覧記録の全てを削除<br>
-　※『保留して保存』　　　　＝　　 　①保存情報を"アクセス権限　許可リスト"に複製（default:常に拒否）<br>
-　　　　　　　　　　　　　　　　　　②アクセス拒否回数のリセット（0回のとき:表では非表示。データは存在）<br>
-　　　　　　　　　　　　　　　　　　③アクセス回数を +1 増加（保留の意味を記録）
+<br>
+　※『 ユーザー削除 』　　　＝　　　　選択したユーザーの個人情報を全て非表示<br>
+<br>
+　※『保留して保存』　　　　＝　　 　①アクセス拒否回数をリセット（n=0のとき:拒否リストで非表示）<br>
+　　　　　　　　　　　　　　　　　　②アクセス回数を+1（n>0のとき:閲覧履歴として表示）<br>
+　　　　　　　　　　　　　　　　　　③保存情報を"『閲覧を許可したい相手』としてデータを複製　(n>0のとき:アクセス権限 許可リストで表示。default:常に拒否）<br>
+<br>
+　※『 完全に削除 』　　　　＝　　　　”拒否されたユーザー”リスト全員の個人情報を全て非表示<br>
 <p>　</p>
 
 <!-- 追記終了: アクセス拒否ユーザー一覧 -->
