@@ -88,48 +88,13 @@ hr {
 <!--ここからが本文です----------------------------------------------------------------->
 
 
+
+
+
 <!-- ✅ PDFでは非表示にするエリア -->
-<% unless request.format.pdf? %>
-  <div class="only-html">
-
-あ
-
-  </div>
-<% end %>
-<!-- ✅ PDFでは非表示にするエリア -->
-
-
-
-
-
-<!-- ✅ PDF専用のエリア -->
-<% if request.format.pdf? %>
-  <div class="only-pdf">
-
-い
-
-  </div>
-<% end %>
-<!-- ✅ PDF専用のエリア -->
-
-
-<!-- ✅ HTMLボタン (PDFでは出力されない) -->
-<% unless request.format.pdf? %>
-  <button type="button" class="only-html-button">HTML専用のボタン</button>
-<% end %>
-
-
-
-<div style="page-break-before: always;"></div>
-
-
-
 
 <p>　</p>
 
-
-
-<!-- ✅ PDFでは非表示にするエリア -->
 <% unless request.format.pdf? %>
   <div class="only-html">
 
@@ -144,12 +109,14 @@ hr {
 
 <h2 style="color: blue">　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
 
-<p>　</p>
+
 
 
 
 
 <!-- ✅ PDFでは非表示にするエリア -->
+<p>　</p>
+
 <% unless request.format.pdf? %>
   <div class="only-html">
 
@@ -166,6 +133,11 @@ hr {
 
   </div>
 <% end %>
+
+
+
+<p>　</p>
+
 <!-- ✅ PDFでは非表示にするエリア -->
 
 
@@ -182,8 +154,6 @@ hr {
 
 
 
-
-<p>　</p>
 
 
 
