@@ -58,7 +58,7 @@ class NotesController < ApplicationController
     end
 
     # 公開者のノート情報を取得
-    @notes = Note.where(user_id: @user.id).to_a # `nil` を防ぐために空配列を返す
+    @owner_note = @user.notes.order(created_at: :desc).first || Note.new # ✅ 公開者の最新ノートを取得
 
     # 閲覧履歴用のview_accesses
     @view_access_logs = ViewAccess.includes(:owner, :viewer)
