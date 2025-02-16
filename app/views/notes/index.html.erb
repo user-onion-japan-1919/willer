@@ -596,7 +596,7 @@ button#scrollAndReloadBtn2:hover {
     ⚠️ Caution!
   </div>
 
-  <h3 style="margin: 0;">⚠️あなたの公開ページURLへアクセスし,拒否されたユーザー⚠️</h3>
+  <h3 style="margin: 0;">⚠️あなたの公開ページURLへアクセスし、拒否されたユーザー⚠️</h3>
 
   
 </div>
@@ -627,8 +627,8 @@ button#scrollAndReloadBtn2:hover {
     <th>血液型</th>
     <th>住所</th>
     <th>電話番号</th>
-    <th>削除</th>
-    <th>保留</th>
+    <th>非表示</th>
+    <th>保存</th>
   </tr>
 
   <% rejected_accesses.each do |va| %>
@@ -644,10 +644,10 @@ button#scrollAndReloadBtn2:hover {
       <td><%= va.viewer.blood_type %></td>
       <td><%= va.viewer.address %></td>
       <td><%= va.viewer.phone_number %></td>
-      <td>ユーザー削除</td>
+      <td>非表示</td>
       <td>
         <!-- 追記: 「保留して保存」ボタン -->
-        <button class="hold-btn" data-viewer-id="<%= va.viewer.id %>" id="hold_btn_<%= va.viewer.id %>">保留して保存</button>
+        <button class="hold-btn" data-viewer-id="<%= va.viewer.id %>" id="hold_btn_<%= va.viewer.id %>">移動して保存</button>
       </td>
     </tr>
   <% end %>
@@ -680,13 +680,13 @@ button#scrollAndReloadBtn2:hover {
             document.getElementById(`reject_count_${viewerId}`).textContent = "0 回";
 
             // ✅ 新規追加: アクセス回数を+1にした旨を表示
-            alert( "『保留して保存』が完了しました！\n" +
+            alert( "『移動して保存』が完了しました！\n" +
               "　　　　　　　　　　　　　　　　　　　\n" +
               "・アクセス拒否回数をリセットしました。\n" +
               "・アクセス回数を+1しました。\n" +
-              "・保存情報をアクセス権限 許可リストに複製しました。");
+              "・許可リストに情報を複製しました。");
           } else {
-            alert("『保留して保存』に失敗しました：" + data.message);
+            alert("『移動して保存』に失敗しました：" + data.message);
           }
         })
         .catch(error => {
@@ -703,16 +703,23 @@ button#scrollAndReloadBtn2:hover {
   <p style="color: red;">　※不正なアクセスはありませんでした。</p>
 <% end %>
 
+<!-- ✅ 新規追加: 全員分「完全に削除」ボタン（表の右端揃え） -->
+<div style="position: relative; margin-top: 20px;">
+  <button id="clearRejectionsBtn" class="hold-btn" style="
+    font-size: 110%; /* ⭐️文字サイズ110% */
+    position: absolute; 
+    right: 7%; /*  ⭐️表の右端から7%左に配置 */
+  ">
+    🚨 リスト全員を完全に非表示　
+  </button>
+</div>
 
 <p>　</p>
 <br>
-　※『 ユーザー削除 』　　　＝　　　　選択したユーザーの個人情報を全て非表示<br>
-<br>
-　※『保留して保存』　　　　＝　　 　①アクセス拒否回数をリセット（n=0のとき:拒否リストで非表示）<br>
+　※　『 非表示 』　　　＝　　　選択したユーザー情報を全て非表示（データ自体は存在）<br>
+　※『移動して保存』　　　　＝　　 　①アクセス拒否回数をリセット（n=0のとき:拒否リストから非表示）<br>
 　　　　　　　　　　　　　　　　　　②アクセス回数を+1（n>0のとき:閲覧履歴として表示）<br>
-　　　　　　　　　　　　　　　　　　③保存情報を"『閲覧を許可したい相手』としてデータを複製　(n>0のとき:アクセス権限 許可リストで表示。default:常に拒否）<br>
-<br>
-　※『 完全に削除 』　　　　＝　　　　”拒否されたユーザー”リスト全員の個人情報を全て非表示<br>
+　　　　　　　　　　　　　　　　　　③『閲覧を許可したい相手』にデータを移動し保存　(上部許可リストに”default:常に拒否”で保存）<br>
 <p>　</p>
 
 <!-- 追記終了: アクセス拒否ユーザー一覧 -->
@@ -772,6 +779,44 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const clearButton = document.getElementById("clearRejectionsBtn");
+
+    clearButton.addEventListener("click", function() {
+      if (!confirm("⚠️ 本当にリスト全員を非表示にしますか？\n（この操作は取り消せません）")) {
+        return;
+      }
+
+      fetch("/view_permissions/clear_rejections", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          // ✅ 成功時UI更新
+          document.querySelectorAll("[id^='reject_count_']").forEach(el => {
+            el.textContent = "0 回"; // 全ユーザーの拒否回数を即座に0表示
+          });
+          alert("✅ 全てのアクセス拒否回数をリセットしました。");
+        } else {
+          alert("❌ リセットに失敗しました：" + data.message);
+        }
+      })
+      .catch(error => {
+        console.error("通信エラー:", error);
+        alert("サーバーとの通信に失敗しました。");
+      });
+    });
+  });
+
+
+
+
 </script>
 
 <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ③ parentの終了タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->

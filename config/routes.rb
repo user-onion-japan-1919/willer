@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :view_permissions, only: [:index, :new, :create, :destroy] do
     collection do
       post "request_access"
+      post :clear_rejections # ✅ 全拒否リセット用エンドポイント
     end
     member do
       patch "update_on_mode"                  # モード更新用ルート

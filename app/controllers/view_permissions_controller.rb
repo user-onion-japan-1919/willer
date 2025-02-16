@@ -120,6 +120,14 @@ class ViewPermissionsController < ApplicationController
     redirect_to notes_path
   end
 
+  # ✅ 全ユーザーの拒否回数をリセットするアクション
+  def clear_rejections
+    ViewAccess.where(owner_id: current_user.id).update_all(rejected_count: 0)
+    render json: { status: 'success', message: '全てのアクセス拒否回数をリセットしました。' }
+  rescue StandardError => e
+    render json: { status: 'error', message: e.message }, status: :unprocessable_entity
+  end
+
   private
 
   # ✅ Strong Parameters
