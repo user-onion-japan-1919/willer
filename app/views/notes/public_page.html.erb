@@ -434,11 +434,14 @@ border: 5px double black;
 
 
 
-
-
-<h2 style="color: darkbrown; font-size: 150%;">公開者の遺言書（閲覧専用） 📓</h2>
+  <br>
+  <br>
+  <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
+  <br>
+  <br>
 
 <!-- 生前に決めておきたいこと -->
+
 <h3><b> 生前 </b>に決めておきたいこと</h3>
 <table>
   <tr>
@@ -513,6 +516,11 @@ border: 5px double black;
   </tr>
 </table>
 
+<br>
+<br>
+<br>
+<br>
+
 <!-- プレースホルダーCSSは不要なので省略 -->
 
 
@@ -531,3 +539,41 @@ border: 5px double black;
 
 <br>
 <br>
+
+
+
+
+<style>
+
+/* ✅ 水色背景内のテーブル書式を独立調整 */
+#readonly-child-section table {
+  border-collapse: separate !important; /* 他のテーブル設定を上書き */
+  border-spacing: 2px !important; /* セル間隔を設定 */
+  margin-top: 15px !important;
+  width: 100% !important; 
+}
+
+#readonly-child-section th, 
+#readonly-child-section td {
+  padding: 6px !important;
+  font-size: 13px !important;
+  text-align: center !important;
+  color: #333 !important; 
+  background-color: #FFFFFF !important; 
+  border: 1px solid #444 !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important; /* 改行を尊重 */
+}
+
+/* ✅ 水色背景内の見出しスタイル */
+#readonly-child-section h3 {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #2C3E50 !important;
+  margin-bottom: 10px !important;
+  border-bottom: 2px solid #00796B !important;
+  padding-bottom: 5px !important;
+}
+
+</style>
