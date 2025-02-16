@@ -4,6 +4,7 @@ class NotesController < ApplicationController
   before_action :set_page_owner, only: [:index, :public_page] # <!-- 追記 --> ページ所有者を設定
 
   def index
+    @user = current_user # ✅ @userをcurrent_userに設定
     @note = current_user.notes.order(created_at: :desc).first || Note.new
     @view_accesses = ViewAccess.includes(:owner, :viewer).where(owner_id: current_user.id).to_a # <!-- 追記 -->
 

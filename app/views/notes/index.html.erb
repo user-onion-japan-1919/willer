@@ -2,7 +2,17 @@
 
 <br>
 <br>
-<%= generate_qr_code('https://example.com') %>
+
+<!-- ✅ 個人ページのURLをQRコード表示 -->
+<% if @user.present? %>
+  <%= generate_qr_code(notes_url) %> 
+<% else %>
+  <p style="color: red;">⚠️ ユーザー情報が見つかりません。</p>
+<% end %>
+<!-- ✅ 個人ページのURLをQRコード表示 -->
+
+
+
 <h1>
   ◎<%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　
 </h1>
