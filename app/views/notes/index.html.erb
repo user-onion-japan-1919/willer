@@ -254,7 +254,7 @@
 
   <!-- 表1 -->
   <h3><b> 生前 </b>に決めておきたいこと</h3>
-  <table>
+  <table class="note-table">
     <tr>
       <th>子へのメッセージ</th>
       <th>税金・行政関係<br>(※金融情報の記載不可)</th>
@@ -265,23 +265,23 @@
     <tr>
       <td>
         <div class="placeholder">＜遠慮せず自由に記載しよう＞</div>
-        <%= f.text_area :type_1, rows: 4 %>
+        <%= f.text_area :type_1, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">・税金の支払い関係<br>・優先順位の決定<br>・事前手続き関係<br>・その他</div>
-        <%= f.text_area :type_2, rows: 4 %>
+        <%= f.text_area :type_2, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">・財産と相続の対象者<br>・財産(株式/家宝/土地/家/車)<br>・使い道の希望<br>・その他</div>
-        <%= f.text_area :type_3, rows: 4 %>
+        <%= f.text_area :type_3, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">・契約中の家賃水道光熱費<br>・連絡先や書類の保管先<br>・契約継続の是非<br>・注意事項と補足</div>
-        <%= f.text_area :type_4, rows: 4 %>
+        <%= f.text_area :type_4, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">・〇〇へ旅行する<br>・創作物を仕上げる<br>・子とお酒を飲む<br>・孫の顔を見る</div>
-        <%= f.text_area :type_5, rows: 4 %>
+        <%= f.text_area :type_5, rows: 10 %>
       </td>
     </tr>
   </table>
@@ -290,7 +290,7 @@
 
   <!-- 表2 -->
   <h3><b> 逝去後 </b>のご希望</h3>
-  <table>
+  <table class="note-table">
     <tr>
       <th>死後７日間以内に必要な手続き</th>
       <th>葬儀関係</th>
@@ -301,23 +301,23 @@
     <tr>
       <td>
         <div class="placeholder">※この項目は本来,子が実行する<br>　ものですので、空欄でも可<br>・死亡届・手続者の指名<br>・その他行政手続き書類</div>
-        <%= f.text_area :issue_1, rows: 4 %>
+        <%= f.text_area :issue_1, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">・希望する葬儀屋<br>・葬儀の種類と予算<br>・招待する人<br>・その他の希望</div>
-        <%= f.text_area :issue_2, rows: 4 %>
+        <%= f.text_area :issue_2, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">・希望の墓地・霊園・納骨堂<br>・墓石・入墓の予算<br>・維持管理費の記入<br>・その他の希望</div>
-        <%= f.text_area :issue_3, rows: 4 %>
+        <%= f.text_area :issue_3, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">＜配偶者/祖父母/兄弟＞<br>＜こども/孫/いとこ＞<br>＜友人/恩人/お得意先＞<br>・関係継続の是非</div>
-        <%= f.text_area :issue_4, rows: 4 %>
+        <%= f.text_area :issue_4, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">＜ここには金融情報記載不可＞<br>＜ここにはパスワ-ド記載不可＞<br>・保管先と公正証書の有無<br>・開封の時期と開封者の指名</div>
-        <%= f.text_area :issue_5, rows: 4 %>
+        <%= f.text_area :issue_5, rows: 10 %>
       </td>
     </tr>
   </table>
@@ -326,7 +326,7 @@
 
   <!-- 表0 -->
   <h3><b> 自由記述 </b>　🗒️</h3>
-  <table>
+  <table class="note-table">
     <tr>
       <th>
         <div class="placeholder">タイトル１</div>
@@ -352,23 +352,23 @@
     <tr>
       <td>
         <div class="placeholder">要件を入力</div>
-        <%= f.text_area :content_1, rows: 4 %>
+        <%= f.text_area :content_1, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">要件を入力</div>
-        <%= f.text_area :content_2, rows: 4 %>
+        <%= f.text_area :content_2, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">要件を入力</div>
-        <%= f.text_area :content_3, rows: 4 %>
+        <%= f.text_area :content_3, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">要件を入力</div>
-        <%= f.text_area :content_4, rows: 4 %>
+        <%= f.text_area :content_4, rows: 10 %>
       </td>
       <td>
         <div class="placeholder">要件を入力</div>
-        <%= f.text_area :content_5, rows: 4 %>
+        <%= f.text_area :content_5, rows: 10 %>
       </td>
     </tr>
   </table>
@@ -436,6 +436,79 @@ button#scrollAndReloadBtn2:hover {
   color: white !important;            /* 文字色を白に変更 */
   transition: background-color 0.3s, color 0.3s;
 }
+
+/* ✅ ノート用の表: 初期等間隔かつテキストエリアに追従 */
+.note-table {
+  width: 95% !important;
+  table-layout: fixed !important; /* 等間隔を維持 */
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow: visible !important;
+  transition: width 0.3s ease-in-out;
+}
+
+/* ✅ 表のセルを等間隔で表示 (固定幅) */
+.note-table th, 
+.note-table td {
+  padding: 8px;
+  text-align: center;
+  vertical-align: top;
+  width: 20% !important; /* 5列の場合、均等20%ずつ */
+  border: 1px solid black;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* ✅ テキストエリア: 自由にリサイズ可能 */
+.note-table textarea {
+  resize: both !important; /* 右下で自由リサイズ */
+  overflow: auto !important;
+  min-height: 4em !important; /* 初期は4行表示 */
+  width: 100% !important; /* セル幅に100%フィット */
+  min-width: 100px !important;
+  box-sizing: border-box !important;
+  font-size: 14px;
+  padding: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* ✅ プレースホルダー調整 */
+.placeholder {
+  position: absolute;
+  color: #888;
+  pointer-events: none;
+  opacity: 0.5;
+  padding: 5px;
+  font-size: 12px;
+}
+
+/* ✅ スマホ対応（レスポンシブ対応） */
+@media (max-width: 768px) {
+  .note-table {
+    width: 100% !important;
+  }
+  .note-table th, 
+  .note-table td {
+    font-size: 12px;
+    padding: 4px;
+  }
+}
+
+
+/* ✅ テキストエリアの文字だけ左詰めに */
+.note-table textarea {
+  text-align: left !important; /* 左詰め */
+  padding-left: 5px;         /* 左に少し余白 */
+}
+
+/* ✅ プレースホルダーも左詰めに */
+.placeholder {
+  text-align: left !important; /* 左詰め */
+  padding-left: 5px;         /* 左に少し余白 */
+}
+
+
 
 </style>
 
