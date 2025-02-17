@@ -7,8 +7,8 @@
 
  /* ✅ 全体の文字サイズ調整 */
 body, p, span, li, a, table, th, td, pre, code, .code-block {
-  font-size: 16px !important; /* 全体の標準文字サイズを大きく */
-  line-height: 1.6 !important;
+  font-size: 14px !important; /* 全体の標準文字サイズを大きく */
+  line-height: 1.5 !important;
 }
 
 /* ✅ 全体のテーブルに適用されている横幅60%制約を無効化 */
@@ -25,12 +25,6 @@ table, th, td {
   line-height: 1.5 !important; /* 行間を少し広めに設定 */
 }
 
-/* ✅ コード全体（<pre>, <code> など） */
-pre, code, .code-block {
-  font-size: 16px !important; /* コード全体を大きく */
-  line-height: 1.6 !important;
-  font-family: 'Courier New', monospace !important; /* 等幅フォントを指定 */
-}
 
 /* ✅ スマホ対応（画面が狭い場合は文字をやや小さめに調整） */
 @media (max-width: 768px) {
@@ -40,4 +34,9 @@ pre, code, .code-block {
   pre, code {
     font-size: 13px !important;
   }
+}
+
+/* ✅ テキストフィールド下に余白を追加 */
+div {
+  margin-bottom: 15px; /* 下部に余白 */
 }
