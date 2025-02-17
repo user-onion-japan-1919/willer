@@ -240,8 +240,8 @@ hr {
 
   <table border="1">
     <tr>
-      <th>閲覧ユーザー</th>
-      <th>公開者から見た続柄</th>
+      <th>閲覧した<br>ユーザー</th>
+      <th>公開者から<br>見た続柄</th>
       <th>最終アクセス</th>
       <th>アクセス回数</th>
       <th>メールアドレス</th>
@@ -252,8 +252,8 @@ hr {
     </tr>
     <% sorted_view_accesses.each do |va| %>
       <tr>
-        <td><%= va[:viewer].first_name %>　(<%= va[:viewer].first_name_furigana %>) 
-          　<%= va[:viewer].last_name %>　(<%= va[:viewer].last_name_furigana %>)</td>
+        <td><%= va[:viewer].first_name %>（<%= va[:viewer].first_name_furigana %>）<br> 
+          <%= va[:viewer].last_name %>（<%= va[:viewer].last_name_furigana %>）</td>
         <td><%= va[:relationship] %></td>
         <td><%= va[:last_accessed_at]&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
         <td><%= va[:access_count] %> 回</td>
@@ -367,10 +367,10 @@ border: 5px double black;
 
 
     <tr>
-      <th>拒否されたユーザー</th>
-      <th>公開者から見た続柄</th>
-      <th>最終アクセス拒否</th>
-      <th>アクセス拒否回数</th>
+      <th>拒否された<br>ユーザー</th>
+      <th>公開者から<br>見た続柄</th>
+      <th>最終アクセス<br>拒否時刻</th>
+      <th>アクセス拒否<br>回数</th>
       <th>メールアドレス</th>
       <th>生年月日</th>
       <th>血液型</th>
