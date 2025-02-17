@@ -504,9 +504,13 @@ border: 5px double black;
 
 <div style="page-break-before: always;"></div>
 
-<p>　</p>
-
-
+<!-- ✅ PDF専用のエリア -->
+<% if request.format.pdf? %>
+  <div class="only-pdf">
+<p>PDF出力時刻：<%= Time.current.strftime('%Y-%m-%d %H:%M:%S') %></p>
+  </div>
+<% end %>
+<!-- ✅ PDF専用のエリア -->
 
 
 <p style="font-weight: bold; color: blue; text-decoration: underline;">
