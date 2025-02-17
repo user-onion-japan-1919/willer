@@ -1098,7 +1098,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが登録した閲覧対象者</h3>
   <% if current_user.view_requests.any? %>
-    <table border="1">
+    <table border="1" style=" margin-right: 40%; border-collapse: collapse;">
       <tr>
         <th>苗字</th>
         <th>名前</th>
@@ -1141,7 +1141,7 @@ document.addEventListener("DOMContentLoaded", function() {
   <h3><%= current_user.first_name %> <%= current_user.last_name %> さんの取得したURLリスト</h3>
   
   <% if current_user.view_requests.any? %>
-    <table border="1">
+    <table border="1" style=" margin-right: 40%; border-collapse: collapse;">
       <tr>
         <th>公開者　　　</th>
         <th>続柄　　　　</th>
