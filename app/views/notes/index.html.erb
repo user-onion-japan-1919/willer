@@ -12,7 +12,7 @@
 
 <!-- ✅ 個人ページのURLをQRコード表示 -->
 <% if @user.present? %>
-<div style="width: 25%; height: auto;">
+<div>
   <%= generate_qr_code(notes_url) %> 
   </div>
 <% end %>

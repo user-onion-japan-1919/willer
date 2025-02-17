@@ -84,3 +84,4 @@ gem 'sidekiq'
 gem 'whenever', require: false
 
 gem 'rqrcode'
+gem 'stimulus-rails'
