@@ -3,3 +3,41 @@
  *= require_self
  */
 
+
+
+ /* ✅ 全体の文字サイズ調整 */
+body, p, span, li, a, table, th, td, pre, code, .code-block {
+  font-size: 16px !important; /* 全体の標準文字サイズを大きく */
+  line-height: 1.6 !important;
+}
+
+/* ✅ 全体のテーブルに適用されている横幅60%制約を無効化 */
+table {
+  width: auto !important; /* 幅を自動調整 */
+  max-width: none !important; /* 最大幅の制約も解除 */
+  min-width: 0 !important; /* 最小幅の制約も解除 */
+  table-layout: auto !important; /* 固定幅の制約を解除 */
+}
+
+/* ✅ 表（テーブル）全体の文字サイズを大きく調整 */
+table, th, td {
+  font-size: 14px !important; /* 16pxに設定（お好みで変更可） */
+  line-height: 1.5 !important; /* 行間を少し広めに設定 */
+}
+
+/* ✅ コード全体（<pre>, <code> など） */
+pre, code, .code-block {
+  font-size: 16px !important; /* コード全体を大きく */
+  line-height: 1.6 !important;
+  font-family: 'Courier New', monospace !important; /* 等幅フォントを指定 */
+}
+
+/* ✅ スマホ対応（画面が狭い場合は文字をやや小さめに調整） */
+@media (max-width: 768px) {
+  table, th, td {
+    font-size: 14px !important; /* スマホは少し小さめ */
+  }
+  pre, code {
+    font-size: 13px !important;
+  }
+}
