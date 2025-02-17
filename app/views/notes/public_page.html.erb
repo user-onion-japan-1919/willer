@@ -524,6 +524,7 @@ border: 5px double black;
 
 
 <!--水色背景  適用開始----------------------------------------------------------------->
+
 <div id="readonly-child-section" class="readonly-container">
 
 
@@ -548,11 +549,11 @@ border: 5px double black;
     <th>やっておきたいリスト</th>
   </tr>
   <tr>
-    <td><%= @owner_note.type_1.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.type_2.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.type_3.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.type_4.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.type_5.presence || "　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_1.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_2.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_3.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_4.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_5.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
   </tr>
 </table>
 
@@ -571,11 +572,11 @@ border: 5px double black;
     <th>エンディングノート</th>
   </tr>
   <tr>
-    <td><%= @owner_note.issue_1.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.issue_2.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.issue_3.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.issue_4.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.issue_5.presence || "　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_1.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_2.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_3.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_4.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_5.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
   </tr>
 </table>
 
@@ -594,11 +595,11 @@ border: 5px double black;
     <th>タイトル5</th>
   </tr>
   <tr>
-    <td><%= @owner_note.title_1.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.title_2.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.title_3.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.title_4.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.title_5.presence || "　\n　\n　\n　" %></td>
+    <td><%= @owner_note.title_1.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_2.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_3.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_4.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_5.presence || "　\n　" %></td>
   </tr>
   <tr>
     <th>内容1</th>
@@ -608,11 +609,11 @@ border: 5px double black;
     <th>内容5</th>
   </tr>
   <tr>
-    <td><%= @owner_note.content_1.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.content_2.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.content_3.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.content_4.presence || "　\n　\n　\n　" %></td>
-    <td><%= @owner_note.content_5.presence || "　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_1.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_2.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_3.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_4.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_5.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
   </tr>
 </table>
 
@@ -685,5 +686,9 @@ border: 5px double black;
   width: calc(100% + 4%) !important; /* 合計6%分広げる */
   box-sizing: border-box; /* パディング含めた幅計算 */
 }
+
+
+
+
 
 </style>
