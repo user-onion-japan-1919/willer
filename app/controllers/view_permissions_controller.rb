@@ -126,16 +126,15 @@ class ViewPermissionsController < ApplicationController
     render json: { status: 'error', message: e.message }, status: :unprocessable_entity
   end
 
-
   # ✅ 拒否回数をリセットするアクション
   def clear_rejection
     view_access = ViewAccess.find_by(viewer_id: params[:viewer_id], owner_id: current_user.id)
 
     if view_access
       view_access.update!(rejected_count: 0)
-      render json: { success: true, message: "拒否回数をリセットしました。" }, status: :ok
+      render json: { success: true, message: '拒否回数をリセットしました。' }, status: :ok
     else
-      render json: { success: false, message: "対象のユーザーが見つかりませんでした。" }, status: :not_found
+      render json: { success: false, message: '対象のユーザーが見つかりませんでした。' }, status: :not_found
     end
   rescue StandardError => e
     render json: { success: false, message: "エラー: #{e.message}" }, status: :unprocessable_entity
@@ -144,29 +143,28 @@ end
 
   private
 
-  # ✅ Strong Parameters
-  def view_permission_params
-    params.require(:view_permission).permit(
-      :first_name, :first_name_furigana,
-      :last_name, :last_name_furigana,
-      :blood_type
-    ).merge(
-      birthday: parse_birthday(params[:view_permission])
+# ✅ Strong Parameters
+def view_permission_params
+  params.require(:view_permission).permit(
+    :first_name, :first_name_furigana,
+    :last_name, :last_name_furigana,
+    :blood_type
+  ).merge(
+    birthday: parse_birthday(params[:view_permission])
+  )
+end
+
+# ✅ `birthday` をパラメータから正しいフォーマットに変換
+def parse_birthday(params)
+  return unless params['birthday(1i)'].present? && params['birthday(2i)'].present? && params['birthday(3i)'].present?
+
+  begin
+    Date.new(
+      params['birthday(1i)'].to_i,
+      params['birthday(2i)'].to_i,
+      params['birthday(3i)'].to_i
     )
-  end
-
-  # ✅ `birthday` をパラメータから正しいフォーマットに変換
-  def parse_birthday(params)
-    return unless params['birthday(1i)'].present? && params['birthday(2i)'].present? && params['birthday(3i)'].present?
-
-    begin
-      Date.new(
-        params['birthday(1i)'].to_i,
-        params['birthday(2i)'].to_i,
-        params['birthday(3i)'].to_i
-      )
-    rescue StandardError
-      nil
-    end
+  rescue StandardError
+    nil
   end
 end
