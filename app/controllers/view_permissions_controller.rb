@@ -109,15 +109,13 @@ class ViewPermissionsController < ApplicationController
 
   # ✅ 閲覧許可削除API
   def destroy
-    @view_permission = current_user.view_permissions.find(params[:id])
+    view_permission = current_user.view_permissions.find_by(id: params[:id])
 
-    if @view_permission.destroy
-      flash[:notice] = '閲覧許可対象者を削除しました。'
+    if view_permission&.destroy
+      head :no_content # ✅ 成功時は即レスポンスで終了
     else
-      flash[:alert] = '削除に失敗しました。'
+      render json: { success: false, message: '削除に失敗しました。' }, status: :unprocessable_entity
     end
-
-    redirect_to notes_path
   end
 
   # ✅ 全ユーザーの拒否回数をリセットするアクション

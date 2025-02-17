@@ -559,7 +559,12 @@ button#scrollAndReloadBtn2:hover {
               <option value="year" <%= "selected" if vp.on_timer_unit == "year" %>>__年後　に自動で許可に切替えます</option>
             </select>
           </td>
-          <td>削除</td>
+          <td>
+  <%= button_to "削除", view_permission_path(vp), 
+                      method: :delete, 
+                      remote: true, 
+                      data: { confirm: "本当に削除しますか？" } %>
+          </td>
         </tr>
       <% end %>
     </table>
@@ -740,6 +745,45 @@ button#scrollAndReloadBtn2:hover {
       });
     });
   });
+
+
+
+// ✅ 削除ボタンのクリックイベント
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.delete-permission-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const permissionId = button.dataset.id;
+
+      if (confirm('この許可を本当に削除しますか？')) {
+        fetch(`/view_permissions/${permissionId}`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('削除しました。');
+            button.closest('tr').remove(); // 表から削除
+          } else {
+            alert('削除に失敗しました: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('削除エラー:', error);
+          alert('通信エラーが発生しました。');
+        });
+      }
+    });
+  });
+});
+
+
+
+
+
 </script>
 
 
