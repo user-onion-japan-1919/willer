@@ -660,7 +660,15 @@ button#scrollAndReloadBtn2:hover {
       <td><%= va.viewer.blood_type %></td>
       <td><%= va.viewer.address %></td>
       <td><%= va.viewer.phone_number %></td>
-      <td>非表示</td>
+      <td>
+
+<button class="clear-rejection-btn" 
+        data-permission-id="<%= va.id %>">
+  非表示
+</button>
+
+
+      </td>
       <td>
         <!-- 追記: 「保留して保存」ボタン -->
         <button class="hold-btn" data-viewer-id="<%= va.viewer.id %>" id="hold_btn_<%= va.viewer.id %>">移動して保存</button>
@@ -781,7 +789,41 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ✅ JSファイル（例: app/assets/javascripts/view_permissions.js）
+document.addEventListener('turbo:load', () => {
+  console.log("🚀 Rejection reset script loaded!");
 
+  document.querySelectorAll('.clear-rejection-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const permissionId = button.dataset.permissionId;
+
+      console.log(`🔹リセット対象ID: ${permissionId}`);
+
+      if (confirm('このユーザーの拒否回数をリセットしますか？')) {
+        fetch(`/view_permissions/${permissionId}/clear_rejection`, {
+          method: 'PATCH',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert(data.message);
+            button.closest('tr').remove(); // テーブルから削除
+          } else {
+            alert(`エラー: ${data.message}`);
+          }
+        })
+        .catch(error => {
+          alert('通信エラーが発生しました。');
+          console.error('🚨 通信エラー:', error);
+        });
+      }
+    });
+  });
+});
 
 
 

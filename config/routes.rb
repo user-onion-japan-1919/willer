@@ -1,16 +1,12 @@
-
-
-
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq' # Sidekiqの管理画面を/sidekiqで開けるようにする
 
-
   root to: "notes#index" # 仮のトップページ
   devise_for :users, controllers: {
     registrations: "users/registrations",
-    sessions: "sessions"
+    sessions: "users/sessions" # ✅ sessionsを正しく設定
   }
 
   resources :users, only: [:update]
@@ -23,6 +19,7 @@ Rails.application.routes.draw do
     member do
       patch "update_on_mode"                  # モード更新用ルート
       patch "update_on_timer_value_and_unit"  # タイマー更新用ルート（修正済み）
+      patch "clear_rejection"                 # ✅ 個別拒否リセット用ルート（追記）
     end
   end
 
@@ -43,5 +40,4 @@ Rails.application.routes.draw do
   get 'notes/public_page/:owner_id', to: 'notes#public_page', as: 'public_note'
 
   post "/view_permissions/hold", to: "view_permissions#hold", as: :view_permissions_hold
-
 end

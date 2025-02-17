@@ -126,6 +126,22 @@ class ViewPermissionsController < ApplicationController
     render json: { status: 'error', message: e.message }, status: :unprocessable_entity
   end
 
+
+  # ✅ 拒否回数をリセットするアクション
+  def clear_rejection
+    view_access = ViewAccess.find_by(viewer_id: params[:viewer_id], owner_id: current_user.id)
+
+    if view_access
+      view_access.update!(rejected_count: 0)
+      render json: { success: true, message: "拒否回数をリセットしました。" }, status: :ok
+    else
+      render json: { success: false, message: "対象のユーザーが見つかりませんでした。" }, status: :not_found
+    end
+  rescue StandardError => e
+    render json: { success: false, message: "エラー: #{e.message}" }, status: :unprocessable_entity
+  end
+end
+
   private
 
   # ✅ Strong Parameters
