@@ -591,7 +591,7 @@ button#scrollAndReloadBtn2:hover {
 
   <!-- ③ー閲覧許可対象者リスト -->
  <% if current_user.view_permissions.any? %>
-    <table border="1">
+    <table border="1" style=" margin-right: 40%; border-collapse: collapse;">
       <tr>
         <th>苗字　　　　　</th>
         <th>名前　　　　　</th>
@@ -711,13 +711,15 @@ button#scrollAndReloadBtn2:hover {
   border-collapse: collapse;
   background-clip: padding-box;
   box-shadow: 0 0 0 3px yellow;
+  table-layout: fixed;  /* ✅ 列幅を固定 */
+  word-wrap: break-word; /* ✅ 文字折り返し */
 ">
 
   <tr>
     <th>拒否されたユーザー</th>
-    <th>本人から見た続柄</th>
-    <th>最終アクセス拒否</th>
-    <th>アクセス拒否回数</th>
+    <th>本人から<br>見た続柄</th>
+    <th>最終アクセス<br>拒否時刻</th>
+    <th>アクセス<br>拒否回数</th>
     <th>メールアドレス</th>
     <th>生年月日</th>
     <th>血液型</th>
@@ -731,7 +733,7 @@ button#scrollAndReloadBtn2:hover {
     <% next if va.viewer.nil? %> <!-- 追記: viewerがnilの場合はスキップ -->
 
     <tr>
-      <td><%= va.viewer.first_name %> (<%= va.viewer.first_name_furigana %>) <%= va.viewer.last_name %> (<%= va.viewer.last_name_furigana %>)</td>
+      <td><%= va.viewer.first_name %> (<%= va.viewer.first_name_furigana %>)<br><%= va.viewer.last_name %> (<%= va.viewer.last_name_furigana %>)</td>
       <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user&.id)&.relationship.presence || "不明" %></td>
       <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
       <td id="reject_count_<%= va.viewer.id %>"><%= va.rejected_count %> 回</td>
