@@ -98,7 +98,7 @@ belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id'
 **✅ インデックス追加**
 ```ruby
 add_index :view_accesses, [:owner_id, :viewer_id], unique: true
-
+```
 
 
 
