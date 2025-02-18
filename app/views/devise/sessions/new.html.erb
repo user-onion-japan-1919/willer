@@ -1,120 +1,312 @@
-<h2>遺言作成管理 - Willer -</h2>
+<div class="container">
+  <br>
+  <br>
 
-<div id="error_explanation">
-  <%= render "devise/shared/error_messages", resource: resource %>
-</div>
+  <h2 style="color: darkbrown; font-size: 150%;">遺言の作成・管理・共有  - Will_Note -  📓</h2>
 
-<div class="tabs">
-  <button id="signup-tab" class="active" onclick="showForm('signup')">新規登録</button>
-  <button id="login-tab" onclick="showForm('login')">ログイン</button>
-</div>
+<br>
+<% if resource.errors.any? %>
+  <div id="error_explanation" style="font-size: 80%; color: red;">
+    <ul>
+      <% resource.errors.full_messages.each do |message| %>
+        <% if message.include?('このユーザー情報の組合せは既に登録されています。') %>
+          <li>
+        <span style="font-size: 150%; font-weight: bold; color: red;">
+          <br>⚠️このユーザー情報の組合せが既に登録されています⚠️
+            <br>エラーメッセージがこれ以外になく、あなたが既にアカウントを作っていなければ、
+            <br>乗っ取り・なりすましの可能性が考えられます。直ちに管理者へ報告をお願いします。<br>
+        </span><br>
+        <span>
+          ”Email ：このメールアドレスは既に使用されています”  が表示される場合は、<br>
+          既にご登録済みの可能性が高いです。一度ご確認いただくようお願いします。<br><br><br>
+        </span>
+      </li>
+    <% else %>
+      <li><%= message %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
-<!-- 新規登録フォーム（デフォルトで表示） -->
-<div id="signup-form">
-  <%= form_with model: resource, url: registration_path(resource_name), local: true, id: "signup_form" do |f| %>
-    <div>
-      <%= f.label :email %><br>
-      <%= f.email_field :email, id: "signup_user_email", value: f.object.email, autocomplete: "email" %>
-    </div>
+  <br>
 
-    <div>
-      <%= f.label :password %><br>
-      <%= f.password_field :password, id: "signup_user_password", autocomplete: "new-password" %>
-    </div>
+  <div class="tabs">
+    <button id="signup-tab" class="active" onclick="showForm('signup')">＜新規登録画面＞</button>
+    　<button id="login-tab" onclick="showForm('login')">＜ログイン画面＞</button>
+  </div>
 
-    <div>
-      <%= f.label :password_confirmation, "パスワード（確認）" %><br>
-      <%= f.password_field :password_confirmation, id: "signup_user_password_confirmation", autocomplete: "new-password" %>
-    </div>
+  <br>
 
-    <div>
-      <%= f.label :first_name, "苗字" %><br>
-      <%= f.text_field :first_name, id: "signup_user_first_name", value: f.object.first_name %>
-    </div>
+  <hr>
+  <br>
 
-    <div>
-      <%= f.label :first_name_furigana, "苗字（ふりがな）" %><br>
-      <%= f.text_field :first_name_furigana, id: "signup_user_first_name_furigana", value: f.object.first_name_furigana %>
-    </div>
+  <!-- 新規登録フォーム（デフォルトで表示） -->
 
-    <div>
-      <%= f.label :last_name, "名前" %><br>
-      <%= f.text_field :last_name, id: "signup_user_last_name", value: f.object.last_name %>
-    </div>
+  <div id="signup-form" class="form-container">
+    <%= form_with model: resource, url: registration_path(resource_name), local: true, id: "signup_form" do |f| %>
+      <div style=";font-size: 80%;">
+        <%= f.label :Eメール　（※＠マークを含め、半角英数字で記入） %>
+        <%= f.email_field :email, id: "signup_user_email", value: f.object.email, autocomplete: "email" %>
+      </div>
 
-    <div>
-      <%= f.label :last_name_furigana, "名前（ふりがな）" %><br>
-      <%= f.text_field :last_name_furigana, id: "signup_user_last_name_furigana", value: f.object.last_name_furigana %>
-    </div>
+  <br>
 
-    <div>
-      <%= f.label :birthday, "生年月日" %><br>
-      <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
-    </div>
+      <div style=";font-size: 80%;">
+        <%= f.label :パスワード　（※9文字以上、半角英数字混合で記入）　 %>
+        <%= f.password_field :password, id: "login_user_password", autocomplete: "current-password" %>
+        <%= f.label :"※パスワードは 親族を含めた他人に 絶対に教えないでください。", style: "color: red;" %>
+      </div>
 
-    <div>
-      <%= f.label :blood_type, "血液型" %><br>
-      <%= f.select :blood_type, ["A", "B", "O", "AB"], id: "signup_user_blood_type", include_blank: "選択してください" %>
-    </div>
+  <br>
+  <br>
 
-    <div>
-      <%= f.label :address, "住所" %><br>
-      <%= f.text_field :address, id: "signup_user_address", value: f.object.address %>
-    </div>
+      <div style=";font-size: 80%;">
+        <%= f.label :password_confirmation, "パスワード（確認のため、再度記入）" %>
+        <%= f.password_field :password_confirmation, id: "signup_user_password_confirmation", autocomplete: "new-password" %>
+      </div>
 
-    <div>
-      <%= f.label :phone_number, "電話番号" %><br>
-      <%= f.text_field :phone_number, id: "signup_user_phone_number", value: f.object.phone_number %>
-    </div>
+  <br>
 
-    <div>
-      <%= f.submit "新規登録" %>
-    </div>
-  <% end %>
-</div>
+      <div style=";font-size: 80%;">
+        <%= f.label :first_name, "苗字（漢字）※新字体での統一を推奨します" %>
+        <%= f.text_field :first_name, id: "signup_user_first_name", value: f.object.first_name %>
+      </div>
 
-<!-- ログインフォーム（非表示） -->
-<div id="login-form" style="display: none;">
-  <%= form_with model: resource, url: session_path(resource_name), local: true, id: "login_form" do |f| %>
-    <div>
-      <%= f.label :email %><br>
-      <%= f.email_field :email, id: "login_user_email", value: f.object.email, autofocus: true, autocomplete: "email" %>
-    </div>
+  <br>
 
-    <div>
-      <%= f.label :password %><br>
-      <%= f.password_field :password, id: "login_user_password", autocomplete: "current-password" %>
-    </div>
+      <div style=";font-size: 80%;">
+        <%= f.label :first_name_furigana, "苗字（ふりがな）" %>
+        <%= f.text_field :first_name_furigana, id: "signup_user_first_name_furigana", value: f.object.first_name_furigana %>
+      </div>
 
-    <div>
-      <%= f.submit "ログイン" %>
-    </div>
-  <% end %>
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :last_name, "名前（漢字）※新字体での統一を推奨します" %>
+        <%= f.text_field :last_name, id: "signup_user_last_name", value: f.object.last_name %>
+      </div>
+
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :last_name_furigana, "名前（ふりがな）" %>
+        <%= f.text_field :last_name_furigana, id: "signup_user_last_name_furigana", value: f.object.last_name_furigana %>
+      </div>
+
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :birthday, "生年月日" %>
+        <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+      </div>
+
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :blood_type, "血液型" %>
+        <%= f.select :blood_type, ["A", "B", "O", "AB"], id: "signup_user_blood_type", include_blank: "選択してください" %>
+      </div>
+
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :address, "住所  （※例:　　〇〇県〇〇市〇〇区〇〇 1-2-3）" %>
+        <%= f.text_field :address, id: "signup_user_address", value: f.object.address %>
+      </div>
+
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :phone_number, "電話番号  （※ハイフンなし）  " %>
+        <%= f.text_field :phone_number, id: "signup_user_phone_number", value: f.object.phone_number %>
+      </div>
+
+      <br><br>
+
+      <div>
+        <%= f.submit "新規登録" %>
+        <br>
+        <br>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- ログインフォーム（非表示） -->
+  <div id="login-form" class="form-container" style="display: none;">
+    <%= form_with model: resource, url: session_path(resource_name), local: true, id: "login_form" do |f| %>
+      <div style=";font-size: 80%;">
+        <%= f.label :Eメール　（※＠マークを含め、半角英数字で記入） %>
+        <%= f.email_field :email, id: "login_user_email", value: f.object.email, autofocus: true, autocomplete: "email" %>
+      </div>
+
+  <br>
+
+      <div style=";font-size: 80%;">
+        <%= f.label :パスワード　（※9文字以上、半角英数字混合で記入）　 %>
+        <%= f.password_field :password, id: "login_user_password", autocomplete: "current-password" %>
+        <%= f.label :"※パスワードは 親族を含めた他人に 絶対に教えないでください。", style: "color: red;" %>
+      </div>
+
+      <br><br>
+
+      <div>
+        <%= f.submit "ログイン" %>
+      </div>
+
+    <% end %>
+  </div>
 </div>
 
 <script>
   function showForm(type) {
     if (type === 'signup') {
-      document.getElementById('signup-form').style.display = 'block';
-      document.getElementById('login-form').style.display = 'none';
-      document.getElementById('signup-tab').classList.add('active');
-      document.getElementById('login-tab').classList.remove('active');
-    } else {
-      document.getElementById('signup-form').style.display = 'none';
-      document.getElementById('login-form').style.display = 'block';
-      document.getElementById('signup-tab').classList.remove('active');
-      document.getElementById('login-tab').classList.add('active');
-    }
+    document.getElementById('signup-form').style.display = 'block';
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('signup-tab').classList.add('active');
+    document.getElementById('login-tab').classList.remove('active');
+
+    document.getElementById('form-title').innerText = "新規登録画面"; // ✅ タイトル更新
+  } else {
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('signup-tab').classList.remove('active');
+    document.getElementById('login-tab').classList.add('active');
+
+    document.getElementById('form-title').innerText = "ログイン画面"; // ✅ タイトル更新
   }
+
+    
+    // ✅ タブ切り替え時に正しいスタイルを適用する
+    applyInputStyles();
+  }
+
+  function applyInputStyles() {
+    // ✅ すべてのテキストフォームの幅を適切に設定
+    document.querySelectorAll('.form-group input, .form-group select').forEach((el) => {
+      el.style.width = "100%";
+      el.style.maxWidth = "300px"; // ✅ 最大幅を固定
+    });
+  }
+
+  // ✅ ページロード時に新規登録フォームを正しく適用
+  document.addEventListener("DOMContentLoaded", function() {
+    showForm('signup'); // ✅ 初回ロード時に実行
+  });
 </script>
 
+
 <style>
+  /* ✅ 全体の中央配置 */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ✅ タイトルを中央揃え */
+  h2 {
+    text-align: center;
+  }
+
+  /* ✅ エラーメッセージの中央揃え */
+  #error_explanation {
+    text-align: center;
+    width: 100%;
+  }
+
+  /* ✅ タブの中央配置 */
+  .tabs {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ✅ タブの共通スタイル */
   .tabs button {
     padding: 10px;
     margin: 5px;
     cursor: pointer;
-  }
-  .tabs button.active {
+    background-color: #E6F7FF;
+    border: 1px solid #A0C4FF;
+    color: black;
     font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
   }
+
+  /* ✅ アクティブなタブの色 */
+  .tabs button.active {
+    background-color: #B3E0FF;
+  }
+
+  /* ✅ ホバー時の色 */
+  .tabs button:hover {
+    background-color: #99D6FF;
+  }
+
+  /* ✅ フォーム全体の中央配置 */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ✅ 入力欄やボタンの中央配置 */
+  .form-container input,
+  .form-container select,
+  .form-container button {
+    width: 60%;
+    max-width: 400px;
+    margin: 5px auto;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    border: 1px solid #A0C4FF;
+    border-radius: 5px;
+  }
+
+  /* ✅ ラベルの中央揃え */
+  .form-container label {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  /* ✅ ボタンのデザイン統一 */
+  .form-container button {
+    background-color: #B3E0FF;
+    cursor: pointer;
+  }
+
+  /* ✅ ボタンホバー時 */
+  .form-container button:hover {
+    background-color: #99D6FF;
+  }
+
+/* ✅ フォームのタイトル（タブ切り替え時に更新） */
+.form-title {
+  text-align: center;
+  font-size: 1.8em;
+  padding: 10px;
+  border: 2px solid #0044CC;
+  background-color: #E6F7FF;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* ✅ フォーム下部の区切り線 */
+.form-footer {
+  width: 100%;
+  height: 3px;
+  background-color: #0044CC;
+  margin-top: 20px;
+}
+
+
+
 </style>

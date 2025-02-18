@@ -1,0 +1,7 @@
+# config/sidekiq.yml
+---
+:verbose: false
+:concurrency: 5  # 同時実行数を指定
+:queues:
+  - default
+  - mailers

@@ -72,3 +72,16 @@ group :production do
   gem 'pg'
 end
 gem "devise", "~> 4.9"
+
+gem "wicked_pdf", "~> 2.8"
+
+gem "wkhtmltopdf-binary", "~> 0.12.6"
+
+gem 'prawn'
+gem 'prawn-table'
+
+gem 'sidekiq'
+gem 'whenever', require: false
+
+gem 'rqrcode'
+gem 'stimulus-rails'

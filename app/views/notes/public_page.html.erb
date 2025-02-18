@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+
+
+
+
+
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>公開ページ - <%= @user.first_name %> <%= @user.last_name %></title>
+
+
+  <style>
+
+/* ✅ 全体の表示を左右5%ずつ空ける */
+body {
+  margin-left: 5%;
+  margin-right: 5%;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+/* ✅ ヘッダー、タイトル、テーブルの基本スタイル */
+h1, h2, h3 {
+  color: #333;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 10px;
+  width: 100%; /* ✅ テーブルは最大幅（親要素の幅100%を使用） */
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* ✅ 水色背景エリアのレイアウト調整（左右5%の余白を維持） */
+.readonly-container {
+  background-color: #E0F7FA; /* ✅ 薄めの水色 */
+  margin-top: 20px;
+  width: 100%; /* ✅ 親要素の幅いっぱい */
+  overflow: hidden; /* ✅ はみ出し防止 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ `.readonly-content` も親要素にフィット */
+.readonly-content {
+  background-color: inherit; /* ✅ 親要素の背景色を継承 */
+  padding: 15px;
+  border-radius: 5px;
+  width: 100%; /* ✅ 親要素いっぱい */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ✅ hr線の幅を統一（左右5%空ける） */
+hr {
+  width: 100%; /* ✅ 画面いっぱいに表示 */
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #ccc; /* ✅ 線のスタイルはそのまま */
+}
+
+
+  </style>
+
+  </head>
+
+<body>
+
+
+
+
+
+<!--ここからが本文です----------------------------------------------------------------->
+
+
+
+
+
+<!-- ✅ PDFでは非表示にするエリア -->
+
+<p>　</p>
+
+<% unless request.format.pdf? %>
+  <div class="only-html">
+
+<p style="color: blue; font-size: 180%; display: block; width: fit-content; margin-left: auto; margin-right: 5%;">
+  <%= link_to "PDFで保存", download_pdf_note_path(@user, format: :pdf), class: "btn btn-primary" %>
+</p>
+
+  </div>
+<% end %>
+<!-- ✅ PDFでは非表示にするエリア -->
+
+
+<h2 style="color: blue">　このページは、 <%= @user.first_name %> <%= @user.last_name %> さんの公開ページです。</h2>
+
+
+
+
+
+
+<!-- ✅ PDFでは非表示にするエリア -->
+<p>　</p>
+
+<% unless request.format.pdf? %>
+  <div class="only-html">
+
+<div style="display: flex; align-items: center; gap: 10px; margin-left: 35px;">
+  <input type="text" id="publicPageUrl" value="<%= request.original_url %>" readonly 
+    style="flex: 1; max-width: 500px; height: 25px; padding: 5px;">　
+    <% unless request.format.pdf? %>
+    <button type="button" class="only-html-button" on onclick="copyPublicPageUrl()" 
+    style="height: 25px; padding: 5px 10px; display: flex; align-items: center;">
+    このページのURLをコピー
+  </button><% end %>　　　　　　　　　　　　　　<p style="color: red; font-size: 90%;"> ※第三者に見られない場所で閲覧または書類管理してください。</p>
+</div>
+
+
+  </div>
+<% end %>
+
+
+
+<p>　</p>
+
+<!-- ✅ PDFでは非表示にするエリア -->
+
+
+<!-- ✅ PDF専用のエリア -->
+<% if request.format.pdf? %>
+  <div class="only-pdf">
+
+<p style="color: red; font-size: 90%;"> ※第三者に見られない場所で閲覧または書類管理してください。</p>
+
+  </div>
+<% end %>
+<!-- ✅ PDF専用のエリア -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // ✅ URLに ?reload=true がついていたらリロードする
+    if (window.location.search.includes("reload=true")) {
+      window.history.replaceState({}, document.title, window.location.pathname); // クエリを消す
+      location.reload();
+    }
+  });
+
+  // ✅ ボタンを押したら、個人ページに移動し、その後リロードする
+  document.getElementById("return-to-notes").addEventListener("click", function(event) {
+    event.preventDefault(); // 通常のリンク動作を止める
+    window.location.href = "<%= notes_path %>?reload=true"; // クエリをつけて移動
+  });
+</script>
+
+
+<!-- ✅ HTMLボタン (PDFでは出力されない) -->
+<% unless request.format.pdf? %>
+  <div class="only-html">
+
+<p style="text-align: left;">
+  <%= button_to "あなたの個人ページに戻る", notes_path, 
+    method: :get, 
+    class: "btn btn-secondary", 
+    id: "return-to-notes", 
+    form: { style: "display: inline; margin-left: 35px;" } %>
+</p>
+
+</div>
+<% end %>
+
+
+
+<p>　</p>
+
+<p><strong>　　ページ公開者　：　</strong> <%= @user.first_name %> <%= @user.last_name %>　　　最終アクセス時間：
+  <%= ViewAccess.where(owner_id: @user.id, viewer_id: @user.id).order(last_accessed_at: :desc).limit(1).pluck(:last_accessed_at).first&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
+</p>
+<p><strong>　　現在の閲覧者　：　</strong> <%= @viewer.first_name %> <%= @viewer.last_name %>　　　最終アクセス時間：
+  <%= ViewAccess.where(owner_id: @user.id, viewer_id: @viewer.id).order(last_accessed_at: :desc).limit(1).pluck(:last_accessed_at).first&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %>
+</p>
+
+<p>　</p>
+<p>　</p>
+
+<h3>　このページの閲覧履歴</h3>
+
+<% if @view_access_logs.any? %>
+  <% sorted_view_accesses = @view_access_logs.map do |access|
+    viewer = access.viewer
+
+    # 閲覧者が公開者本人なら「本人」と表示
+    if viewer == @user
+      relationship = "本人"
+    else
+      view_request = ViewRequest.find_by(viewer_id: viewer.id)
+      relationship = view_request&.relationship.presence || "本人"
+    end
+ 
+    {
+      viewer: viewer,
+      relationship: relationship,
+      last_accessed_at: access.last_accessed_at,
+      access_count: access.access_count
+    }
+  end %>
+
+  <% sorted_view_accesses.reject! { |va| va[:access_count].to_i.zero? } %>  <!-- 追記: アクセス回数0は非表示 -->
+
+
+  <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
+  <% sorted_view_accesses.sort_by! { |va| relationship_order.index(va[:relationship]) || relationship_order.length } %>
+
+
+  <table border="1">
+    <tr>
+      <th>閲覧した<br>ユーザー</th>
+      <th>公開者から<br>見た続柄</th>
+      <th>最終アクセス</th>
+      <th>アクセス回数</th>
+      <th>メールアドレス</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>住所</th>
+      <th>電話番号</th>
+    </tr>
+    <% sorted_view_accesses.each do |va| %>
+      <tr>
+        <td><%= va[:viewer].first_name %>（<%= va[:viewer].first_name_furigana %>）<br> 
+          <%= va[:viewer].last_name %>（<%= va[:viewer].last_name_furigana %>）</td>
+        <td><%= va[:relationship] %></td>
+        <td><%= va[:last_accessed_at]&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+        <td><%= va[:access_count] %> 回</td>
+        <td><%= va[:viewer].email %></td>
+        <td><%= va[:viewer].birthday.strftime('%Y-%m-%d') if va[:viewer].birthday %></td>
+        <td><%= va[:viewer].blood_type %></td>
+        <td><%= va[:viewer].address %></td>
+        <td><%= va[:viewer].phone_number %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+<p>　</p>
+<p style="color: red;">　※まだ誰にも閲覧されていません。</p>
+<% end %>
+
+<script>
+  function copyPublicPageUrl() {
+    var urlField = document.getElementById("publicPageUrl");
+    urlField.select();
+    urlField.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("URLをコピーしました: " + urlField.value);
+  }
+</script>
+
+<p>　</p>
+
+
+
+
+<!-- ✅ PDFでは非表示にするエリア -->
+<% unless request.format.pdf? %>
+  <div class="only-html">
+
+<p style="color: red; font-size: 95%; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
+  ※閲覧を許可した覚えのないユーザーが表示されている場合は、①<u>このページを保存</u>のうえ、②<u>この行より上の情報を開発者まで連絡して</u>ください。
+</p>
+<p style="color: red; font-size: 95%; font-weight: bold; width: fit-content; margin-left: auto; margin-right: 1%;">
+  ※パスワード変更を行っても、ページURLは変更されません。③<u>このアカウントを削除</u>後、④<u>再度、新規登録から作り直して</u>ください。
+</p>
+
+  </div>
+<% end %>
+<!-- ✅ PDFでは非表示にするエリア -->
+
+
+
+<!-- ✅ PDFでは非表示にするエリア -->
+<% unless request.format.pdf? %>
+  <div class="only-html">
+
+ 
+<div style="display: flex; align-items: center; gap: 10px;">
+  　<div style="
+    display: inline-block;
+    background: repeating-linear-gradient(
+      45deg,
+      yellow,
+      yellow 10px,
+      black 10px,
+      black 20px
+    );
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3.2px 3.2px;
+    border: 2px solid red;
+    text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;
+  ">
+    ⚠️ Caution!
+  </div>
+
+  <h3 style="margin: 0;">⚠️このURLへアクセスし、拒否されたユーザー⚠️</h3>
+
+  
+</div>
+
+
+  </div>
+<% end %>
+<!-- ✅ PDFでは非表示にするエリア -->
+
+<!-- ✅ PDF専用のエリア -->
+<% if request.format.pdf? %>
+  <div class="only-pdf">
+
+<h3 style="margin: 0;">　このURLへアクセスし、拒否されたユーザー</h3>
+
+  </div>
+<% end %>
+<!-- ✅ PDF専用のエリア -->
+
+
+
+<!-- 追記開始: アクセス拒否ユーザー一覧 -->
+
+<% rejected_accesses = @view_accesses.select { |va| va.access_count == 0 && va.rejected_count > 0 } %>
+
+<% if rejected_accesses.any? %>
+
+<table border="1" style="
+
+border: 5px double black; 
+  border-collapse: collapse;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 3px yellow;
+
+">
+
+
+    <tr>
+      <th>拒否された<br>ユーザー</th>
+      <th>公開者から<br>見た続柄</th>
+      <th>最終アクセス<br>拒否時刻</th>
+      <th>アクセス拒否<br>回数</th>
+      <th>メールアドレス</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>住所</th>
+      <th>電話番号</th>
+    </tr>
+    <% rejected_accesses.each do |va| %>
+      <tr>
+        <td><%= va.viewer.first_name %>　(<%= va.viewer.first_name_furigana %>)　<%= va.viewer.last_name %>　(<%= va.viewer.last_name_furigana %>)</td>
+        <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user.id)&.relationship.presence || "不明" %></td>
+        <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+        <td><%= va.rejected_count %> 回</td>
+        <td><%= va.viewer.email %></td>
+        <td><%= va.viewer.birthday.strftime('%Y-%m-%d') if va.viewer.birthday %></td>
+        <td><%= va.viewer.blood_type %></td>
+        <td><%= va.viewer.address %></td>
+        <td><%= va.viewer.phone_number %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+<p>　</p>
+  <p style="color: red;">　※不正なアクセスはありませんでした。</p>
+<% end %>
+
+
+<!-- 追記終了: アクセス拒否ユーザー一覧 -->
+
+
+
+
+<p>　</p>
+<p>　</p>
+<p>　</p>
+<hr>
+<p>　</p>
+
+
+
+
+
+
+<p>　</p>
+<p>　</p>
+
+
+
+
+<h3>　　<%= @user.first_name %> <%= @user.last_name %> さんが許可した人の一覧</h3>
+
+<% if @user.view_permissions.any? %>
+  <table border="1">
+    <tr>
+      <th>許可された閲覧者</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+    </tr>
+    <% @user.view_permissions.each do |vp| %>
+      <tr>
+        <td>
+          <%= vp.first_name %> （<%= vp.first_name_furigana %>）　 
+          <%= vp.last_name %> （<%= vp.last_name_furigana %>）
+        </td>
+        <td><%= vp.birthday.strftime('%Y-%m-%d') if vp.birthday %></td>
+        <td><%= vp.blood_type %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+<p>　</p>
+    <p style="color: red;">　※現在、許可した相手はいません。</p>
+<% end %>
+
+<p>　</p>
+<p>　</p>
+
+
+
+
+<h3>　　<%= @user.first_name %> <%= @user.last_name %> さんが閲覧したいと検索をかけた人の一覧</h3>
+
+<% if @user.view_requests.any? %>
+  <% base_url = request.base_url %>  <!-- ✅ 事前に `request.base_url` を変数に格納 -->
+
+  <table border="1">
+    <tr>
+      <th>閲覧したい対象者</th>
+      <th>生年月日</th>
+      <th>血液型</th>
+      <th>公開ページURL</th>
+    </tr>
+
+    <% @user.view_requests.each do |vr| %>
+      <% 
+        # URLが存在する場合、"http://" または "https://" が含まれているかチェック
+        formatted_url = vr.url.present? ? (vr.url =~ /\Ahttp(s)?:\/\// ? vr.url : "#{base_url}/#{vr.url}") : nil 
+      %>
+
+      <tr>
+        <td>
+          <%= vr.first_name %> （<%= vr.first_name_furigana %>）　 
+          <%= vr.last_name %> （<%= vr.last_name_furigana %>）
+        </td>
+        <td><%= vr.birthday.strftime('%Y-%m-%d') if vr.birthday %></td>
+        <td><%= vr.blood_type %></td>
+        <td>
+          <% if formatted_url.present? %>
+            <%= link_to formatted_url, formatted_url, target: "_blank", rel: "noopener noreferrer" %>
+          <% else %>
+            未取得（ ※ ユーザー登録情報 または URL が存在しません ）
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>　</p>
+  <p style="color: red;">　※現在、検索をかけたリストは存在しません。</p>
+<% end %>
+
+
+
+<p>　</p>
+
+
+<p>　</p>
+<p>　</p>
+<hr>
+<p>　</p>
+
+
+<div style="page-break-before: always;"></div>
+
+<!-- ✅ PDF専用のエリア -->
+<% if request.format.pdf? %>
+  <div class="only-pdf">
+<p>PDF出力時刻：<%= Time.current.strftime('%Y-%m-%d %H:%M:%S') %></p>
+  </div>
+<% end %>
+<!-- ✅ PDF専用のエリア -->
+
+
+<p style="font-weight: bold; color: blue; text-decoration: underline;">
+  ↓↓↓以下は閲覧専用であり、編集やリンク先への移動は一切できません。↓↓↓
+</p>
+
+<p>　</p>
+
+
+
+
+
+<!--水色背景  適用開始----------------------------------------------------------------->
+
+<div id="readonly-child-section" class="readonly-container">
+
+
+
+
+  <br>
+  <br>
+  <h3> <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート  </h3>
+  <br>
+  <br>
+  <br>
+
+<!-- 生前に決めておきたいこと -->
+
+<h3><b> 生前 </b>に決めておきたいこと</h3>
+<table>
+  <tr>
+    <th>子へのメッセージ</th>
+    <th>税金・行政関係</th>
+    <th>相続関係</th>
+    <th>公共料金関係</th>
+    <th>やっておきたいリスト</th>
+  </tr>
+  <tr>
+    <td><%= @owner_note.type_1.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_2.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_3.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_4.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.type_5.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+  </tr>
+</table>
+
+<br>
+<br>
+<br>
+
+<!-- 逝去後のご希望 -->
+<h3><b> 逝去後 </b>のご希望</h3>
+<table>
+  <tr>
+    <th>死後７日間以内に必要な手続き</th>
+    <th>葬儀関係</th>
+    <th>入墓関係</th>
+    <th>親族等連絡先・交流関係</th>
+    <th>エンディングノート</th>
+  </tr>
+  <tr>
+    <td><%= @owner_note.issue_1.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_2.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_3.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_4.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.issue_5.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+  </tr>
+</table>
+
+<br>
+<br>
+<br>
+
+<!-- 自由記述 -->
+<h3><b> 自由記述 </b>　</h3>
+<table>
+  <tr>
+    <th>タイトル1</th>
+    <th>タイトル2</th>
+    <th>タイトル3</th>
+    <th>タイトル4</th>
+    <th>タイトル5</th>
+  </tr>
+  <tr>
+    <td><%= @owner_note.title_1.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_2.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_3.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_4.presence || "　\n　" %></td>
+    <td><%= @owner_note.title_5.presence || "　\n　" %></td>
+  </tr>
+  <tr>
+    <th>内容1</th>
+    <th>内容2</th>
+    <th>内容3</th>
+    <th>内容4</th>
+    <th>内容5</th>
+  </tr>
+  <tr>
+    <td><%= @owner_note.content_1.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_2.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_3.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_4.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+    <td><%= @owner_note.content_5.presence || "　\n　\n　\n　\n　\n　\n　\n　\n　\n　" %></td>
+  </tr>
+</table>
+
+<br>
+<br>
+<br>
+<br>
+
+<!-- プレースホルダーCSSは不要なので省略 -->
+
+
+
+  </div>
+<!--水色背景  適用終了----------------------------------------------------------------->
+
+
+<br>
+<br>
+
+<p style="font-weight: bold; color: blue; text-decoration: underline;">
+  ※本日時刻以降の変更内容については保証されません。<br>
+  ※意思表示に関し、一定の遺言効果や尊重がなされる可能性はありますが、法的な遺言効果を約束するものではありません。
+</p>
+
+<br>
+<br>
+
+
+
+
+<style>
+
+/* ✅ 水色背景内のテーブル書式を独立調整 */
+#readonly-child-section table {
+  border-collapse: separate !important; /* 他のテーブル設定を上書き */
+  border-spacing: 2px !important; /* セル間隔を設定 */
+  margin-top: 15px !important;
+  width: 100% !important; 
+}
+
+#readonly-child-section th, 
+#readonly-child-section td {
+  padding: 6px !important;
+  font-size: 13px !important;
+  text-align: center !important;
+  color: #333 !important; 
+  background-color: #FFFFFF !important; 
+  border: 1px solid #444 !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important; /* 改行を尊重 */
+}
+
+/* ✅ 水色背景内の見出しスタイル */
+#readonly-child-section h3 {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #2C3E50 !important;
+  margin-bottom: 10px !important;
+  border-bottom: none !important;
+  padding-bottom: 5px !important;
+}
+
+/* ✅ 水色背景エリアを左右3%ずつ広げる */
+.readonly-container {
+  margin-left: -2% !important; /* 左側を3%広げる */
+  margin-right: -2% !important; /* 右側を3%広げる */
+  padding-left: 2% !important; /* 内側も左側に3%の余白 */
+  padding-right: 2% !important; /* 内側も右側に3%の余白 */
+  width: calc(100% + 4%) !important; /* 合計6%分広げる */
+  box-sizing: border-box; /* パディング含めた幅計算 */
+}
+
+
+
+
+
+</style>

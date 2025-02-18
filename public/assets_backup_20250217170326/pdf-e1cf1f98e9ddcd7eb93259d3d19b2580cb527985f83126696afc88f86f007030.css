@@ -1,0 +1,49 @@
+/* 📄 PDF専用のスタイル */
+body {
+  font-size: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed; /* 📌 幅を固定して横伸びを防ぐ */
+  border-collapse: collapse;
+  font-size: 8px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+th, td {
+  padding: 4px;
+  border: 1px solid #000;
+  font-size: 8px;
+  text-align: center;
+  white-space: nowrap; /* 長すぎる単語は折り返さない */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 長いテキストは「…」で省略 */
+}
+
+/* ヘッダーのスタイル */
+h1, h2, h3 {
+  font-size: 12px;
+  color: #000;
+}
+
+/* 表の列幅を調整 */
+table th:nth-child(1), table td:nth-child(1) { width: 12%; }
+table th:nth-child(2), table td:nth-child(2) { width: 12%; }
+table th:nth-child(3), table td:nth-child(3) { width: 10%; }
+table th:nth-child(4), table td:nth-child(4) { width: 10%; }
+table th:nth-child(5), table td:nth-child(5) { width: 14%; }
+table th:nth-child(6), table td:nth-child(6) { width: 12%; }
+table th:nth-child(7), table td:nth-child(7) { width: 10%; }
+table th:nth-child(8), table td:nth-child(8) { width: 10%; }
+table th:nth-child(9), table td:nth-child(9) { width: 10%; }
+
+/* 水色背景エリアも縮小対応 */
+.readonly-container {
+  padding: 5px;
+  font-size: 9px;
+  background-color: #E0F7FA;
+}

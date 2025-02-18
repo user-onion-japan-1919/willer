@@ -1,0 +1,28 @@
+<h1>閲覧申請一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>対象者（親）</th>
+      <th>メール</th>
+      <th>電話番号</th>
+      <th>関係性</th>
+      <th>申請日時</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @view_requests.each do |request| %>
+      <tr>
+        <td><%= request.id %></td>
+        <td><%= request.parent.full_name %></td>
+        <td><%= request.viewer_email %></td>
+        <td><%= request.viewer_phone_number %></td>
+        <td><%= request.relationship %></td>
+        <td><%= request.created_at.strftime('%Y-%m-%d %H:%M') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '新しい閲覧申請', new_view_request_path, class: 'btn btn-primary' %>

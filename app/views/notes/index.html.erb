@@ -1,2 +1,1610 @@
-<h1>遺言一覧ページ</h1>
-<%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-danger" %>
+
+
+<body style="margin-left: 5%;">
+
+<!-- キャッシュ無効化 -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<br>
+<br>
+
+<!-- ✅ 個人ページのURLをQRコード表示 -->
+<% if @user.present? %>
+<div>
+  <%= generate_qr_code(notes_url) %> 
+  </div>
+<% end %>
+<!-- ✅ 個人ページのURLをQRコード表示 -->
+
+
+
+<h1>
+  ◎<%= current_user.first_name %> <%= current_user.last_name %> さんの個人ページ　
+</h1>
+<h3 style="color: red; font-size: 60%;">※このページは本人しか閲覧できません。</h3>
+
+<br>
+<br>
+
+<div class="button-container" style="display: flex; gap: 10px;">
+
+  　　　<%= button_to "   ⭐️ 閲覧者から見た『あなた』の公開ページ ⭐️   ",
+                public_page_path(current_user.uuid, (current_user.id + 150150)),
+                method: :get,
+                class: "btn btn-primary",
+                style: "flex: 1;" %>
+
+  　　　　　　　<%= button_to "   ログアウト   ", destroy_user_session_path, 
+                method: :delete, 
+                class: "btn btn-danger",
+                style: "flex: 1;" %>
+
+</div>
+
+<br>
+<br>
+
+<hr style=" margin-right: 40%;">
+
+<br>
+
+<!-- ⭐️⭐️⭐️⭐️ シングルとファミリーの分岐タブ ⭐️⭐️⭐️⭐️ -->
+<div class="tabs">
+
+  　　　<button id="single-tab" class="active" onclick="showSection('single')"> Single_Note 📖 <br><br>シングルモード</button>
+  　　　<button id="family-tab" onclick="showSection('family')"> Family's_Note 📚 <br><br>ファミリーモード</button>
+</div>
+
+<br>
+
+<hr style=" margin-right: 40%;">
+
+<br>
+
+
+<!-- ⭐️⭐️⭐️⭐️ シングルの小タブ（infoとnoteを定義） ⭐️⭐️⭐️⭐️ -->
+<div id="single-section">
+  <div class="sub-tabs">
+    　◎1人で作業しよう<br>
+    　　　<button id="info-tab" class="active" onclick="showSubSection('info')"> ⚙️   ユーザー編集   ⚙️ <br>(ログイン)</button>
+    　　<button id="note-tab" onclick="showSubSection('note')"> 📓   ノートに記述   📓 <br>(遺言作成)</button>
+
+<!-- 1つ目のボタン -->
+　　　　　<button id="scrollAndReloadBtn1" style="padding: 10px 20px; background-color: #4CAF50; color:black; border-radius: 5px; border: none; cursor: pointer;">
+  ⤴️ 上へ戻ってリロード<br>　 (保存はされません)
+</button>
+
+<!-- 追記終了 -->
+
+  </div>
+</div>
+
+<!-- ⭐️⭐️⭐️⭐️ ファミリーの小タブ（parentとchildを定義） ⭐️⭐️⭐️⭐️ -->
+<div id="family-section" style="display: none;">
+  <div class="sub-tabs">
+    　◎家族と共有しよう<br>
+    　　　<button id="parent-tab" class="active" onclick="showParentSubSection('parent')"> 🏠  "親" として利用  <br>(閲覧許可)</button>
+    　　<button id="child-tab" onclick="showChildSubSection('child')"> 🥳  "子" として利用  <br>(閲覧検索)</button>
+
+<!-- 2つ目のボタン -->
+　　　　　<button id="scrollAndReloadBtn2" style="padding: 10px 20px; background-color: #4CAF50; color:black; border-radius: 5px; border: none; cursor: pointer;">
+  ⤴️ 上へ戻ってリロード<br>　 (保存はされません)
+</button>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // ✅ 1つ目のボタン
+    const scrollAndReloadBtn1 = document.getElementById("scrollAndReloadBtn1");
+    scrollAndReloadBtn1.addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        location.reload();
+      }, 600);
+    });
+
+    // ✅ 2つ目のボタン
+    const scrollAndReloadBtn2 = document.getElementById("scrollAndReloadBtn2");
+    scrollAndReloadBtn2.addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        location.reload();
+      }, 600);
+    });
+  });
+</script>
+
+<!-- 追記終了 -->
+
+  </div>
+</div>
+
+
+
+
+  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①infoの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+<br>
+
+<hr style=" margin-right: 40%;">
+
+<br>
+<br>
+
+  <div id="info-section">
+  <h3> ⚙️ <%= current_user.first_name %> <%= current_user.last_name %> さんのユーザー情報 ⚙️ </h3>
+  <br>
+
+<h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。（空欄は不可）</h3>
+<h3 style="color: blue; font-size: 70%;">※ログイン時の情報・閲覧許可の対象・閲覧申請の対象として使用されます。</h3>
+<br>
+<h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+<h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、親と子の紐付けが失敗します。</h3>
+  <br>
+  
+
+<%= form_with model: current_user, url: user_path(current_user), method: :patch, remote: true do |f| %>
+  <div>
+    <label>Eメール</label><br>
+    <%= f.text_field :email, value: current_user.email %>
+  </div>
+
+  <div>
+    <label>苗字（漢字）</label><br>
+    <%= f.text_field :first_name, value: current_user.first_name %>
+  </div>
+
+  <div>
+    <label>苗字（ふりがな）</label><br>
+    <%= f.text_field :first_name_furigana, value: current_user.first_name_furigana %>
+  </div>
+
+  <div>
+    <label>名前（漢字）</label><br>
+    <%= f.text_field :last_name, value: current_user.last_name %>
+  </div>
+
+  <div>
+    <label>名前（ふりがな）</label><br>
+    <%= f.text_field :last_name_furigana, value: current_user.last_name_furigana %>
+  </div>
+
+<div>
+  <label>生年月日</label><br>
+  <div style="display: flex; flex-direction: column; gap: 5px;">
+    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true %>
+  </div>
+</div>
+
+  <div>
+    <label>血液型</label><br>
+    <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
+  </div>
+
+  <div>
+    <label>電話番号</label><br>
+    <%= f.text_field :phone_number, value: current_user.phone_number %>
+  </div>
+
+  <div>
+    <label>住所</label><br>
+    <%= f.text_field :address, value: current_user.address %>
+  </div>
+
+  <br>
+  <%= f.submit " 📌 更新して保存する　" %>
+  <br>
+  <br>
+  <br>
+<hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+<% end %>  <!--form with-->
+     </div>  <!--info-section閉じタグ  -->
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ①infoの終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+
+
+
+
+
+ <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+  <div id="note-section">
+ 
+  <h3>📓 <%= current_user.first_name %> <%= current_user.last_name %> さんの ノート 📓 </h3>
+  <br>
+
+  <h3 style="color: blue; font-size: 70%;">※枠の右下をクリックして引っ張ると、表示画面が広がります。 </h3>
+  <h3 style="color: blue; font-size: 70%;">※記載内容を非表示にするため、記入は５行目からお願いします。 </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※いつでも内容を変更できます。　空欄での保存も可能です。　 </h3>
+  <h3 style="color: blue; font-size: 70%;">※入力後は必ず、保存ボタンで更新してください。 </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※正式書類ではないので、気負わず、じっくり、やれるところから取り組みましょう!! </h3>
+  <h3 style="color: blue; font-size: 70%;">※まずは言語化してみましょう!!　やりたいこと、遺したいことがきっと見つかります!! </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※本人と許可したユーザーしか閲覧できない仕様となってはおりますが、<br>　暗号化はされないため、<b><u>ここにパスワードや金融情報の直接の記載は避けてください。</u></b> </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※とくに金融情報や遺書については、別途エンディングノートを作成することを強くお勧めします。 </h3>
+  <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%= form_with model: @note, url: @note.persisted? ? note_path(@note) : notes_path, method: @note.persisted? ? :patch : :post, local: true do |f| %>
+
+  <br>
+
+  <!-- 表1 -->
+  <h3><b> 生前 </b>に決めておきたいこと</h3>
+  <table class="note-table">
+    <tr>
+      <th>子へのメッセージ</th>
+      <th>税金・行政関係<br>(※金融情報の記載不可)</th>
+      <th>相続関係<br>(※公開範囲と時期に注意)</th>
+      <th>公共料金関係<br>(※パスワード等記載不可)</th>
+      <th>やっておきたいリスト<br></th>
+    </tr>
+    <tr>
+      <td>
+        <div class="placeholder">＜遠慮せず自由に記載しよう＞</div>
+        <%= f.text_area :type_1, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">・税金の支払い関係<br>・優先順位の決定<br>・事前手続き関係<br>・その他</div>
+        <%= f.text_area :type_2, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">・財産と相続の対象者<br>・財産(株式/家宝/土地/家/車)<br>・使い道の希望<br>・その他</div>
+        <%= f.text_area :type_3, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">・契約中の家賃水道光熱費<br>・連絡先や書類の保管先<br>・契約継続の是非<br>・注意事項と補足</div>
+        <%= f.text_area :type_4, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">・〇〇へ旅行する<br>・創作物を仕上げる<br>・子とお酒を飲む<br>・孫の顔を見る</div>
+        <%= f.text_area :type_5, rows: 10 %>
+      </td>
+    </tr>
+  </table>
+
+  <br>
+
+  <!-- 表2 -->
+  <h3><b> 逝去後 </b>のご希望</h3>
+  <table class="note-table">
+    <tr>
+      <th>死後７日間以内に必要な手続き</th>
+      <th>葬儀関係</th>
+      <th>入墓関係</th>
+      <th>親族等連絡先・交流関係</th>
+      <th>エンディングノート<br>(実際に自筆したメモや遺言書)</th>
+    </tr>
+    <tr>
+      <td>
+        <div class="placeholder">※この項目は本来,子が実行する<br>　ものですので、空欄でも可<br>・死亡届・手続者の指名<br>・その他行政手続き書類</div>
+        <%= f.text_area :issue_1, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">・希望する葬儀屋<br>・葬儀の種類と予算<br>・招待する人<br>・その他の希望</div>
+        <%= f.text_area :issue_2, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">・希望の墓地・霊園・納骨堂<br>・墓石・入墓の予算<br>・維持管理費の記入<br>・その他の希望</div>
+        <%= f.text_area :issue_3, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">＜配偶者/祖父母/兄弟＞<br>＜こども/孫/いとこ＞<br>＜友人/恩人/お得意先＞<br>・関係継続の是非</div>
+        <%= f.text_area :issue_4, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">＜ここには金融情報記載不可＞<br>＜ここにはパスワ-ド記載不可＞<br>・保管先と公正証書の有無<br>・開封の時期と開封者の指名</div>
+        <%= f.text_area :issue_5, rows: 10 %>
+      </td>
+    </tr>
+  </table>
+
+  <br>
+
+  <!-- 表0 -->
+  <h3><b> 自由記述 </b>　🗒️</h3>
+  <table class="note-table">
+    <tr>
+      <th>
+        <div class="placeholder">タイトル１</div>
+        <%= f.text_area :title_1, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル2</div>
+        <%= f.text_area :title_2, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル3</div>
+        <%= f.text_area :title_3, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル4</div>
+        <%= f.text_area :title_4, rows: 2 %>
+      </th>
+      <th>
+        <div class="placeholder">タイトル5</div>
+        <%= f.text_area :title_5, rows: 2 %>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_1, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_2, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_3, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_4, rows: 10 %>
+      </td>
+      <td>
+        <div class="placeholder">要件を入力</div>
+        <%= f.text_area :content_5, rows: 10 %>
+      </td>
+    </tr>
+  </table>
+
+  <br>
+
+  <%= f.submit " 📌 保存する　", class: "btn btn-primary" %>
+<% end %>
+
+<!-- 追記: プレースホルダーCSS -->
+<style>
+  .placeholder {
+    position: absolute;
+    color: #555; /* 変更: 少し濃い灰色 */
+    pointer-events: none;
+    padding: 5px;
+    opacity: 0.5;
+    z-index: 10; /* 追加: プレースホルダーを最前面に */
+  }
+  textarea {
+    position: relative;
+    z-index: 1; /* テキストエリアを背景に配置 */
+  }
+</style>
+
+
+
+
+
+
+  <br>
+  <br>
+<h3 style="color: blue; font-size: 70%;"> 入力は以上で記入は終わりです。お疲れ様でした。🍵<br>いいノートに仕上がりましたね。</h3>
+<br>
+<h3 style="color: blue; font-size: 70%; display: inline; "id="family-tab" onclick="showSection('family')"> →もしよかったらこのまま、 <u><b>ファミリーモード </b></u>で共有してみませんか？</h3>
+
+
+<p>　</p>
+<hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+
+
+
+  </div>   <!--noteの閉じタグ-->
+
+
+<style>
+  #scrollAndReloadBtn1, 
+  #scrollAndReloadBtn2 {
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  #scrollAndReloadBtn1:hover, 
+  #scrollAndReloadBtn2:hover {
+    background-color: #3a8e41;
+    color: white;
+  }
+
+/* ✅ 上へ戻ってリロードボタンのホバースタイル */
+button#scrollAndReloadBtn1:hover,
+button#scrollAndReloadBtn2:hover {
+  background-color: #3a8e41 !important; /* 少し暗い色 */
+  color: white !important;            /* 文字色を白に変更 */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ✅ ノート用の表: 初期等間隔かつテキストエリアに追従 */
+.note-table {
+  width: 95% !important;
+  table-layout: fixed !important; /* 等間隔を維持 */
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow: visible !important;
+  transition: width 0.3s ease-in-out;
+}
+
+/* ✅ 表のセルを等間隔で表示 (固定幅) */
+.note-table th, 
+.note-table td {
+  padding: 3px;
+  text-align: center;
+  vertical-align: top;
+  width: 20% !important; /* 5列の場合、均等20%ずつ */
+  border: 1px solid black;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* ✅ テキストエリア: 自由にリサイズ可能 */
+.note-table textarea {
+  resize: both !important; /* 右下で自由リサイズ */
+  overflow: auto !important;
+  min-height: 4em !important; /* 初期は4行表示 */
+  width: 100% !important; /* セル幅に100%フィット */
+  min-width: 100px !important;
+  box-sizing: border-box !important;
+  font-size: 14px;
+  padding: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* ✅ プレースホルダー調整 */
+.placeholder {
+  position: absolute;
+  color: #888;
+  pointer-events: none;
+  opacity: 0.5;
+  padding: 5px;
+  font-size: 12px;
+}
+
+/* ✅ スマホ対応（レスポンシブ対応） */
+@media (max-width: 768px) {
+  .note-table {
+    width: 100% !important;
+  }
+  .note-table th, 
+  .note-table td {
+    font-size: 12px;
+    padding: 4px;
+  }
+}
+
+
+/* ✅ テキストエリアの文字だけ左詰めに */
+.note-table textarea {
+  text-align: left !important; /* 左詰め */
+  padding-left: 5px;         /* 左に少し余白 */
+}
+
+/* ✅ プレースホルダーも左詰めに */
+.placeholder {
+  text-align: left !important; /* 左詰め */
+  padding-left: 5px;         /* 左に少し余白 */
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+  <!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ②ノートの終了 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+
+
+ 
+
+
+
+
+
+
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ③ parentの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+<!-- ③閲覧許可 -->
+<div id="parent-section" style="display: none;">
+  <h3>🏠公開ページの閲覧を許可する対象者</h3>
+  <br>
+
+  <h3 style="color: blue; font-size: 70%;">※<%= current_user.first_name %> <%= current_user.last_name %> さんを公開者（親）、許可対象を閲覧者（子）として紐付けします。</h3>
+  <h3 style="color: blue; font-size: 70%;">※本人または許可対象者のみが、<%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへアクセスできるようになります。</h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+  <h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+  <br>
+
+  <%= form_with model: ViewPermission.new, url: view_permissions_path, method: :post, local: true do |f| %>
+    <div>
+      <label>苗字（漢字）</label><br>
+      <%= f.text_field :first_name %>
+    </div>
+
+    <div>
+      <label>苗字（ふりがな）</label><br>
+      <%= f.text_field :first_name_furigana %>
+    </div>
+
+    <div>
+      <label>名前（漢字）</label><br>
+      <%= f.text_field :last_name %>
+    </div>
+
+    <div>
+      <label>名前（ふりがな）</label><br>
+      <%= f.text_field :last_name_furigana %>
+    </div>
+
+    <div>
+      <label>生年月日</label><br>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
+      </div>
+    </div>
+
+    <div>
+      <label>血液型</label><br>
+      <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください" %>
+    </div>
+
+    <br>
+    <%= f.submit " 📌 閲覧を許可したい相手を保存　" %>
+  <% end %>
+
+  <br><br>
+  <hr style=" margin-right: 40%;">
+  <br>
+
+
+<h3> 🏠 <%= current_user.first_name %> <%= current_user.last_name %> さんの公開ページへのアクセス権限　許可リスト </h3>
+
+  <!-- ③ー閲覧許可対象者リスト -->
+ <% if current_user.view_permissions.any? %>
+    <table border="1" style=" margin-right: 40%; border-collapse: collapse;">
+      <tr>
+        <th>苗字　　　　　</th>
+        <th>名前　　　　　</th>
+        <th>生年月日　　　　　</th>
+        <th>血液型　　　</th>
+        <th>許可設定　（モードは自動保存）　</th>
+        <th>削除　　</th>
+      </tr>
+
+ <!-- ✅ 1行目に本人の情報を追加 -->
+    <tr>
+      <td><%= current_user.first_name %> <br>(<%= current_user.first_name_furigana %>)</td>
+      <td><%= current_user.last_name %> <br>(<%= current_user.last_name_furigana %>)</td>
+      <td><%= current_user.birthday.strftime('%Y-%m-%d') %></td>
+      <td><%= current_user.blood_type %></td>
+      <td>常に許可する</td> <!-- ✅ 許可設定 -->
+      <td>本人</td>          <!-- ✅ 削除欄 -->
+    </tr>
+
+
+      <% current_user.view_permissions.each do |vp| %>
+        <tr>
+          <td><%= vp.first_name %> <br>(<%= vp.first_name_furigana %>)</td>
+          <td><%= vp.last_name %> <br>(<%= vp.last_name_furigana %>)</td>
+          <td><%= vp.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vp.blood_type %></td>
+          <td>
+            <!-- ON/OFF モード選択 -->
+            <select class="on-mode-select" data-id="<%= vp.id %>">
+              <option value="拒否" <%= "selected" if vp.on_mode == "拒否" %>>常に拒否する</option>
+              <option value="許可" <%= "selected" if vp.on_mode == "許可" %>>常に許可する</option>
+              <option value="タイマー" <%= "selected" if vp.on_mode == "タイマー" %>>ログアウトタイマー作動中！！</option>
+            </select>
+
+            <!-- タイマー時間設定 -->
+            <input type="number" class="on-timer-input" data-id="<%= vp.id %>" value="<%= vp.on_timer_value %>" min="1" <%= "disabled" if vp.on_mode != "タイマー" %> >
+
+            <!-- タイマー単位設定 -->
+            <select class="on-timer-unit-select" data-id="<%= vp.id %>" <%= "disabled" if vp.on_mode != "タイマー" %>>
+              <option value="second" <%= "selected" if vp.on_timer_unit == "second" %>>__秒後　に自動で許可に切替えます</option>
+              <option value="minute" <%= "selected" if vp.on_timer_unit == "minute" %>>__分後　に自動で許可に切替えます</option>
+              <option value="hour" <%= "selected" if vp.on_timer_unit == "hour" %>>時間後　に自動で許可に切替えます</option>
+              <option value="day" <%= "selected" if vp.on_timer_unit == "day" %>>__日後　に自動で許可に切替えます</option>
+              <option value="month" <%= "selected" if vp.on_timer_unit == "month" %>>__月後　に自動で許可に切替えます</option>
+              <option value="year" <%= "selected" if vp.on_timer_unit == "year" %>>__年後　に自動で許可に切替えます</option>
+            </select>
+          </td>
+          <td>
+  <%= button_to "削除", view_permission_path(vp), 
+                      method: :delete, 
+                      remote: true, 
+                      data: { confirm: "本当に削除しますか？" } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+
+  <br>
+ 
+  <% else %>
+    <p>　</p>
+    <p style="color: red;">　※現在、あなたが許可している相手はいません。</p>
+  <% end %>
+
+  <br>
+  <br>
+  <hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+
+
+
+
+
+
+<!--アクセスエラーハンドリング -->
+
+<div style="display: flex; align-items: center; gap: 10px;">
+  　<div style="
+    display: inline-block;
+    background: repeating-linear-gradient(
+      45deg,
+      yellow,
+      yellow 10px,
+      black 10px,
+      black 20px
+    );
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3.2px 3.2px;
+    border: 2px solid red;
+    text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;
+  ">
+    ⚠️ Caution!
+  </div>
+
+  <h3 style="margin: 0;">⚠️あなたの公開ページURLへアクセスし、拒否されたユーザー⚠️</h3>
+
+  
+</div>
+
+
+
+<!-- 追記開始: アクセス拒否ユーザー一覧 -->
+
+<% rejected_accesses = @view_accesses.select { |va| va.access_count == 0 && va.rejected_count > 0 } %>
+
+<% if rejected_accesses.any? %>
+
+<table border="1" style="
+  width: 95% !important;
+  border: 5px double black; 
+  border-collapse: collapse;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 3px yellow;
+  table-layout: fixed;  /* ✅ 列幅を固定 */
+  word-wrap: break-word; /* ✅ 文字折り返し */
+">
+
+  <tr>
+    <th>拒否されたユーザー</th>
+    <th>本人から<br>見た続柄</th>
+    <th>最終アクセス<br>拒否時刻</th>
+    <th>アクセス<br>拒否回数</th>
+    <th>メールアドレス</th>
+    <th>生年月日</th>
+    <th>血液型</th>
+    <th>住所</th>
+    <th>電話番号</th>
+    <th>非表示</th>
+    <th>保存</th>
+  </tr>
+
+  <% rejected_accesses.each do |va| %>
+    <% next if va.viewer.nil? %> <!-- 追記: viewerがnilの場合はスキップ -->
+
+    <tr>
+      <td><%= va.viewer.first_name %> (<%= va.viewer.first_name_furigana %>)<br><%= va.viewer.last_name %> (<%= va.viewer.last_name_furigana %>)</td>
+      <td><%= ViewRequest.find_by(viewer_id: va.viewer_id, owner_id: @user&.id)&.relationship.presence || "不明" %></td>
+      <td><%= va.last_rejected_at&.in_time_zone('Asia/Tokyo')&.strftime('%Y-%m-%d %H:%M') || 'データなし' %></td>
+      <td id="reject_count_<%= va.viewer.id %>"><%= va.rejected_count %> 回</td>
+      <td><%= va.viewer.email %></td>
+      <td><%= va.viewer.birthday.strftime('%Y-%m-%d') if va.viewer.birthday %></td>
+      <td><%= va.viewer.blood_type %></td>
+      <td><%= va.viewer.address %></td>
+      <td><%= va.viewer.phone_number %></td>
+      <td>
+
+<button class="clear-rejection-btn" 
+        data-permission-id="<%= va.id %>">
+  非表示
+</button>
+
+
+      </td>
+      <td>
+        <!-- 追記: 「保留して保存」ボタン -->
+        <button class="hold-btn" data-viewer-id="<%= va.viewer.id %>" id="hold_btn_<%= va.viewer.id %>">移動して保存</button>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- ✅ 新規追加: 全員分「完全に削除」ボタン（表の右端揃え） -->
+<div style="position: relative; margin-top: 20px;">
+  <button id="clearRejectionsBtn" class="hold-btn" style="
+    font-size: 110%; /* ⭐️文字サイズ110% */
+    position: absolute; 
+    right: 7%; /*  ⭐️表の右端から7%左に配置 */
+  ">
+    🚨 リスト全員を完全に非表示　
+  </button>
+
+
+<p>　</p>
+<br>
+　※『移動して保存』　　　　＝　　 　①アクセス拒否回数をリセット（n=0のとき:拒否リストから非表示）<br>
+　　　　　　　　　　　　　　　　　　②アクセス回数を+1（n>0のとき:閲覧履歴として表示）<br>
+　　　　　　　　　　　　　　　　　　③『閲覧を許可したい相手』にデータを移動し保存　(上部許可リストに”default:常に拒否”で保存）<br>
+<br>
+　※　『 非表示 』　　　＝　　　選択したユーザー または リスト全員 のアクセス拒否回数をリセット（データ自体は残します）<br>
+<p>　</p>
+
+
+
+</div>
+
+
+
+<% else %>
+  <p>　</p>
+  <p style="color: red;">　※不正なアクセスはありませんでした。</p>
+<% end %>
+
+
+
+
+<!-- ✅ ＜追記＞「保留して保存」ボタンのJavaScript処理 -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".hold-btn").forEach(button => {
+      button.addEventListener("click", function() {
+        const viewerId = this.dataset.viewerId;
+        const button = this;
+
+        fetch("/view_permissions/hold", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+          },
+          body: JSON.stringify({ viewer_id: viewerId })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            // ✅ 成功時のUI更新
+            button.textContent = "保留済み";
+            button.disabled = true; // ボタンを無効化
+
+            // ✅ アクセス拒否回数をリセット
+            document.getElementById(`reject_count_${viewerId}`).textContent = "0 回";
+
+            // ✅ 新規追加: アクセス回数を+1にした旨を表示
+            alert( "『移動して保存』が完了しました！\n" +
+              "　　　　　　　　　　　　　　　　　　　\n" +
+              "・アクセス拒否回数をリセットしました。\n" +
+              "・アクセス回数を+1しました。\n" +
+              "・許可リストに情報を複製しました。");
+          } else {
+            alert("『移動して保存』に失敗しました：" + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("通信エラー:", error);
+          alert("サーバーとの通信に失敗しました。");
+        });
+      });
+    });
+  });
+
+
+
+// ✅ 削除ボタンのクリックイベント
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.delete-permission-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const permissionId = button.dataset.id;
+
+      if (confirm('この許可を本当に削除しますか？')) {
+        fetch(`/view_permissions/${permissionId}`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('削除しました。');
+            button.closest('tr').remove(); // 表から削除
+          } else {
+            alert('削除に失敗しました: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('削除エラー:', error);
+          alert('通信エラーが発生しました。');
+        });
+      }
+    });
+  });
+});
+
+// ✅ JSファイル（例: app/assets/javascripts/view_permissions.js）
+document.addEventListener('turbo:load', () => {
+  console.log("🚀 Rejection reset script loaded!");
+
+  document.querySelectorAll('.clear-rejection-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const permissionId = button.dataset.permissionId;
+
+      console.log(`🔹リセット対象ID: ${permissionId}`);
+
+      if (confirm('このユーザーの拒否回数をリセットしますか？')) {
+        fetch(`/view_permissions/${permissionId}/clear_rejection`, {
+          method: 'PATCH',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert(data.message);
+            button.closest('tr').remove(); // テーブルから削除
+          } else {
+            alert(`エラー: ${data.message}`);
+          }
+        })
+        .catch(error => {
+          alert('通信エラーが発生しました。');
+          console.error('🚨 通信エラー:', error);
+        });
+      }
+    });
+  });
+});
+
+
+
+</script>
+
+
+
+
+
+<!-- 追記終了: アクセス拒否ユーザー一覧 -->
+
+
+<p>　</p>
+
+<br>
+<hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+</div>
+</div>
+
+<!-- ✅ JavaScript: 「保留して保存」＆「全員を非表示」処理 -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".on-mode-select").forEach(select => {
+    select.addEventListener("change", function() {
+      const id = this.dataset.id;
+      const mode = this.value;
+      const timerInput = document.querySelector(`.on-timer-input[data-id="${id}"]`);
+      const timerUnit = document.querySelector(`.on-timer-unit-select[data-id="${id}"]`);
+
+      timerInput.disabled = (mode !== "タイマー");
+      timerUnit.disabled = (mode !== "タイマー");
+
+      fetch(`/view_permissions/${id}/update_on_mode`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ on_mode: mode })
+      }).then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            alert("更新に失敗しました");
+          }
+        });
+    });
+  });
+
+  document.querySelectorAll(".on-timer-input, .on-timer-unit-select").forEach(input => {
+    input.addEventListener("change", function() {
+      const id = this.dataset.id;
+      const timerValue = document.querySelector(`.on-timer-input[data-id="${id}"]`).value;
+      const timerUnit = document.querySelector(`.on-timer-unit-select[data-id="${id}"]`).value;
+
+      fetch(`/view_permissions/${id}/update_on_timer_value_and_unit`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ on_timer_value: timerValue, on_timer_unit: timerUnit })
+      }).then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            alert("更新に失敗しました");
+          }
+        });
+    });
+  });
+});
+
+// ✅ 「全員を非表示」専用処理
+document.addEventListener("DOMContentLoaded", function() {
+  const clearButton = document.getElementById("clearRejectionsBtn");
+
+  if (!clearButton) {
+    console.warn("⚠️ clearRejectionsBtn ボタンが見つかりません。");
+    return;
+  }
+
+  clearButton.addEventListener("click", async function() {
+    if (!confirm("⚠️ 本当にリスト全員を非表示にしますか？\n（この操作は取り消せません）")) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/view_permissions/clear_rejections", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+        },
+      });
+
+      const data = await response.json();
+
+      // ✅ 【追加】無関係なエラー表示を抑止
+      if (data.status === "success") {
+        document.querySelectorAll("[id^='reject_count_']").forEach(el => {
+          el.textContent = "0 回"; // 全ユーザーの拒否回数を即座に0表示
+        });
+        alert("✅ 全てのアクセス拒否回数をリセットしました。");
+      } else {
+        // ✅ 「全員を非表示」用のエラーメッセージのみ表示
+        alert("❌ 全員を非表示処理でエラー発生：" + (data.message || "不明なエラー"));
+      }
+    } catch (error) {
+      console.error("通信エラー:", error);
+      alert("❌ サーバー通信に失敗しました。エラー詳細: " + error.message);
+    }
+  });
+});
+
+
+
+
+</script>
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ③ parentの終了タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ④ childの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+<!-- 🌕🌕🌕🌕 AI 4回目🌕🌕🌕🌕🌕🌕 -->
+
+
+
+<div id="child-section" style="display: none;">
+
+  <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 </h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※<%= current_user.first_name %> <%= current_user.last_name %> さんを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
+  <h3 style="color: blue; font-size: 70%;">※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</h3>
+  <h3 style="color: blue; font-size: 70%;">※取得した公開ページURLにアクセスできるかは、都度チェックされます。</h3>
+  <br>
+  <h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+  <h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+  <br>
+
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+  
+    <div>
+      <label>苗字（漢字）</label><br>
+      <%= f.text_field :first_name, name: "view_request[first_name]", required: true %>
+    </div>
+
+    <div>
+      <label>苗字（ふりがな）</label><br>
+      <%= f.text_field :first_name_furigana, name: "view_request[first_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（漢字）</label><br>
+      <%= f.text_field :last_name, name: "view_request[last_name]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（ふりがな）</label><br>
+      <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>生年月日</label><br>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
+      </div>
+    </div>
+
+    <div>
+      <label>血液型</label><br>
+      <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください", name: "view_request[blood_type]" %>
+    </div>
+
+    <br>
+
+    <div>
+  <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
+  <%= f.select :relationship, 
+      ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], 
+      { include_blank: "選択してください" }, 
+      { required: true } %> <!-- ✅ **required: true を追加** -->
+</div>
+
+    <br>
+    <%= f.submit " 📌 閲覧したい対象者を登録する　", class: "btn btn-primary" %>
+    <br>
+
+  <% end %>
+
+  <br>
+  <hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1" style=" margin-right: 40%; border-collapse: collapse;">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %>（<%= vr.first_name_furigana %>）</td>
+          <td><%= vr.last_name %>（<%= vr.last_name_furigana %>）</td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            <%= button_to "削除", view_request_path(vr), method: :delete, class: "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+
+  <p>　</p>
+    <p style="color: red;">　※現在、あなたが登録している親の情報（閲覧したい対象者）は存在しません。</p>
+
+  <% end %>
+
+  <br>
+
+  <p>
+ 
+    <%= button_to " 📌 公開ページURLを取得・更新する　", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+
+  </p>
+
+  <br>
+  <hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんの取得したURLリスト</h3>
+  
+  <% if current_user.view_requests.any? %>
+    <table border="1" style=" margin-right: 40%; border-collapse: collapse;">
+      <tr>
+        <th>公開者　　　</th>
+        <th>続柄　　　　</th>
+        <th>公開ページURL</th>
+      </tr>
+
+
+<% base_url = request.base_url %>  <!-- ✅ 事前に `request.base_url` を変数に格納 -->
+
+ <!-- 🔹 1行目：本人の情報を表示 -->
+
+<% user_url = "#{base_url}/public_page/#{current_user.uuid}/#{current_user.id + 150150}" %>
+
+    <tr>
+      <td><%= current_user.first_name %> <%= current_user.last_name %></td>
+      <td>本人</td>
+      <td>
+        <%= link_to user_url, user_url, target: "_blank", rel: "noopener noreferrer" %>
+      </td>
+    </tr>
+
+<!-- 🔹 2行目以降：登録したview_requestsを表示 -->
+<% current_user.view_requests.each do |vr| %>
+  <% owner = User.find_by(
+    first_name: vr.first_name,
+    first_name_furigana: vr.first_name_furigana,
+    last_name: vr.last_name,
+    last_name_furigana: vr.last_name_furigana,
+    birthday: vr.birthday,
+    blood_type: vr.blood_type
+  ) %>
+
+  <% vr_url = owner.present? ? "#{base_url}/public_page/#{owner.uuid}/#{owner.id + 150150}" : nil %>
+
+  <tr>
+    <td><%= vr.first_name %> <%= vr.last_name %></td>
+    <td><%= vr.relationship %></td>
+    <td>
+      <% if vr_url.present? %>
+        <%= link_to vr_url, vr_url, target: "_blank", rel: "noopener noreferrer" %>
+      <% else %>
+        未取得　　（ ※ ユーザー登録情報 または URL が存在しません ）
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+
+
+
+<% if current_user.view_requests.empty? %>
+
+  <p>　</p>
+
+  <p style="color: red;">　※現在あなたが取得した、第三者の公開ページはありません。</p>
+
+  <p>　</p>
+
+
+<% end %>
+
+<p>　</p>
+
+<p style="color: red; font-weight: bold; font-size: 100%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  ※あなたの検索履歴を通し、公開者（検索された親側）にもあなたの情報が保存されます。
+</p>
+<p style="color: red; font-weight: bold; font-size: 100%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  ※不用意な検索・目的に合わない使用はお控えください。なりすましも十分考えられます。
+</p>
+<p style="color: red; font-weight: bold; font-size: 100%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  ※自分や他人の公開URLをSNS等で共有することも、重大な違反行為です。絶対におやめ下さい。
+</p>
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  ※不正な利用(リスト型攻撃・フィッシング詐欺・DDoS攻撃等)について通報があり、
+</p>
+<p style="color: red; font-weight: bold; font-size: 70%; width: fit-content; margin-left: auto; margin-right: 40%;">
+  管理者が悪質と判断した際には、アカウントを停止のうえ、法的措置をとります。
+</p>
+
+<% end %>
+
+  <br>
+  <hr style=" margin-right: 40%;">
+  <br>
+  <br>
+
+</div>
+
+
+<!-- 🌕🌕🌕🌕 AI 4回目🌕🌕🌕🌕🌕🌕 -->
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ④childの終了タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+
+
+
+  <!-- タブタブタブタブタブタブタブタブ ---------------------------------------------->
+
+
+
+
+
+<script>
+  function showSection(type) {
+    if (type === 'single') {
+      // シングルモードを表示
+      document.getElementById('single-section').style.display = 'block';
+      document.getElementById('family-section').style.display = 'none';
+
+      // ファミリーモードのコンテンツを完全非表示
+      document.getElementById('parent-section').style.display = 'none';
+      document.getElementById('child-section').style.display = 'none';
+
+      // タブのアクティブ状態を変更
+      document.getElementById('single-tab').classList.add('active');
+      document.getElementById('family-tab').classList.remove('active');
+
+      // ✅ デフォルトで「ユーザー編集」を開く
+      showSubSection('info');
+
+      // ✅ タブを切り替えた時のみ、画面を最上部にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // ファミリーモードを表示
+      document.getElementById('single-section').style.display = 'none';
+      document.getElementById('family-section').style.display = 'block';
+
+      // シングルモードのコンテンツを完全非表示
+      document.getElementById('info-section').style.display = 'none';
+      document.getElementById('note-section').style.display = 'none';
+
+      // タブのアクティブ状態を変更
+      document.getElementById('single-tab').classList.remove('active');
+      document.getElementById('family-tab').classList.add('active');
+
+      // ✅ 「◎家族と共有しよう」から表示し、それ以外を非表示
+      showParentSubSection('parent');
+
+      // ✅ タブを切り替えた時のみ、画面を最上部にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function showSubSection(type) {
+    // すべて非表示にしてから、選択したものだけ表示
+    document.getElementById('info-section').style.display = 'none';
+    document.getElementById('note-section').style.display = 'none';
+
+    if (type === 'info') {
+      document.getElementById('info-section').style.display = 'block';
+      document.getElementById('info-tab').classList.add('active');
+      document.getElementById('note-tab').classList.remove('active');
+    } else if (type === 'note') {
+      document.getElementById('note-section').style.display = 'block';
+      document.getElementById('note-tab').classList.add('active');
+      document.getElementById('info-tab').classList.remove('active');
+    }
+    // ❌ ここではスクロールをさせない（修正済）
+  }
+
+  function showParentSubSection(type) {
+    // すべて非表示にしてから、選択したものだけ表示
+    document.getElementById('parent-section').style.display = 'none';
+    document.getElementById('child-section').style.display = 'none';
+
+    if (type === 'parent') {
+      document.getElementById('parent-section').style.display = 'block';
+      document.getElementById('parent-tab').classList.add('active');
+      document.getElementById('child-tab').classList.remove('active');
+    }
+  }
+
+  function showChildSubSection(type) {
+    // すべて非表示にしてから、選択したものだけ表示
+    document.getElementById('parent-section').style.display = 'none';
+    document.getElementById('child-section').style.display = 'none';
+
+    if (type === 'child') {
+      document.getElementById('child-section').style.display = 'block';
+      document.getElementById('child-tab').classList.add('active');
+      document.getElementById('parent-tab').classList.remove('active');
+    }
+  }
+
+  // ✅ ページのロードが完全に終わってからデフォルト状態を適用する
+  window.onload = function () {
+    // ✅ シングルモード & ユーザー編集タブをデフォルト表示
+    showSection("single");
+    showSubSection("info");
+
+    // ✅ ページのスクロールを一番上に戻す
+    window.scrollTo(0, 0);
+  };
+
+  function resetToDefaultTab() {
+    // ✅ ページをリロードして、デフォルト状態（シングルモード & ユーザー編集）に戻す
+    location.reload();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</script>
+
+
+
+
+
+
+
+ <!-- タブタブタブタブタブタブタブタブ --------------------------------------------->
+
+
+
+
+
+ <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS --------------------------------------------->
+
+
+
+
+
+<style>
+
+/* ✅ シングルモードのタブはそのまま（既存のコードを変更しない） */
+
+/* ✅ ファミリーモードのタブ（非アクティブ: 薄い青系） */
+.tabs #family-tab, .sub-tabs #parent-tab, .sub-tabs #child-tab {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #C0D8F0; /* ✅ 薄い青 */
+  border: 1px solid #4A90E2; /* ✅ 縁取りは青系 */
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* ✅ アクティブなファミリーモードのタブ（中程度の青） */
+.tabs #family-tab.active, .sub-tabs #parent-tab.active, .sub-tabs #child-tab.active {
+  background-color: #5B9BD5; /* ✅ 中程度の青 */
+}
+
+/* ✅ ホバー時のファミリーモードのタブ（さらに濃い青） */
+.tabs #family-tab:hover, .sub-tabs #parent-tab:hover, .sub-tabs #child-tab:hover {
+  background-color: #2F4F6F; /* ✅ 濃い青 */
+}
+
+
+
+
+  /* タブボタンの共通スタイル（通常時は薄めの黄緑） */
+  .tabs button, .sub-tabs button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #D0F0C0; /* ✅ 通常時の薄い黄緑 */
+    border: 1px solid #8BC34A; /* ✅ 縁取りは緑系 */
+    color: black; /* ✅ 文字色はそのまま */
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  /* アクティブなタブの色を #9ACD32（黄緑） */
+  .tabs button.active, .sub-tabs button.active {
+    background-color: #9ACD32; /* ✅ 黄緑 */
+  }
+
+  /* ✅ ホバー時の文字色を白に変更 (既存の .tabs, .sub-tabs に追加) */
+.tabs button:hover, 
+.sub-tabs button:hover {
+  background-color: #556B2F; /* 既存の濃いオリーブグリーン */
+  color: white; /* ✅ ホバー時に文字色を白に変更 */
+}
+
+.tabs #family-tab:hover, 
+.sub-tabs #parent-tab:hover, 
+.sub-tabs #child-tab:hover {
+  background-color: #2F4F6F; /* 既存の濃い青 */
+  color: white; /* ✅ ホバー時に文字色を白に変更 */
+}
+
+/* ✅ すべてのテキストフィールドを画面幅の50%に設定 */
+input[type="text"], select {
+  width: 350px;
+  min-width: 250px;  /* 最小幅を設定し、狭くなりすぎないように */
+  max-width: 600px;  /* 最大幅を600pxにしてデザイン崩れを防ぐ */
+  padding: 5px;  /* 余白を確保 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ✅ テキストエリアも同様に拡張 */
+textarea {
+  width: 350PX;
+  min-width: 250px;
+  max-width: 600px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 📌 表のスタイルを統一 */
+  table {
+    width: 60%; /* ✅ 表を横幅いっぱいに */
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+/* 📌 フォームの入力フィールドの幅を統一 */
+input[type="text"], textarea {
+  width: 100%;
+  max-width: 600px; /* ✅ 最大幅を600pxに設定 */
+  min-width: 250px; /* ✅ 最小幅を設定 */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+
+
+
+  
+
+
+
+</style>
+
+
+<!-- ⭐️⭐️⭐️⭐️ スクロール追従 (下枠線のみ・背景50%透過ぼかし) ⭐️⭐️⭐️⭐️ -->
+<style>
+  /* ✅ シングルモード固定部分 */
+  .sticky-single {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* 白背景・透過50% */
+    border-bottom: 4px solid #9ACD32; /* 下部のみ黄緑枠線 */
+    border-left: none; /* 横の枠線なし */
+    border-right: none; /* 横の枠線なし */
+    border-top: none; /* 上部の枠線なし */
+    backdrop-filter: blur(5px); /* ぼかし効果 */
+    z-index: 9999; 
+    padding: 10px;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
+  }
+
+  /* ✅ ファミリーモード固定部分 */
+  .sticky-family {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* 白背景・透過50% */
+    border-bottom: 4px solid #5B9BD5; /* 下部のみ青色枠線 */
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    backdrop-filter: blur(5px); /* ぼかし効果 */
+    z-index: 9999; 
+    padding: 10px;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
+  }
+
+  /* スクロール時の余白調整 */
+  .scroll-offset {
+    margin-top: 120px; /* 固定部分の高さ分だけ余白 */
+  }
+  
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const singleSection = document.querySelector("#single-section .sub-tabs");
+    const familySection = document.querySelector("#family-section .sub-tabs");
+
+    const headerHeight = 100; // 固定前の基準位置
+    const offsetHeight = 120; // 余白の高さ
+
+    window.addEventListener("scroll", () => {
+      const scrollPosition = window.scrollY;
+
+      // ✅ シングルモードのスクロール固定処理
+      if (singleSection && singleSection.style.display !== "none") {
+        if (scrollPosition > headerHeight) {
+          singleSection.classList.add("sticky-single");
+          document.body.classList.add("scroll-offset");
+        } else {
+          singleSection.classList.remove("sticky-single");
+          document.body.classList.remove("scroll-offset");
+        }
+      }
+
+      // ✅ ファミリーモードのスクロール固定処理
+      if (familySection && familySection.style.display !== "none") {
+        if (scrollPosition > headerHeight) {
+          familySection.classList.add("sticky-family");
+          document.body.classList.add("scroll-offset");
+        } else {
+          familySection.classList.remove("sticky-family");
+          document.body.classList.remove("scroll-offset");
+        }
+      }
+    });
+  });
+
+
+
+
+
+
+
+
+
+
+  
+</script>
+
+
+
+</body>
+
+
+ <!-- CSSCSSCSSCSSCSSCSSCSSCSSCSS ------------------------------------------->
+
+
+
+
+
+ <!-- ここが最後ですここが最後ですここが最後です ----------------------------------->

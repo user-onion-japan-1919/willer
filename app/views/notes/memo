@@ -1,0 +1,616 @@
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ④ childの開始タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+    <div id="child-section" style="display: none;">
+
+    <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者  </h3>
+    <br>
+  <p style="color: blue; font-size: 70%;">※<%= current_user.first_name %> <%= current_user.last_name %> さんを閲覧者（子）、検索したい対象を公開者（親）として紐付けします。</p>
+  <p style="color: blue; font-size: 70%;">※検索内容と一致するユーザーが存在すると、公開ページURLを取得できます。</p>
+  <p style="color: blue; font-size: 70%;">※取得した公開ページURLにアクセスできるかは、都度チェックされます。</p>
+  <br>
+    <h3 style="color: blue; font-size: 70%;">※漢字は新字体での統一を推奨します。</h3>
+  <h3 style="color: blue; font-size: 70%;">※情報が少しでも異なると、アクセス許可を付与できません。</h3>
+  <br>
+
+<%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+  
+  <div>
+    <label>苗字（漢字）</label><br>
+    <%= f.text_field :first_name, name: "view_request[first_name]", required: true %>
+  </div>
+
+  <div>
+    <label>苗字（ふりがな）</label><br>
+    <%= f.text_field :first_name_furigana, name: "view_request[first_name_furigana]", required: true %>
+  </div>
+
+  <div>
+    <label>名前（漢字）</label><br>
+    <%= f.text_field :last_name, name: "view_request[last_name]", required: true %>
+  </div>
+
+  <div>
+    <label>名前（ふりがな）</label><br>
+    <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
+  </div>
+
+<div>
+  <label>生年月日</label><br>
+  <div style="display: flex; flex-direction: column; gap: 5px;">
+    <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
+  </div>
+</div>
+
+  <div>
+    <label>血液型</label><br>
+    <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください", name: "view_request[blood_type]" %>
+  </div>
+
+<br>
+
+  <div>
+    <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
+    <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
+  </div>
+
+  <br>
+  <%= f.submit "　閲覧したい対象者を登録する　", class: "btn btn-primary" %>
+  <br>
+
+  <br>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<br>
+
+  <!-- ④BリストBBリストBBリストBBリストBBリストBBリストBBリストBBリストB -->
+
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんが登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %> (<%= vr.first_name_furigana %>)</td>
+          <td><%= vr.last_name %> (<%= vr.last_name_furigana %>)</td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            削除
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
+  <% end %>
+
+<br>
+
+<% current_user.view_requests.each do |request| %>
+  <p>
+       <%= button_to "　公開ページURLを更新・取得する　", request_access_view_requests_path, 
+          method: :post, params: { view_request_id: request.id }, class: "btn btn-primary" %>
+  </p>
+
+<% end %>
+
+<br>
+ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー
+<br>
+<br>
+
+
+ <!-- ④C取得済みリストCC取得済みリストCC取得済みリストCC取得済みリストCC取得済みリストC -->
+
+  <h3><%= current_user.first_name %> <%= current_user.last_name %> さんの取得したURLリスト</h3>
+  
+<% if current_user.view_accesses_as_viewer.any? %>
+  <% sorted_view_accesses = current_user.view_accesses_as_viewer.map do |access|
+    owner = access.owner
+    view_request = ViewRequest.find_by(user_id: current_user.id, first_name: owner.first_name, last_name: owner.last_name, birthday: owner.birthday)
+    relationship = view_request&.relationship.to_s.presence || "本人"
+    {
+      owner: owner,
+      relationship: relationship,
+      public_page_url: access.public_page_url
+    }
+  end %>
+
+  <% relationship_order = ["本人", "夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"] %>
+
+  <% sorted_view_accesses.sort_by! { |entry| relationship_order.index(entry[:relationship]) || relationship_order.length } %>
+
+  <table border="1">
+    <tr>
+      <th>公開者</th>
+      <th>続柄</th>
+      <th>公開ページURL</th>
+    </tr>
+    <% sorted_view_accesses.each do |entry| %>
+      <tr>
+        <td><%= entry[:owner].first_name %> <%= entry[:owner].last_name %></td>
+        <td><%= entry[:relationship] %></td>
+        <td>
+          <% if entry[:public_page_url].present? %>
+            <%= link_to entry[:public_page_url], entry[:public_page_url], target: "_blank", rel: "noopener noreferrer" %>
+          <% else %>
+            URL未取得
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>閲覧許可された公開ページはありません。</p>
+<% end %>
+
+
+  <br>
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<br>
+<br>
+
+  </div>
+
+<% end %>  <!--form with-->
+  </div>   <!--noteの閉じタグ-->
+
+<!-- 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 ④childの終了タブ 🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+
+
+
+<-- 🌕🌕🌕🌕 AI １回目🌕🌕🌕🌕🌕🌕 -->
+
+
+
+<div id="child-section" style="display: none;">
+
+  <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 </h3>
+
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+    <div>
+      <label>苗字（漢字）</label><br>
+      <%= f.text_field :first_name, required: true %>
+    </div>
+    <div>
+      <label>名前（漢字）</label><br>
+      <%= f.text_field :last_name, required: true %>
+    </div>
+    <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
+  <% end %>
+
+  <h3>登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %></td>
+          <td><%= vr.last_name %></td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            <%= button_to "削除", view_request_path(vr), method: :delete, class: "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <h3>取得したURLリスト</h3>
+  <table border="1">
+    <tr>
+      <th>公開者</th>
+      <th>公開ページURL</th>
+    </tr>
+    <% current_user.view_requests.each do |vr| %>
+      <tr>
+        <td><%= vr.first_name %> <%= vr.last_name %></td>
+        <td>
+          <% if vr.url.present? %>
+            <%= link_to vr.url, vr.url, target: "_blank", rel: "noopener noreferrer" %>
+          <% else %>
+            未取得
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <%= button_to "公開ページURLを更新・取得する", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+
+</div>
+
+
+
+<-- 🌕🌕🌕🌕 AI １回目🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+
+
+<-- 🌕🌕🌕🌕 AI ２回目🌕🌕🌕🌕🌕🌕 -->
+
+<div id="child-section" style="display: none;">
+
+  <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 </h3>
+
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+  
+    <div>
+      <label>苗字（漢字）</label><br>
+      <%= f.text_field :first_name, name: "view_request[first_name]", required: true %>
+    </div>
+
+    <div>
+      <label>苗字（ふりがな）</label><br>
+      <%= f.text_field :first_name_furigana, name: "view_request[first_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（漢字）</label><br>
+      <%= f.text_field :last_name, name: "view_request[last_name]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（ふりがな）</label><br>
+      <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
+    </div>
+
+    <%= f.submit "閲覧したい対象者を登録する", class: "btn btn-primary" %>
+  <% end %>
+
+  <h3>登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>ふりがな</th>
+        <th>名前</th>
+        <th>ふりがな</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %></td>
+          <td><%= vr.first_name_furigana %></td>
+          <td><%= vr.last_name %></td>
+          <td><%= vr.last_name_furigana %></td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            <%= button_to "削除", view_request_path(vr), method: :delete, class: "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <h3>取得したURLリスト</h3>
+  <table border="1">
+    <tr>
+      <th>公開者</th>
+      <th>続柄</th>
+      <th>公開ページURL</th>
+    </tr>
+    <% current_user.view_requests.each do |vr| %>
+      <tr>
+        <td><%= vr.first_name %> <%= vr.last_name %></td>
+        <td><%= vr.relationship %></td>
+        <td>
+          <% if vr.url.present? %>
+            <%= link_to vr.url, vr.url, target: "_blank", rel: "noopener noreferrer" %>
+          <% else %>
+            未取得
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <%= button_to "公開ページURLを更新・取得する", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+
+</div>
+
+
+<-- 🌕🌕🌕🌕 AI ２回目🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+
+
+
+
+
+
+
+
+<-- 🌕🌕🌕🌕 AI ３回目🌕🌕🌕🌕🌕🌕 -->
+
+<div id="child-section" style="display: none;">
+
+  <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 </h3>
+
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+  
+    <div>
+      <label>苗字（漢字）</label><br>
+      <%= f.text_field :first_name, name: "view_request[first_name]", required: true %>
+    </div>
+
+    <div>
+      <label>苗字（ふりがな）</label><br>
+      <%= f.text_field :first_name_furigana, name: "view_request[first_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（漢字）</label><br>
+      <%= f.text_field :last_name, name: "view_request[last_name]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（ふりがな）</label><br>
+      <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>生年月日</label><br>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
+      </div>
+    </div>
+
+    <div>
+      <label>血液型</label><br>
+      <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください", name: "view_request[blood_type]" %>
+    </div>
+
+    <br>
+
+    <div>
+      <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
+      <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
+    </div>
+
+    <br>
+    <%= f.submit "　閲覧したい対象者を登録する　", class: "btn btn-primary" %>
+    <br>
+
+  <% end %>
+
+  <br>
+  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <br>
+  <br>
+
+  <h3>登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %>（<%= vr.first_name_furigana %>）</td>
+          <td><%= vr.last_name %>（<%= vr.last_name_furigana %>）</td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            <%= button_to "削除", view_request_path(vr), method: :delete, class: "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
+  <% end %>
+
+  <br>
+
+  <p>
+    <%= button_to "　公開ページURLを更新・取得する　", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+  </p>
+
+  <br>
+  ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー
+  <br>
+  <br>
+
+  <h3>取得したURLリスト</h3>
+  
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>公開者</th>
+        <th>続柄</th>
+        <th>公開ページURL</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %>（<%= vr.first_name_furigana %>）　<%= vr.last_name %>（<%= vr.last_name_furigana %>）</td>
+          <td><%= vr.relationship %></td>
+          <td>
+            <% if vr.url.present? %>
+              <%= link_to vr.url, vr.url, target: "_blank", rel: "noopener noreferrer" %>
+            <% else %>
+              未取得
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>閲覧許可された公開ページはありません。</p>
+  <% end %>
+
+  <br>
+  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <br>
+  <br>
+
+</div>
+
+
+<-- 🌕🌕🌕🌕 AI ３回目🌕🌕🌕🌕🌕🌕 -->
+
+
+
+
+
+
+
+<-- 🌕🌕🌕🌕 AI 4回目🌕🌕🌕🌕🌕🌕 -->
+
+<div id="child-section" style="display: none;">
+
+  <h3> 🥳 <%= current_user.first_name %> <%= current_user.last_name %> さんが閲覧したい対象者 </h3>
+
+  <%= form_with model: ViewRequest.new, url: view_requests_path, method: :post, local: true do |f| %>
+  
+    <div>
+      <label>苗字（漢字）</label><br>
+      <%= f.text_field :first_name, name: "view_request[first_name]", required: true %>
+    </div>
+
+    <div>
+      <label>苗字（ふりがな）</label><br>
+      <%= f.text_field :first_name_furigana, name: "view_request[first_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（漢字）</label><br>
+      <%= f.text_field :last_name, name: "view_request[last_name]", required: true %>
+    </div>
+
+    <div>
+      <label>名前（ふりがな）</label><br>
+      <%= f.text_field :last_name_furigana, name: "view_request[last_name_furigana]", required: true %>
+    </div>
+
+    <div>
+      <label>生年月日</label><br>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <%= f.date_select :birthday, start_year: 1900, end_year: Date.today.year, use_month_numbers: true, prompt: { year: '年', month: '月', day: '日' } %>
+      </div>
+    </div>
+
+    <div>
+      <label>血液型</label><br>
+      <%= f.select :blood_type, ["A", "B", "O", "AB"], include_blank: "選択してください", name: "view_request[blood_type]" %>
+    </div>
+
+    <br>
+
+    <div>
+      <label style="color: darkbrown; font-size: 90%;">検索対象から見た あなた の続柄</label><br>
+      <%= f.select :relationship, ["夫", "妻", "長男", "二男", "三男", "長女", "二女", "三女", "本人の父母", "本人の兄弟", "その他"], include_blank: "選択してください" %>
+    </div>
+
+    <br>
+    <%= f.submit "　閲覧したい対象者を登録する　", class: "btn btn-primary" %>
+    <br>
+
+  <% end %>
+
+  <br>
+  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <br>
+  <br>
+
+  <h3>登録した閲覧対象者</h3>
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>苗字</th>
+        <th>名前</th>
+        <th>生年月日</th>
+        <th>血液型</th>
+        <th>削除</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %>（<%= vr.first_name_furigana %>）</td>
+          <td><%= vr.last_name %>（<%= vr.last_name_furigana %>）</td>
+          <td><%= vr.birthday.strftime('%Y-%m-%d') %></td>
+          <td><%= vr.blood_type %></td>
+          <td>
+            <%= button_to "削除", view_request_path(vr), method: :delete, class: "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>現在、登録されている親情報（閲覧したい対象者の情報）はありません。</p>
+  <% end %>
+
+  <br>
+
+  <p>
+    <%= button_to "　公開ページURLを更新・取得する　", request_access_view_requests_path, method: :post, class: "btn btn-primary" %>
+  </p>
+
+  <br>
+  ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー　　ー
+  <br>
+  <br>
+
+  <h3>取得したURLリスト</h3>
+  
+  <% if current_user.view_requests.any? %>
+    <table border="1">
+      <tr>
+        <th>公開者</th>
+        <th>続柄</th>
+        <th>公開ページURL</th>
+      </tr>
+      <% current_user.view_requests.each do |vr| %>
+        <tr>
+          <td><%= vr.first_name %>（<%= vr.first_name_furigana %>）　<%= vr.last_name %>（<%= vr.last_name_furigana %>）</td>
+          <td><%= vr.relationship %></td>
+          <td>
+            <% if vr.url.present? %>
+              <%= link_to vr.url, vr.url, target: "_blank", rel: "noopener noreferrer" %>
+            <% else %>
+              未取得
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>閲覧許可された公開ページはありません。</p>
+  <% end %>
+
+  <br>
+  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+  <br>
+  <br>
+
+</div>
+
+
+<-- 🌕🌕🌕🌕 AI 4回目🌕🌕🌕🌕🌕🌕 -->
