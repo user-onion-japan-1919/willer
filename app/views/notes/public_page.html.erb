@@ -462,10 +462,18 @@ border: 5px double black;
       <th>公開ページURL</th>
     </tr>
 
-    <% @user.view_requests.each do |vr| %>
+<% @user.view_requests.each do |vr| %>
       <% 
-        # URLが存在する場合、"http://" または "https://" が含まれているかチェック
-        formatted_url = vr.url.present? ? (vr.url =~ /\Ahttp(s)?:\/\// ? vr.url : "#{base_url}/#{vr.url}") : nil 
+        # usersテーブルからUUID/IDを取得
+        target_user = User.find_by(first_name: vr.first_name, 
+                                   last_name: vr.last_name, 
+                                   first_name_furigana: vr.first_name_furigana, 
+                                   last_name_furigana: vr.last_name_furigana, 
+                                   birthday: vr.birthday, 
+                                   blood_type: vr.blood_type)
+
+        # UUIDまたはIDを基にURLを生成
+        public_page_url = target_user ? "#{base_url}/public_page/#{target_user.uuid}/#{target_user.id + 150_150}" : nil
       %>
 
       <tr>
@@ -476,8 +484,8 @@ border: 5px double black;
         <td><%= vr.birthday.strftime('%Y-%m-%d') if vr.birthday %></td>
         <td><%= vr.blood_type %></td>
         <td>
-          <% if formatted_url.present? %>
-            <%= link_to formatted_url, formatted_url, target: "_blank", rel: "noopener noreferrer" %>
+          <% if public_page_url.present? %>
+            <%= link_to public_page_url, public_page_url, target: "_blank", rel: "noopener noreferrer" %>
           <% else %>
             未取得（ ※ ユーザー登録情報 または URL が存在しません ）
           <% end %>
