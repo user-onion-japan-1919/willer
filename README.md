@@ -102,17 +102,11 @@ add_index :view_accesses, [:owner_id, :viewer_id], unique: true
 
 
 
-
-
-
-
-
-
 ## 5.notes テーブル（遺言データ）
-| Column             | Type       | Options     |
-| ------------------ | ---------- | ----------- |
+| Column             | Type       | Options                       |
+| ------------------ | ---------- | ----------------------------- |
 | user_id            | references | null: false,foreign_key: true |
-| content            | text       | null: false |    ## 遺言の内容
+| content            | text       | null: false                   |    ## 遺言の内容
 
 ### 5.Association
 belongs_to :user
