@@ -90,6 +90,8 @@ belongs_to :user
 | public_page_url  | string     | null: true                                      |
 | last_accessed_at | datetime   | null: true                                      |
 | access_count     | integer    | null: false, default: 0                         |
+| last_rejected_at | datetime   | null: true                                      |
+| rejected_count     | integer    | null: false, default: 0                       |
 
 ### **4. Association**
 belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
