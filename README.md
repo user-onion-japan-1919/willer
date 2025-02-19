@@ -98,21 +98,45 @@ belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id'
 **✅ インデックス追加**
 ```ruby
 add_index :view_accesses, [:owner_id, :viewer_id], unique: true
-
-
-
-
-
-
-
+```
 
 
 
 ## 5.notes テーブル（遺言データ）
-| Column             | Type       | Options     |
-| ------------------ | ---------- | ----------- |
-| user_id            | references | null: false,foreign_key: true |
-| content            | text       | null: false |    ## 遺言の内容
+| Column             | Type       | Options                        |
+| ------------------ | ---------- | ------------------------------ |
+| user_id            | references | null: false,foreign_key: true  |
+| type_1             | string     | null: true                     |
+| type_2             | string     | null: true                     |
+| type_3             | string     | null: true                     |
+| type_4             | string     | null: true                     |
+| type_5             | string     | null: true                     |
+| issue_1            | string     | null: true                     |
+| issue_2            | string     | null: true                     |
+| issue_3            | string     | null: true                     |
+| issue_4            | string     | null: true                     |
+| issue_5            | string     | null: true                     |
+| requirement_1      | string     | null: true                     |
+| requirement_2      | string     | null: true                     |
+| requirement_3      | string     | null: true                     |
+| requirement_4      | string     | null: true                     |
+| requirement_5      | string     | null: true                     |
+| title_1            | string     | null: true                     |
+| title_2            | string     | null: true                     |
+| title_3            | string     | null: true                     |
+| title_4            | string     | null: true                     |
+| title_5            | string     | null: true                     |
+| content_1          | text       | null: true                     |
+| content_2          | text       | null: true                     |
+| content_3          | text       | null: true                     |
+| content_4          | text       | null: true                     |
+| content_5          | text       | null: true                     |
+| metadata           | json       | null: true                     |
+| created_at         | datetime   | null: false                    |
+| updated_at         | datetime   | null: false                    |
+
+
+
 
 ### 5.Association
 belongs_to :user
