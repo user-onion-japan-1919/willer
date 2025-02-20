@@ -154,3 +154,16 @@ add_index :view_accesses, [:owner_id, :viewer_id], unique: true
 ### 5.Association
 belongs_to :user
 
+
+
+
+![オリアプ設計図.pdf](./images/オリアプ_テーブル設計図.pdf)
+
+app/assets/images/オリアプ_テーブル設計図.pdf
+
+
+
+
+![オリアプ画面遷移図.pdf](./images/オリアプ_画面遷移図.pdf)
+
+app/assets/images/オリアプ_画面遷移図.pdf
