@@ -37,7 +37,7 @@ https://willer.onrender.com
 
 
 
-![ターゲット3.png](./app/assets/images/ターゲット3.png)
+![差別化.png](./app/assets/images/差別化.png)
 
 
 
