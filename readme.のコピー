@@ -180,4 +180,3 @@ add_index :view_accesses, [:owner_id, :viewer_id], unique: true
 
 ### 5.Association
 belongs_to :user
-
