@@ -1,21 +1,44 @@
 
 
 ## アプリケーション名
-遺言の作成/管理/共有 - Will_Note -  📓　　（ウィルノート）
+遺言の作成/管理/共有 - Will_Note -  📓　　（ウィルノート）<br><br>
 
 
 
 ## アプリケーション概要
 ・親側：遺言の言語化と作成をサポートし、子に記録を遺す。<br>
-・子側：必要時に親側の情報を検索し、”親の意思を尊重した遺言執行”をサポート。
+・子側：必要時に親側の情報を検索し、”親の意思を尊重した遺言執行”をサポート。<br><br>
+
+
+
+## 開発環境
+・本番アップロード先　（Render）<br>
+・タスク管理　（GitHub）<br>
+・テキストエディタ　（VS Code）<br><br>
+
+・本番環境データベース（PostgreSQL）<br>
+・開発環境データベース（MySQL）<br>
+・プログラミング言語　（JavaScript・Ruby3.2.0・SQL系）<br>
+・マークアップ・スタイル言語　（HTML・CSS・ERB）<br>
+
+ーーー<br>
+<br>
+
+・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF・Bootstrap・actioncable）<br>
+・インフラ　（PostgreSQL・MySQL・Redis）<br>
+・バックエンド　（Ruby on Rails 7.1.0・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
+・テスト　（RSpec・Rubocop・FactoryBot・Capybara）<br>
+・パフォーマンス最適化　（Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
 
 
 
 ## URL
-https://willer.onrender.com <br><br>
+　https://willer.onrender.com <br><br>
 
 ・Basic認証ID：admin<br>
 ・Basic認証パスワード：2222<br><br>
+
+
 
 ## テスト用アカウント
 ・テスト用アドレス１（本人）：test＠testA<br>
@@ -32,53 +55,68 @@ https://willer.onrender.com <br><br>
 ・ログインしてご使用ください。<br><br>
 
 
+
 ## 利用方法
 親側：①新規登録　②遺言情報を記入　③指定した子の閲覧を許可<br>
 子側：①新規登録　②指定した親を検索　③親の遺言を管理・執行<br><br>
 
 
 
-
-## 開発環境
-・本番アップロード先　（Render）<br>
-・タスク管理　（GitHub）<br>
-・テキストエディタ　（VS Code）<br><br>
-
-・本番環境データベース（PostgreSQL）<br>
-・開発環境データベース（MySQL）<br>
-・プログラミング言語　（JavaScript・Ruby3.2.0・SQL系）<br>
-・マークアップ・スタイル言語　（HTML・CSS・ERB）<br>
-
-<br>
-ーーー<br>
-<br>
-
-・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF・Bootstrap・actioncable）<br>
-・インフラ　（PostgreSQL・MySQL・Redis）<br>
-・バックエンド　（Ruby on Rails 7.1.0・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
-・テスト　（RSpec・Rubocop・FactoryBot・Capybara）<br>
-・パフォーマンス最適化　（Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
-
-
-
 ## アプリケーションを作成した背景
 親側：いつかはやってくる自分の命日。”終活”という言葉を最近耳にするが、結局、何から始めたらいいか分からない。<br>
-一度子と話さなればいけないと思っているが、機会が作れない。仮に会えたとしても、内容が繊細で話しづらい。<br>
+一度子と話さなればいけないと思っているが、機会が作れない。仮に会えたとしても、内容が繊細で話しづらい。<br><br>
 
 子側：いつかはやってくる家族の命日。”喪主や遺族代表者”になったら、何をしたらいいのだろうか？<br>
 一度親と話さなければいけないと思っているが、時間が取れない。仮に会えてたとしても、死後の話など直接聞きづらい。<br>
-そもそも、今自分にできる親孝行って、何なんだろう？　直接聞くのはちょっと野暮。<br>
+そもそも、今自分にできる親孝行って、何なんだろう？　直接聞くのはちょっと野暮。<br><br>
 
 →そんな社会問題・ディスコミュニケーションを解決すべく、親子をつなぐ『仲介』としての手段が必要と考えた。<br>
 →チャット機能も直接対面で話す機能もないが、それでも親子の意思疎通が取れる。そんな終活補助アプリを目指した。<br><br>
 
 
+## 工夫したポイント
+・ユーザーの現実的・実用的なニーズに沿った設計を実装<br>
+→恐らく、親と子ではアプリの利用時期が異なる。そのタイムラグをあらかじめ考慮し、”いつ始めても使用者に利がある”よう設計。<br>
+・シンプルかつ実用的な機能のみ採用<br>
+→要件を成すための必要な機能を取捨選択し、必要最小限だけをシンプルに実装。<br><br>
+
+
+
+## 改善点
+・”今後の実装予定”に記載したセキュリティ対策関連の実装<br>
+・CSSのデザイン改良<br>
+・ボタン入力時の確認メッセージ・エラーメッセージの改良<br>
+・リストの表示・非表示の管理<br>
+・開発者問合せ先の実装<br><br>
+
+
+
+## 今後実装予定の機能　（セキュリティ面）
+①公開ページURLの非表示化（iframe）<br>
+　→URLの非表示により、SNSでの拡散を防ぐ<br><br>
+ 
+②NOTESテーブルの暗号化（ビュー表示は可能なまま）<br>
+　→管理者がノートの内容を見られないようにする<br><br>
+ 
+③マイナンバー認証機能（JPKI）の申請と導入<br>
+　→匿名・偽証でのアカウント作成を防ぎ、ログインユーザーが間違いなく本人であることを担保する<br><br>
+
+
+
+## 制作時間
+・約３週間　(令和7年 2/1〜2/21)　25/02/21本番環境1回目提出<br>
+ ※ 以降も継続改良中<br><br>
+
+
+
 ## ターゲット層・差別化・目指すゴール（画像説明）
+<br><br>
 
 ![ターゲット1.png](./app/assets/images/ターゲット1.png)
 
 <br>
 <hr>
+
 
 ![ターゲット2.png](./app/assets/images/ターゲット2.png)
 
@@ -89,95 +127,63 @@ https://willer.onrender.com <br><br>
 ![差別化.png](./app/assets/images/差別化.png)
 
 <br>
+<hr>
 
-
-
-## 今後実装予定の機能　（セキュリティ面）
-①公開ページURLの非表示化（iframe）<br>
-　→URLの非表示により、SNSでの拡散を防ぐ<br><br>
-②NOTESテーブルの暗号化（ビュー表示は可能なまま）<br>
-　→管理者がノートの内容を見られないようにする<br><br>
-・マイナンバー認証機能（JPKI）の申請と導入<br>
-　→匿名・偽証でのアカウント作成を防ぎ、ログインユーザーが間違いなく本人であることを担保する
 
 ![セキュリティ.png](./app/assets/images/セキュリティ.png)
 
 <br>
 <hr>
 
+
 ![マイナポータル.png](./app/assets/images/マイナポータル.png)
 
 <br>
+<hr>
 
 
 
 ## テーブル設計図・画面
+<br><br>
 
 ![オリアプ設計図.png](./app/assets/images/オリアプ_テーブル設計図.png)
 
 <br>
 <hr>
 
+
 ![オリアプ画面遷移図.png](./app/assets/images/オリアプ_画面遷移図.png)
 
 <br>
+<hr>
 
 
 
 ## アプリの操作画面
+<br><br>
 
 ![ログインページ.png](./app/assets/images/ログインページ.png)
 
 <br>
 <hr>
 
+
 ![マイページ.png](./app/assets/images/マイページ.png)
 
 <br>
 <hr>
+
 
 ![ノート画面.png](./app/assets/images/ノート画面.png)
 
 <br>
 <hr>
 
+
 ![公開ページPDF.png](./app/assets/images/公開ページPDF.png)
 
 <br>
-
-
-
-
-## ローカルでの動作方法
-・git clone https://github.com/xxxxxxxxxx<br>
-・cd xxxxxxxxxxx<br>
-・bundle install<br>
-・rails db:create<br>
-・rails db:migrate
-
-
-
-## 工夫したポイント
-・ユーザーの現実的・実用的なニーズに沿った設計を実装<br>
-→恐らく、親と子ではアプリの利用時期が異なる。そのタイムラグをあらかじめ考慮し、”いつ始めても使用者に利がある”よう設計。<br>
-・シンプルかつ実用的な機能のみ採用<br>
-→要件を成すための必要な機能を取捨選択し、必要最小限だけをシンプルに実装。
-
-
-
-## 改善点
-・”今後の実装予定”に記載したセキュリティ対策関連の実装<br>
-・CSSのデザイン改良<br>
-・ボタン入力時の確認メッセージ・エラーメッセージの改良<br>
-・リストの表示・非表示の管理<br>
-・開発者問合せ先の実装
-
-
-
-## 制作時間
-・約３週間　(令和7年 2/1〜2/21)　25/02/21本番環境1回目提出<br>
- ※ 以降も継続改良中
-
+<hr>
 
 
 
@@ -202,6 +208,7 @@ https://willer.onrender.com <br><br>
 
 
 # テーブル設計 （詳細）
+<br><br>
 
 ## 1.users テーブル（ユーザー情報）
 | Column                        | Type   | Options     |
@@ -233,12 +240,8 @@ has_many :view_accesses_as_owner, class_name: 'ViewAccess', foreign_key: :owner_
 has_many :view_accesses_as_viewer, class_name: 'ViewAccess', foreign_key: :viewer_id, dependent: :destroy
 
 
-
-
-
-
-
-
+<br>
+<hr>
 
 
 ## 2. view_permissions テーブル（閲覧許可情報）
@@ -263,11 +266,8 @@ belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
 belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id'
 
 
-
-
-
-
-
+<br>
+<hr>
 
 
 ## 3. view_requests テーブル（閲覧申請情報）
@@ -287,12 +287,8 @@ belongs_to :viewer, class_name: 'User', foreign_key: 'viewer_id'
 belongs_to :user
 
 
-
-
-
-
-
-
+<br>
+<hr>
 
 
 ## 4. view_accesses テーブル（閲覧アクセス情報）
@@ -318,12 +314,8 @@ add_index :view_accesses, [:owner_id, :viewer_id], unique: true
 ```
 
 
-
-
-
-
-
-
+<br>
+<hr>
 
 
 ## 5.notes テーブル（遺言データ）
@@ -360,4 +352,8 @@ add_index :view_accesses, [:owner_id, :viewer_id], unique: true
 
 ### 5.Association
 belongs_to :user
+
+
+<br>
+<hr>
 
