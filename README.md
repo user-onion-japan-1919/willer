@@ -122,28 +122,16 @@
 <br><br>
 
 <p align="center">
-  <img src="./app/assets/images/ターゲット1.png" alt="ターゲット1" width="50%"/>
+  <img src="./app/assets/images/ターゲット1.png" alt="ターゲット1" width="45%"/>
+  <img src="./app/assets/images/ターゲット2.png" alt="ターゲット2" width="45%"/>
 </p>
 
 <br>
 <hr>
 
 <p align="center">
-  <img src="./app/assets/images/ターゲット2.png" alt="ターゲット2" width="50%"/>
-</p>
-
-<br>
-<hr>
-
-<p align="center">
-  <img src="./app/assets/images/差別化.png" alt="差別化" width="50%"/>
-</p>
-
-<br>
-<hr>
-
-<p align="center">
-  <img src="./app/assets/images/セキュリティ.png" alt="セキュリティ" width="50%"/>
+  <img src="./app/assets/images/差別化.png" alt="差別化" width="45%"/>
+  <img src="./app/assets/images/セキュリティ.png" alt="セキュリティ" width="45%"/>
 </p>
 
 <br>
