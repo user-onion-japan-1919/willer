@@ -130,10 +130,11 @@ https://willer.onrender.com
 ーーー<br>
 <br>
 
-・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF）　　<!---今後/Bootstrap/ActionCable---><br>
+・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF・Bootstrap・actioncable）<br>
 ・インフラ　（PostgreSQL・MySQL・Redis）<br>
 ・バックエンド　（Ruby on Rails 7.1.0・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
-・テスト・パフォーマンス最適化　（RSpec・Rubocop・FactoryBot・Capybara・Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
+・テスト　（RSpec・Rubocop・FactoryBot・Capybara）<br>
+・パフォーマンス最適化　（Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
 
 
 ## ローカルでの動作方法
