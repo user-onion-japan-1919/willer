@@ -117,34 +117,29 @@
 
 
 
-# <p style="color: red;">ターゲット層・差別化・目指すゴール（以下、画像説明）</p>
+# <p style="color: red;">ターゲット層・差別化・目指すゴール<br>
+## （以下、画像説明）
 <br><br>
 
-![ターゲット1.png](./app/assets/images/ターゲット1.png)
+<p align="center">
+  <img src="./app/assets/images/ターゲット1.png" alt="ターゲット1" width="45%"/>
+  <img src="./app/assets/images/ターゲット2.png" alt="ターゲット2" width="45%"/>
+</p>
 
 <br>
 <hr>
 
-
-![ターゲット2.png](./app/assets/images/ターゲット2.png)
-
-<br>
-<hr>
-
-
-![差別化.png](./app/assets/images/差別化.png)
+<p align="center">
+  <img src="./app/assets/images/差別化.png" alt="差別化" width="45%"/>
+  <img src="./app/assets/images/セキュリティ.png" alt="セキュリティ" width="45%"/>
+</p>
 
 <br>
 <hr>
 
-
-![セキュリティ.png](./app/assets/images/セキュリティ.png)
-
-<br>
-<hr>
-
-
-![マイナポータル.png](./app/assets/images/マイナポータル.png)
+<p align="center">
+  <img src="./app/assets/images/マイナポータル.png" alt="マイナポータル" width="50%"/>
+</p>
 
 <br>
 <hr>
@@ -159,54 +154,34 @@
 
 
 
-# <p style="color: red;">テーブル設計図・画面</p>
+
+# アプリの操作画面
 <br><br>
 
-
-
-![オリアプ設計図.png](./app/assets/images/オリアプ_テーブル設計図.png)
-
-<br>
-<hr>
-
-
-![オリアプ画面遷移図.png](./app/assets/images/オリアプ_画面遷移図.png)
+<p align="center">
+  <img src="./app/assets/images/ログインページ.png" alt="ログインページ" width="75%"/>
+</p>
 
 <br>
 <hr>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
-## アプリの操作画面
-<br><br>
-
-![ログインページ.png](./app/assets/images/ログインページ.png)
+<p align="center">
+  <img src="./app/assets/images/マイページ.png" alt="マイページ" width="75%"/>
+</p>
 
 <br>
 <hr>
 
-
-![マイページ.png](./app/assets/images/マイページ.png)
-
-<br>
-<hr>
-
-
-![ノート画面.png](./app/assets/images/ノート画面.png)
+<p align="center">
+  <img src="./app/assets/images/ノート画面.png" alt="ノート画面" width="75%"/>
+</p>
 
 <br>
 <hr>
 
-
-![公開ページPDF.png](./app/assets/images/公開ページPDF.png)
+<p align="center">
+  <img src="./app/assets/images/公開ページPDF.png" alt="公開ページPDF" width="75%"/>
+</p>
 
 <br>
 <hr>
@@ -234,7 +209,27 @@
 
 
 
+# <p style="color: red;">画面遷移図・テーブル設計図</p>
+<br><br>
 
+![オリアプ画面遷移図.png](./app/assets/images/オリアプ_画面遷移図.png)
+
+<br>
+<hr>
+
+![オリアプ設計図.png](./app/assets/images/オリアプ_テーブル設計図.png)
+
+<br>
+<hr>
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 
