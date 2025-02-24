@@ -157,7 +157,7 @@
 
 # アプリの操作画面
 <br><br>
-### ログインページ<br>
+### 新規登録/ログインページ<br>
 <p align="center">
   <img src="./app/assets/images/ログインページ.png" alt="ログインページ" width="75%"/>
 </p>
@@ -165,7 +165,7 @@
 <br>
 <hr>
 
-### 個人ページ<br>
+### 個人ページ(ページトップ)<br>
 <p align="center">
   <img src="./app/assets/images/マイページ.png" alt="マイページ" width="75%"/>
 </p>
@@ -173,7 +173,7 @@
 <br>
 <hr>
 
-### ノートに記入<br>
+### 個人ページ（ノートに記入）<br>
 <p align="center">
   <img src="./app/assets/images/ノート画面.png" alt="ノート画面" width="75%"/>
 </p>
