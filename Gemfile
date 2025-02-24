@@ -54,3 +54,6 @@ end
 
 # Sidekiq用にRedisを有効化
 gem "redis", ">= 4.0.1"
+
+
+gem 'concurrent-ruby', '~> 1.2', '< 1.3.0'
