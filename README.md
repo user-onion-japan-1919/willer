@@ -32,7 +32,7 @@
 
 
 ## URL
-　## https://willer.onrender.com <br><br>
+　　　https://willer.onrender.com <br><br>
 
 ・Basic認証ID：admin<br>
 ・Basic認証パスワード：2222<br><br>
@@ -114,7 +114,9 @@
 <br>
 <br>
 
-# ターゲット層・差別化・目指すゴール（以下、画像説明）
+
+
+# <p style="color: red;">ターゲット層・差別化・目指すゴール（以下、画像説明）</p>
 <br><br>
 
 ![ターゲット1.png](./app/assets/images/ターゲット1.png)
@@ -156,7 +158,7 @@
 
 
 
-# テーブル設計図・画面
+# <p style="color: red;">テーブル設計図・画面</p>
 <br><br>
 
 
@@ -236,7 +238,7 @@
 
 
 
-# テーブル設計の詳細（以下、カラム一覧）
+# <p style="color: red;">テーブル設計の詳細（以下、カラム一覧）</p>
 <br><br>
 
 ## 1.users テーブル（ユーザー情報）
