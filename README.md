@@ -184,16 +184,28 @@
 <br><br>
 
 <p align="center">
-  <img src="./app/assets/images/ログインページ.png" alt="ログインページ" width="45%"/>
-  <img src="./app/assets/images/マイページ.png" alt="マイページ" width="45%"/>
+  <img src="./app/assets/images/ログインページ.png" alt="ログインページ" width="75%"/>
 </p>
 
 <br>
 <hr>
 
 <p align="center">
-  <img src="./app/assets/images/ノート画面.png" alt="ノート画面" width="45%"/>
-  <img src="./app/assets/images/公開ページPDF.png" alt="公開ページPDF" width="45%"/>
+  <img src="./app/assets/images/マイページ.png" alt="マイページ" width="75%"/>
+</p>
+
+<br>
+<hr>
+
+<p align="center">
+  <img src="./app/assets/images/ノート画面.png" alt="ノート画面" width="75%"/>
+</p>
+
+<br>
+<hr>
+
+<p align="center">
+  <img src="./app/assets/images/公開ページPDF.png" alt="公開ページPDF" width="75%"/>
 </p>
 
 <br>
