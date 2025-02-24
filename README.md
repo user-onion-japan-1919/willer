@@ -118,34 +118,40 @@
 
 
 # <p style="color: red;">ターゲット層・差別化・目指すゴール<br>
-# （以下、画像説明）</p>
+# （以下、画像説明）
 <br><br>
 
-![ターゲット1.png](./app/assets/images/ターゲット1.png)
+<p align="center">
+  <img src="./app/assets/images/ターゲット1.png" alt="ターゲット1" width="50%"/>
+</p>
 
 <br>
 <hr>
 
-
-![ターゲット2.png](./app/assets/images/ターゲット2.png)
-
-<br>
-<hr>
-
-
-![差別化.png](./app/assets/images/差別化.png)
+<p align="center">
+  <img src="./app/assets/images/ターゲット2.png" alt="ターゲット2" width="50%"/>
+</p>
 
 <br>
 <hr>
 
-
-![セキュリティ.png](./app/assets/images/セキュリティ.png)
+<p align="center">
+  <img src="./app/assets/images/差別化.png" alt="差別化" width="50%"/>
+</p>
 
 <br>
 <hr>
 
+<p align="center">
+  <img src="./app/assets/images/セキュリティ.png" alt="セキュリティ" width="50%"/>
+</p>
 
-![マイナポータル.png](./app/assets/images/マイナポータル.png)
+<br>
+<hr>
+
+<p align="center">
+  <img src="./app/assets/images/マイナポータル.png" alt="マイナポータル" width="50%"/>
+</p>
 
 <br>
 <hr>
