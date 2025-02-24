@@ -32,6 +32,8 @@ Rails.application.configure do
   # プリコンパイル時にダイジェストを生成
   config.assets.digest = true
 
+  config.assets.initialize_on_precompile = false
+
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
@@ -53,7 +55,6 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
-
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
@@ -99,6 +100,6 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
 # production.rb
-Rails.application.routes.default_url_options = { host: 'willer.onrender.com', protocol: 'https' }
-
+config.action_mailer.default_url_options = { host: 'willer.onrender.com', protocol: 'https' }
+  Rails.application.routes.default_url_options = { host: 'willer.onrender.com', protocol: 'https' }
 end
