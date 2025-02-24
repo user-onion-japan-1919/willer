@@ -118,7 +118,7 @@
 
 
 # <p style="color: red;">ターゲット層・差別化・目指すゴール<br>
-# （以下、画像説明）
+## （以下、画像説明）
 <br><br>
 
 <p align="center">
@@ -180,28 +180,21 @@
 
 
 
-## アプリの操作画面
+# アプリの操作画面
 <br><br>
 
-![ログインページ.png](./app/assets/images/ログインページ.png)
+<p align="center">
+  <img src="./app/assets/images/ログインページ.png" alt="ログインページ" width="45%"/>
+  <img src="./app/assets/images/マイページ.png" alt="マイページ" width="45%"/>
+</p>
 
 <br>
 <hr>
 
-
-![マイページ.png](./app/assets/images/マイページ.png)
-
-<br>
-<hr>
-
-
-![ノート画面.png](./app/assets/images/ノート画面.png)
-
-<br>
-<hr>
-
-
-![公開ページPDF.png](./app/assets/images/公開ページPDF.png)
+<p align="center">
+  <img src="./app/assets/images/ノート画面.png" alt="ノート画面" width="45%"/>
+  <img src="./app/assets/images/公開ページPDF.png" alt="公開ページPDF" width="45%"/>
+</p>
 
 <br>
 <hr>
