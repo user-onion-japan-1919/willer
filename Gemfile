@@ -23,6 +23,7 @@ gem "bootstrap"
 gem "actioncable"
 
 gem 'sassc-rails'
+gem 'uglifier' # JavaScriptの圧縮用（必要なら）
 
 # バックエンド
 gem "devise", "~> 4.9"
