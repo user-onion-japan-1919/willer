@@ -1,8 +1,7 @@
 
 
 ## アプリ名
- <p style="color: blue;">　遺言の作成/管理/共有 - Will_Note -  📓　　（ウィルノート）</p><br><br>
-
+ <p style="color: blue;">　遺言の作成/管理/共有 - Will_Note -  📓　　（ウィルノート）</p><br>
 
 
 ## 概要
