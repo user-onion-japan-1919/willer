@@ -12,21 +12,52 @@
 
 
 ## URL
-https://willer.onrender.com
+https://willer.onrender.com <br><br>
 
-
+・Basic認証ID：admin<br>
+・Basic認証パスワード：2222<br><br>
 
 ## テスト用アカウント
-・Basic認証ID：admin<br>
-・Basic認証パスワード：2222<br>
-・メールアドレス：test＠test<br>
-・パスワード：admin2222
+・テスト用アドレス１（本人）：test＠testA<br>
+・テスト用アドレス２（実父）：test＠testB<br>
+・テスト用アドレス３（実母）：test＠testC<br>
+・テスト用アドレス４（祖父）：test＠testD<br>
+・テスト用アドレス５（叔父）：test＠testE<br>
+・テスト用アドレス６（長男）：test＠testF<br>
+・テスト用アドレス７（二女）：test＠testG<br>
+・テスト用アドレス８（他人）：test＠testH<br><br>
 
+・パスワード：admin2222　（共通）<br>
+
+・ログインしてご使用ください。<br><br>
 
 
 ## 利用方法
 親側：①新規登録　②遺言情報を記入　③指定した子の閲覧を許可<br>
-子側：①新規登録　②指定した親を検索　③親の遺言を管理・執行
+子側：①新規登録　②指定した親を検索　③親の遺言を管理・執行<br><br>
+
+
+
+
+## 開発環境
+・本番アップロード先　（Render）<br>
+・タスク管理　（GitHub）<br>
+・テキストエディタ　（VS Code）<br><br>
+
+・本番環境データベース（PostgreSQL）<br>
+・開発環境データベース（MySQL）<br>
+・プログラミング言語　（JavaScript・Ruby3.2.0・SQL系）<br>
+・マークアップ・スタイル言語　（HTML・CSS・ERB）<br>
+
+<br>
+ーーー<br>
+<br>
+
+・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF・Bootstrap・actioncable）<br>
+・インフラ　（PostgreSQL・MySQL・Redis）<br>
+・バックエンド　（Ruby on Rails 7.1.0・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
+・テスト　（RSpec・Rubocop・FactoryBot・Capybara）<br>
+・パフォーマンス最適化　（Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
 
 
 
@@ -36,10 +67,10 @@ https://willer.onrender.com
 
 子側：いつかはやってくる家族の命日。”喪主や遺族代表者”になったら、何をしたらいいのだろうか？<br>
 一度親と話さなければいけないと思っているが、時間が取れない。仮に会えてたとしても、死後の話など直接聞きづらい。<br>
-そもそも、今自分にできる親孝行って、何なんだろう？　直接聞くのはちょっと野暮。
+そもそも、今自分にできる親孝行って、何なんだろう？　直接聞くのはちょっと野暮。<br>
 
-→そんな社会問題・ディスコミュニケーションを解決すべく、親子をつなぐ『仲介』としての手段が必要と考えた。
-→チャット機能も直接対面で話す機能もないが、それでも親子の意思疎通が取れる。そんな終活補助アプリを目指した。
+→そんな社会問題・ディスコミュニケーションを解決すべく、親子をつなぐ『仲介』としての手段が必要と考えた。<br>
+→チャット機能も直接対面で話す機能もないが、それでも親子の意思疎通が取れる。そんな終活補助アプリを目指した。<br><br>
 
 
 ## ターゲット層・差別化・目指すゴール（画像説明）
@@ -116,26 +147,6 @@ https://willer.onrender.com
 
 
 
-## 開発環境
-・本番アップロード先　（Render）<br>
-・タスク管理　（GitHub）<br>
-・テキストエディタ　（VS Code）<br><br>
-
-・本番環境データベース（PostgreSQL）<br>
-・開発環境データベース（MySQL）<br>
-・プログラミング言語　（JavaScript・Ruby3.2.0・SQL系）<br>
-・マークアップ・スタイル言語　（HTML・CSS・ERB）<br><br>
-
-<br>
-ーーー<br>
-<br>
-
-・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF・Bootstrap・actioncable）<br>
-・インフラ　（PostgreSQL・MySQL・Redis）<br>
-・バックエンド　（Ruby on Rails 7.1.0・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
-・テスト　（RSpec・Rubocop・FactoryBot・Capybara）<br>
-・パフォーマンス最適化　（Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
-
 
 ## ローカルでの動作方法
 ・git clone https://github.com/xxxxxxxxxx<br>
@@ -147,10 +158,10 @@ https://willer.onrender.com
 
 
 ## 工夫したポイント
-・利用者のニーズに沿った設計を実装<br>
-→恐らく、親と子ではアプリの利用時期が異なる。そのタイムラグをあらかじめ考慮し、”いつ始めても機能する”よう設計した。<br>
+・ユーザーの現実的・実用的なニーズに沿った設計を実装<br>
+→恐らく、親と子ではアプリの利用時期が異なる。そのタイムラグをあらかじめ考慮し、”いつ始めても使用者に利がある”よう設計。<br>
 ・シンプルかつ実用的な機能のみ採用<br>
-→要件をなすための必要な機能を選別し、必要最小限だけを実装。
+→要件を成すための必要な機能を取捨選択し、必要最小限だけをシンプルに実装。
 
 
 
