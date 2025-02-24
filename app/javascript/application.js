@@ -11,3 +11,6 @@ application.debug = false
 window.Stimulus   = application
 
 export { application }
+
+import "@hotwired/stimulus"
+import "@hotwired/stimulus-loading"
