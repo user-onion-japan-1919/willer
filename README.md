@@ -119,8 +119,6 @@
 
 # <p style="color: red;">ターゲット層・差別化・目指すゴール（以下、画像説明）</p>
 <br><br>
-[発表スライド.pdf](https://github.com/user-attachments/files/18936351/default.pdf)
-
 
 ![ターゲット1.png](./app/assets/images/ターゲット1.png)
 
@@ -391,3 +389,4 @@ belongs_to :user
 <br>
 <hr>
 
+[250221発表スライド.pdf](https://github.com/user-attachments/files/18936351/default.pdf)
