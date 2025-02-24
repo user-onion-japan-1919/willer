@@ -154,31 +154,6 @@
 
 
 
-# <p style="color: red;">テーブル設計図・画面</p>
-<br><br>
-
-
-
-![オリアプ設計図.png](./app/assets/images/オリアプ_テーブル設計図.png)
-
-<br>
-<hr>
-
-
-![オリアプ画面遷移図.png](./app/assets/images/オリアプ_画面遷移図.png)
-
-<br>
-<hr>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
 
 # アプリの操作画面
 <br><br>
@@ -234,7 +209,27 @@
 
 
 
+# <p style="color: red;">画面遷移図・テーブル設計図</p>
+<br><br>
 
+![オリアプ画面遷移図.png](./app/assets/images/オリアプ_画面遷移図.png)
+
+<br>
+<hr>
+
+![オリアプ設計図.png](./app/assets/images/オリアプ_テーブル設計図.png)
+
+<br>
+<hr>
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 
