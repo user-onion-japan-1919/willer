@@ -118,7 +118,7 @@
 
 
 # <p style="color: red;">ターゲット層・差別化・目指すゴール<br>
-（以下、画像説明）</p>
+# （以下、画像説明）</p>
 <br><br>
 
 ![ターゲット1.png](./app/assets/images/ターゲット1.png)
