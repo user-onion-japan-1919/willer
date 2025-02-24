@@ -122,27 +122,18 @@ https://willer.onrender.com
 ・テキストエディタ　（VS Code）<br><br>
 
 ・本番環境データベース（PostgreSQL）<br>
-・開発環境データベース（MySQL）<br><br>
-・使用した言語　（Ruby）
+・開発環境データベース（MySQL）<br>
+・プログラミング言語　（JavaScript・Ruby3.2.0・SQL系）<br>
+・マークアップ・スタイル言語　（HTML・CSS・ERB）<br><br>
 
-・フロントエンド　（HTML・CSS・JavaScript・RQRCode・Wicked PDF）　　<!---/Bootstrap/ActionCable---><br>
-・インフラ　（PostgreSQL・MySQL）　　<!---/Redis---><br>
-・バックエンド　（Ruby on Rails 7.1・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
-・テスト　（RSpec・Rubocop・FactoryBot・Capybara）<br><br>
-・言語に該当
+<br>
+ーーー<br>
+<br>
 
-
-
-- バックエンド: Ruby 3.2 / Ruby on Rails 7.1
-- フロントエンド: HTML5 / CSS3 / JavaScript (ES6)
-- CSS フレームワーク: Bootstrap 5
-- テンプレートエンジン: ERB (Embedded Ruby)
-- リアルタイム機能: ActionCable
-- 言語：Ruby 3.2.0
-- 
-フレームワーク：Ruby on Rails 7.1.5.1
-認証機能：Devise 4.9
-
+・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF）　　<!---今後/Bootstrap/ActionCable---><br>
+・インフラ　（PostgreSQL・MySQL・Redis）<br>
+・バックエンド　（Ruby on Rails 7.1.0・Sidekiq・Whenever・Prawn・Prawn-Table）<br>
+・テスト・パフォーマンス最適化　（RSpec・Rubocop・FactoryBot・Capybara・Bootsnap・shoulda-matchers・dotenv-rails）<br><br>
 
 
 ## ローカルでの動作方法
