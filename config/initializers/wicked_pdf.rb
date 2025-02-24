@@ -1,3 +1,3 @@
 WickedPdf.configure do |config|
-  config.exe_path = '/usr/local/bin/wkhtmltopdf'
+  config.exe_path = '/Users/takasakashuta/.rbenv/shims/wkhtmltopdf'
 end
