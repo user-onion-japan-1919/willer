@@ -84,4 +84,6 @@ gem 'sidekiq'
 gem 'whenever', require: false
 
 gem 'rqrcode'
-gem 'stimulus-rails'
+
+gem 'dotenv-rails'
+gem 'factory_bot_rails'
