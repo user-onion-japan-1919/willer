@@ -21,8 +21,7 @@
 ・プログラミング言語　（JavaScript・Ruby3.2.0・SQL系）<br>
 ・マークアップ・スタイル言語　（HTML・CSS・ERB）<br>
 
-ーーー<br>
-<br>
+ーーーーーーーーーー<br>
 
 ・フロントエンド　（JavaScript・HTML・CSS・RQRCode・Wicked PDF・Bootstrap・actioncable）<br>
 ・インフラ　（PostgreSQL・MySQL・Redis）<br>
