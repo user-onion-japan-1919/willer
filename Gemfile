@@ -58,3 +58,4 @@ gem "redis", ">= 4.0.1"
 
 gem 'concurrent-ruby', '~> 1.2', '< 1.3.0'
 gem 'sprockets', '>= 4.0.0'
+gem "terser", "~> 1.2"
