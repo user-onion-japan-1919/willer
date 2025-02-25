@@ -1,0 +1,8 @@
+{
+  "name": "willer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/user-onion-japan-1919/willer.git",
+  "author": "user-onion-japan-1919 <shuta.12.27st@gmail.com>",
+  "license": "MIT"
+}
