@@ -29,11 +29,12 @@ Rails.application.configure do
   #config.assets.js_compressor = :uglifier
   #config.assets.js_compressor = Uglifier.new(harmony: true)
 
-  # JSの圧縮を無効化
-config.assets.js_compressor = nil
+# JavaScriptの圧縮を有効にする
+config.assets.js_compressor = Uglifier.new(harmony: true)
+
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = true
+  config.assets.compile = false
 
   # プリコンパイル時にダイジェストを生成
   config.assets.digest = true
