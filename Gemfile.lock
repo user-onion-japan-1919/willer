@@ -415,6 +415,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   sidekiq
+  sprockets (>= 4.0.0)
   stimulus-rails
   turbo-rails
   uglifier
